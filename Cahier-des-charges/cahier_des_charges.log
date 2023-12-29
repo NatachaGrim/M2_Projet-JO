@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.10.2)  29 DEC 2023 19:21
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.10.2)  29 DEC 2023 20:10
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -451,11 +451,6 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 File: modele01.jpeg Graphic file (type bmp)
 <modele01.jpeg>
  [2] [3] [4]
-Overfull \hbox (28.95203pt too wide) in paragraph at lines 126--127
-[]\TU/lmr/m/n/12 Charge estimée de travail : deux personnes (une pour les templ
-ates HTML/CSS,
- []
-
 The property list \polyglossia@langsetup contains the pairs (without outer
 braces):
 >  {latex/script}  =>  {latin}
@@ -530,7 +525,7 @@ The property list \__xpg_alias contains the pairs (without outer braces):
 >  {canadien/target}  =>  {french}
 >  {canadien/variant}  =>  {canadian}
 >  {canadien/options}  =>  {variant=canadian}.
-[5] (./cahier_des_charges.aux)
+ [5] (./cahier_des_charges.aux)
  ***********
 LaTeX2e <2023-06-01> patch level 1
 L3 programming layer <2023-08-29>

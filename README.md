@@ -1,2 +1,2 @@
 # M2_Projet-JO
-Projet de groupe réalisé dans le cadre du Master 2 - Technologiques Numériques Appliquées à l'Histoire de l'École nationale des chartes.
+Étude de la corrélation entre la richesse d'un pays et sa réussite aux Jeux Olympiques. Les données économiques concernent le PIB par habitant et les investissements dans le domaine du sport. La réussite aux Jeux est mesurée sur la base du nombre de médailles remportées par sport.

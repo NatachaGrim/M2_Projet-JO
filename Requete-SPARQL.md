@@ -2,7 +2,7 @@
 
 Enrichissement obligatoire de nos données avec Wikidata _via_ une requête SPARQL. La présente requête affiche le nombre de la population de pays sur trente ans (1993 - 2023).
 
-```
+```sparql
 SELECT ?paysLabel ?population ?date
 WHERE
 {

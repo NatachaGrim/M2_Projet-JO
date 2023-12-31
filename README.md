@@ -4,5 +4,6 @@
 À ce jour (décembre 2023), le dépôt contient :
 
 - Une [note de cadrage](Note-de-cadrage.pdf), offrant une vue d'ensemble sur notre projet ;
-- Une [requête SPARQL](Requete-SPARQL.md), constituant un enrichissement de nos données _via_ Wikidata.
-- Un [cahier des charges](./Cahier-des-charges/cahier_des_charges.pdf), décrivant notre application Flask.
+- Une [requête SPARQL](Requete-SPARQL.md), constituant un enrichissement de nos données _via_ Wikidata ;
+- Un [journal de bord](Journal-de-bord/Journal-de-bord.pdf), rendant compte de notre traitement des données ;
+- Un [cahier des charges](Cahier-des-charges/cahier_des_charges.pdf), décrivant notre application Flask.

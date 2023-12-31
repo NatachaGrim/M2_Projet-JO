@@ -1,6 +1,6 @@
 # Requête SPARQL
 
-Enrichissement obligatoire de nos données avec Wikidata _via_ une requête SPARQL. La présente requête affiche le nombre de la population de pays sur trente ans (1993 - 2023). Pour plus de détails, consulter la page (à ajouter) du journal de bord.
+Enrichissement obligatoire de nos données avec Wikidata _via_ une requête SPARQL. La présente requête affiche le nombre de la population de pays sur trente ans (1993 - 2023). Pour plus de détails, consulter le [journal de bord](Journal-de-bord/Journal-de-bord.pdf).
 
 Pour tester la requête : [Wikidata : Service des requêtes SPARQL](https://query.wikidata.org/).
 

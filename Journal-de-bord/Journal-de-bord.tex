@@ -37,10 +37,38 @@
 		
 		\subsection{Chaîne de traitement}
 		
-			\subsubsection{Requête SPARQL}
-		
 		Pensez à parler aussi de vos échecs, des enrichissements ou croisements qui n’ont pas marché… et de ce que vous avez appris.
-	
+		
+			\subsubsection{Requête SPARQL}
+			
+			Pour enrichir nos données \emph{via} Wikidata, notre objectif était de mettre au point une requête SPARQL retournant le nombre d'habitants de tous les pays du monde sur trente ans (1993 - 2003).
+			
+			\begin{verbatim}
+				SELECT ?paysLabel ?population ?date
+				WHERE
+				{
+					?pays wdt:P31 wd:Q6256.
+					?pays p:P1082 ?populationStatement.
+					?populationStatement ps:P1082 ?population.
+					?populationStatement pq:P585 ?date.
+					
+					FILTER(YEAR(?date) >= (YEAR(NOW()) - 30)).
+					
+					SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],fr". }
+				}
+				ORDER BY ?paysLabel ?date
+			\end{verbatim}
+		
+			Être en mesure de requêter la liste de l'ensemble des pays a été la première étape de la construction de notre requête. Le premier triplet utilise la variable inconnue \textbf{?pays} dont l'objet est \textbf{country} (wd:Q6256) :
+			
+			\begin{verbatim}
+				?pays wdt:P31 wd:Q6256.
+			\end{verbatim}
+			
+			La deuxième partie de la requête doit retourner la liste du nombre d'habitants de chaque pays en prenant en compte une dimension chronologique. La complexité de cette demande correspond à un parcours de graph en quatre temps -- et non pas en trois.
+			
+			Nous avons donc créé une nouvelle variable, \textbf{populationStatement?}, contenant toutes les propriétés utilisées dans la classe \textbf{population} grâce au préfixe \textbf{p}\footnote{Pour ce faire, nous avons consulté la liste suivante de préfixes Wikidata : }.
+
 	\section{Visualisation des données}
 	
 		\subsection{Présentation des visualisations}

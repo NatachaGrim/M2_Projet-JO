@@ -1,4 +1,4 @@
-\documentclass[12pt]{report}
+\documentclass[hidelinks, 12pt]{article}
 \usepackage{fontspec}
 \usepackage{xunicode}
 \usepackage{polyglossia}
@@ -9,6 +9,8 @@
 
 \usepackage{soul}
 \usepackage{color}
+
+\usepackage{hyperref}
 
 \usepackage{enumitem}
 \usepackage{setspace}
@@ -26,6 +28,7 @@
 	\maketitle
 	
 	\section{Introduction}
+	
 	
 	Nous sommes une équipe de datajournalistes chargée d'étuder l'existence ou non de liens entre le succès d'un pays aux Jeux Olympiques et sa richesse.
 	
@@ -51,10 +54,9 @@
 					?pays p:P1082 ?populationStatement.
 					?populationStatement ps:P1082 ?population.
 					?populationStatement pq:P585 ?date.
-					
 					FILTER(YEAR(?date) >= (YEAR(NOW()) - 30)).
-					
-					SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],fr". }
+					SERVICE wikibase:label { bd:serviceParam wikibase:language 
+					"[AUTO_LANGUAGE],fr". }
 				}
 				ORDER BY ?paysLabel ?date
 			\end{verbatim}
@@ -67,7 +69,30 @@
 			
 			La deuxième partie de la requête doit retourner la liste du nombre d'habitants de chaque pays en prenant en compte une dimension chronologique. La complexité de cette demande correspond à un parcours de graph en quatre temps -- et non pas en trois.
 			
-			Nous avons donc créé une nouvelle variable, \textbf{populationStatement?}, contenant toutes les propriétés utilisées dans la classe \textbf{population} grâce au préfixe \textbf{p}\footnote{Pour ce faire, nous avons consulté la liste suivante de préfixes Wikidata : }.
+			Nous avons donc créé une nouvelle variable, \textbf{?populationStatement}, contenant toutes les propriétés utilisées dans la classe \textbf{population} grâce au préfixe \textbf{p}\footnote{Pour ce faire, nous avons consulté la liste de préfixes Wikidata : \url{https://www.wikidata.org/wiki/EntitySchema:E49}.}. Pour obtenir le nombre d'habitants, nous avons utilisé le préfixe \textbf{ps} permettant d'obtenir la valeur de la propriété relative à la population :
+			
+			\begin{verbatim}
+				?pays p:P1082 ?populationStatement.
+				?populationStatement ps:P1082 ?population.
+			\end{verbatim}
+		
+			Enfin, nous avons utilisé le préfixe \textbf{pq} pour récupérer la valeur chronologique dans la variable \textbf{?date}. Un filtre a été appliqué pour exprimer les limites de notre période, soit \textbf{NOW} pour 2023 et \textbf{-30} pour 1993 :
+			
+			\begin{verbatim}
+				?populationStatement pq:P585 ?date.
+				FILTER(YEAR(?date) >= (YEAR(NOW()) - 30)).
+			\end{verbatim}
+			
+			La toute dernière ligne de la requête -- couplée à la toute première -- permet de contraindre l'affichage des résultats. Lorsque la requête s'exécute, le service Wikidata renvoie le nom de chaque pays (\textbf{?paysLabel}) par ordre alphabétique, le nombre d'habitants (\textbf{?population}) et l'année correspondante (\textbf{?date}) par ordre croissant :
+			
+			\begin{verbatim}
+				SELECT ?paysLabel ?population ?date
+				ORDER BY ?paysLabel ?date
+			\end{verbatim}
+		
+			Nous nous sommes heurtés à plusieurs erreurs avant de rendre la requête fonctionnelle. Nous avons dû nous éloigner du parcours de graphique à trois étapes vu en cours et comprendre la nécessité de recourir à la variable \textbf{?paysStatement}. La documentation a été d'un grand secours pour nous aider à saisir l'utilisation des propriétés \textbf{population}\footnote{\emph{Confer}. \url{https://www.wikidata.org/wiki/Property:P1082}.} et \textbf{date}\footnote{\emph{Confer}. \url{https://www.wikidata.org/wiki/Property:P585}.}.
+			
+			Nous avons également pris en exemple la requête \href{https://query.wikidata.org/#%23Population%20in%20Europe%20after%201960%0ASELECT%20%20%3FobjectLabel%20%20%20%20%28YEAR%28%3Fdate%29%20as%20%3Fyear%29%0A%20%20%20%20%20%20%20%20%3Fpopulation%20%20%20%20%20%28%3FobjectLabel%20as%20%3FLocation%29%0AWHERE%0A%7B%0A%20%20%20%20%20%20%20%20wd%3AQ458%20wdt%3AP150%20%3Fobject%20.%20%20%20%23%20European%20Union%20%20contains%20administrative%20territorial%20entity%0A%20%20%20%20%20%20%20%20%3Fobject%20p%3AP1082%20%3FpopulationStatement%20.%0A%20%20%20%20%20%20%20%20%3FpopulationStatement%20%20%20%20ps%3AP1082%20%3Fpopulation%0A%20%20%20%20%20%20%20%20%3B%20pq%3AP585%20%3Fdate%20.%0A%20%20%20%20%20%20%20%20SERVICE%20wikibase%3Alabel%20%7B%20bd%3AserviceParam%20wikibase%3Alanguage%20%22%5BAUTO_LANGUAGE%5D%2Cen%22%20%7D%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%0A%20%20FILTER%20%28YEAR%28%3Fdate%29%20%3E%3D%201960%29%0A%7D%0AORDER%20BY%20%3FobjectLabel%20%3Fyear}{\emph{Population in Europe after 1960}}. La consulter a été l'occasion d'un meilleur apprentissage sur les propriétés Wikidata, une porte ouverte à la lecture de la documentation et à l'appréhension des requêtes en deux temps : d'abord la collecte des propriétés d'une classe puis le requêtage de chacune d'elles en fonction de notre besoin.
 
 	\section{Visualisation des données}
 	
@@ -76,7 +101,7 @@
 		\subsection{Analyse}
 		
 		Qu'apprend-on en regardant les visualisations ? Quels sont les biais ?
-
+		\newpage
 
 	\tableofcontents
 

@@ -12,7 +12,6 @@ WHERE
   ?pays p:P1082 ?populationStatement.
   ?populationStatement ps:P1082 ?population.
   ?populationStatement pq:P585 ?date.
-  
   FILTER(YEAR(?date) >= (YEAR(NOW()) - 30)).
   
   SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],fr". }

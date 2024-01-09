@@ -5,14 +5,15 @@ Enrichissement obligatoire de nos données avec Wikidata _via_ une requête SPAR
 Pour tester la requête : [Wikidata : Service des requêtes SPARQL](https://query.wikidata.org/).
 
 ```sparql
-SELECT ?paysLabel ?population ?date
-WHERE
+SELECT ?paysLabel ?population ?date ?cio
+WHERE 
 {
-  ?pays wdt:P31 wd:Q6256.
-  ?pays p:P1082 ?populationStatement.
-  ?populationStatement ps:P1082 ?population.
-  ?populationStatement pq:P585 ?date.
-  FILTER(YEAR(?date) >= (YEAR(NOW()) - 30)).
+  ?pays wdt:P31 wd:Q6256. # liste de tous les pays 
+  ?pays wdt:P984 ?cio. #liste des codes CIO
+  ?pays p:P1082 ?populationStatement. # déclaration de population
+  ?populationStatement ps:P1082 ?population. # population 
+  ?populationStatement pq:P585 ?date. # date
+  FILTER(YEAR(?date) >= (YEAR(NOW()) - 30)). # filtre sur les trente dernières années
   
   SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],fr". }
            }

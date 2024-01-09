@@ -40,7 +40,16 @@
 		
 		\subsection{Chaîne de traitement}
 		
-		Pensez à parler aussi de vos échecs, des enrichissements ou croisements qui n’ont pas marché… et de ce que vous avez appris.
+			\subsubsection{Semaine du 1\textsuperscript{er} janvier 2024}
+		
+			Au cours du traitement, nous avons réalisé que le jeu de données de Kaggle ne représentait pas les pays grâce aux codes basés sur la norme ISO 3166 mais aux code du CIO (Comité International Olympique). Nous avons donc adapté notre requête SPARQL pour les obtenir pour être en mesure de réaliser une jointure en bout de chaîne de traitement.
+		
+			Également, le jeu de données du FMI est trop avare en données fiables (données manquantes, valeurs aberrantes\footnote{Donner des exemples.}) à propos des investissements en pourcentage du PIB dans le domaine du sport. Nous avons donc fait le choix d'utiliser les valeurs absolues\footnote{???} que nous croiserons avec le PIB par habitant de chaque pays. En somme, nous pallions les données fautives du FMI.
+		
+			Pour ce faire, nous avions de prime abord songé à rédiger une autre requête SPARQL. Nonobstant, le résultat ne concernait que les années 2021 et 2022 -- les années précédentes sont vraisemblablement absentes de Wikidata.
+		
+			Nous avons donc dû trouver un jeu de données contenant le PIB par habitant. Parmi les données sources de Wikidata se trouvait un jeu hébergé sur le site de la Banque mondiale\footnote{\url{https://data.worldbank.org/indicator/NY.GDP.MKTP.CD?most_recent_year_desc=false&view=map}}. Les données correspondent à une profondeur temporelle suffisante pour le cadre de notre projet. Cela nous a permis de résoudre le problème de mauvaise qualité du jeu du FMI.
+		
 		
 			\subsubsection{Requête SPARQL}
 			
@@ -93,6 +102,30 @@
 			Nous nous sommes heurtés à plusieurs erreurs avant de rendre la requête fonctionnelle. Nous avons dû nous éloigner du parcours de graphique à trois étapes vu en cours et comprendre la nécessité de recourir à la variable \textbf{?paysStatement}. La documentation a été d'un grand secours pour nous aider à saisir l'utilisation des propriétés \textbf{population}\footnote{\emph{Confer}. \url{https://www.wikidata.org/wiki/Property:P1082}.} et \textbf{date}\footnote{\emph{Confer}. \url{https://www.wikidata.org/wiki/Property:P585}.}.
 			
 			Nous avons également pris en exemple la requête \href{https://query.wikidata.org/#%23Population%20in%20Europe%20after%201960%0ASELECT%20%20%3FobjectLabel%20%20%20%20%28YEAR%28%3Fdate%29%20as%20%3Fyear%29%0A%20%20%20%20%20%20%20%20%3Fpopulation%20%20%20%20%20%28%3FobjectLabel%20as%20%3FLocation%29%0AWHERE%0A%7B%0A%20%20%20%20%20%20%20%20wd%3AQ458%20wdt%3AP150%20%3Fobject%20.%20%20%20%23%20European%20Union%20%20contains%20administrative%20territorial%20entity%0A%20%20%20%20%20%20%20%20%3Fobject%20p%3AP1082%20%3FpopulationStatement%20.%0A%20%20%20%20%20%20%20%20%3FpopulationStatement%20%20%20%20ps%3AP1082%20%3Fpopulation%0A%20%20%20%20%20%20%20%20%3B%20pq%3AP585%20%3Fdate%20.%0A%20%20%20%20%20%20%20%20SERVICE%20wikibase%3Alabel%20%7B%20bd%3AserviceParam%20wikibase%3Alanguage%20%22%5BAUTO_LANGUAGE%5D%2Cen%22%20%7D%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%0A%20%20FILTER%20%28YEAR%28%3Fdate%29%20%3E%3D%201960%29%0A%7D%0AORDER%20BY%20%3FobjectLabel%20%3Fyear}{\emph{Population in Europe after 1960}}. La consulter a été l'occasion d'un meilleur apprentissage sur les propriétés Wikidata, une porte ouverte à la lecture de la documentation et à l'appréhension des requêtes en deux temps : d'abord la collecte des propriétés d'une classe puis le requêtage de chacune d'elles en fonction de notre besoin.
+
+			Tel que mentionné \emph{supra}\footnote{Mettre le renvoi}, nous avons adapté notre requête pour récupérer les codes CIO des pays, et ce grâce à l'ajout d'une unique ligne :
+			
+			\begin{verbatim}
+				?pays wdt:P984 ?cio.
+			\end{verbatim}
+		
+			Voici, en somme, notre requête SPARQL :
+
+			\begin{verbatim}
+				SELECT ?paysLabel ?population ?date ?cio
+				WHERE 
+				{
+					?pays wdt:P31 wd:Q6256.
+					?pays wdt:P984 ?cio.
+					?pays p:P1082 ?populationStatement.
+					?populationStatement ps:P1082 ?population. 
+					?populationStatement pq:P585 ?date.
+					FILTER(YEAR(?date) >= (YEAR(NOW()) - 30)).
+					SERVICE wikibase:label { bd:serviceParam wikibase:language
+					"[AUTO_LANGUAGE],fr". }
+				}
+				ORDER BY ?paysLabel ?date
+			\end{verbatim}
 
 	\section{Visualisation des données}
 	

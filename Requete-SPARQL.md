@@ -9,7 +9,7 @@ SELECT ?paysLabel ?population ?date ?cio
 WHERE 
 {
   ?pays wdt:P31 wd:Q6256. # liste de tous les pays 
-  ?pays wdt:P984 ?cio. #liste des codes CIO
+  ?pays wdt:P984 ?cio. # liste des codes CIO
   ?pays p:P1082 ?populationStatement. # déclaration de population
   ?populationStatement ps:P1082 ?population. # population 
   ?populationStatement pq:P585 ?date. # date

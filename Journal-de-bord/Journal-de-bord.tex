@@ -19,6 +19,28 @@
 \usepackage{graphicx}
 \usepackage{float}
 
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+\definecolor{red}{rgb}{1,0,0}
+
+\lstset{
+	language=SPARQL,
+	%aboveskip=3mm,
+	%belowskip=3mm,
+	showstringspaces=false,
+	columns=flexible,
+	basicstyle={\small\ttfamily},
+	numbers=none,
+	keywordstyle=\color{blue},
+	commentstyle=\color{dkgreen},
+	stringstyle=\color{mauve},
+	%identifierstyle=\color{red}
+	breaklines=true,
+	breakatwhitespace=true,
+	tabsize=3
+}
+
 \title{Projet Jeux Olympiques - Journal de bord}
 \date{Janvier 2024}
 \author{T. Burnel, N. Grim, M. Griveau, M. Mechentel}
@@ -74,20 +96,19 @@
 		
 		Pour enrichir nos données \emph{via} Wikidata, notre objectif était de mettre au point une requête SPARQL retournant le nombre d'habitants de tous les pays du monde sur trente ans (1993 - 2003).
 		
-		\begin{verbatim}
-			SELECT ?paysLabel ?population ?date
-			WHERE
-			{
-				?pays wdt:P31 wd:Q6256.
-				?pays p:P1082 ?populationStatement.
-				?populationStatement ps:P1082 ?population.
-				?populationStatement pq:P585 ?date.
-				FILTER(YEAR(?date) >= (YEAR(NOW()) - 30)).
-				SERVICE wikibase:label { bd:serviceParam wikibase:language 
-					"[AUTO_LANGUAGE],fr". }
-			}
-			ORDER BY ?paysLabel ?date
-		\end{verbatim}
+\begin{lstlisting}
+	SELECT ?paysLabel ?population ?date
+	WHERE
+	{
+		?pays wdt:P31 wd:Q6256.
+		?pays p:P1082 ?populationStatement.
+		?populationStatement ps:P1082 ?population.
+		?populationStatement pq:P585 ?date.
+		FILTER(YEAR(?date) >= (YEAR(NOW()) - 30)).
+		SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],fr". }
+	}
+	ORDER BY ?paysLabel ?date
+\end{lstlisting}
 		
 		Être en mesure de requêter la liste de l'ensemble des pays a été la première étape de la construction de notre requête. Le premier triplet utilise la variable inconnue \textbf{?pays} dont l'objet est \textbf{country} (wd:Q6256) :
 		
@@ -171,8 +192,8 @@
 		\subsection{Analyse}
 		
 		Qu'apprend-on en regardant les visualisations ? Quels sont les biais ?
-		\newpage
-
+	\newpage
+	
 	\tableofcontents
 
 \end{document}

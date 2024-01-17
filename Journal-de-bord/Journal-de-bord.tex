@@ -4,42 +4,55 @@
 \usepackage{polyglossia}
 \setmainlanguage{french}
 \usepackage{csquotes}
-
-\usepackage{listings}
-
 \usepackage{soul}
 \usepackage{color}
-
 \usepackage{hyperref}
-
 \usepackage{enumitem}
 \usepackage{setspace}
-
 \usepackage{lscape}
 \usepackage{graphicx}
 \usepackage{float}
 
-\definecolor{dkgreen}{rgb}{0,0.6,0}
-\definecolor{gray}{rgb}{0.5,0.5,0.5}
-\definecolor{marron}{RGB}{173, 69, 47}
-\definecolor{red}{RGB}{170, 5, 5}
-\definecolor{LightGray}{rgb}{0.97,0.97,0.97}
+\usepackage[dvipsnames]{xcolor}
 
-\lstset{
-	language=SPARQL,
-	%aboveskip=3mm,
-	%belowskip=3mm,
-	showstringspaces=false,
+\definecolor{LightGray}{rgb}{0.97,0.97,0.97}
+\definecolor{red}{RGB}{255,0,0}
+\definecolor{brown}{RGB}{139,69,19}
+\definecolor{green}{RGB}{0,128,0}
+\definecolor{blue}{RGB}{0,0,255}
+
+\usepackage{listings}
+
+\lstdefinelanguage{SPARQL}{
+	basicstyle=\small\ttfamily,
 	backgroundcolor=\color{LightGray},
-	columns=flexible,
-	basicstyle={\small\ttfamily},
-	numbers=none,
-	keywordstyle=\color{red},
-	commentstyle=\color{dkgreen},
-	stringstyle=\color{marron},
+	%
+	tabsize=1,
+	showstringspaces=false,
+	columns=fullflexible,
 	breaklines=true,
 	breakatwhitespace=true,
-	tabsize=3
+	%
+	aboveskip=1em,
+	belowskip=1em,
+	xleftmargin=.5em,
+	xrightmargin=.5em,
+	framexleftmargin=.5em,
+	framextopmargin=.5em,
+	framexbottommargin=.5em,
+	framexrightmargin=.5em,
+	%
+	morekeywords=[1]{paysLabel,population,date,cio,pays,populationStatement},
+	keywordstyle=[1]\color{green},
+	%
+	morekeywords=[2]{wd,Q6256,wdt,P31,p,P1082,ps,pq,P585,wikibase,P984,label,bd,serviceParam,language},
+	keywordstyle=[2]\color{blue},
+	%
+	morekeywords=[3]{SELECT,ORDER,BY,WHERE,FILTER,YEAR,NOW,SERVICE},
+	keywordstyle=[3]\color{red},
+	%
+	morestring=[b][\color{brown}]",
+	otherkeywords={?},
 }
 
 \title{Projet Jeux Olympiques - Journal de bord}
@@ -97,7 +110,7 @@
 		
 		Pour enrichir nos données \emph{via} Wikidata, notre objectif était de mettre au point une requête SPARQL retournant le nombre d'habitants de tous les pays du monde sur trente ans (1993 - 2003).
 		
-\begin{lstlisting}
+\begin{lstlisting}[language=SPARQL]
 	SELECT ?paysLabel ?population ?date
 	WHERE
 	{
@@ -113,32 +126,32 @@
 		
 		Être en mesure de requêter la liste de l'ensemble des pays a été la première étape de la construction de notre requête. Le premier triplet utilise la variable inconnue \textbf{?pays} dont l'objet est \textbf{country} (wd:Q6256) :
 		
-		\begin{verbatim}
-			?pays wdt:P31 wd:Q6256.
-		\end{verbatim}
+\begin{lstlisting}[language=SPARQL]
+	?pays wdt:P31 wd:Q6256.
+\end{lstlisting}
 		
 		La deuxième partie de la requête doit retourner la liste du nombre d'habitants de chaque pays en prenant en compte une dimension chronologique. La complexité de cette demande correspond à un parcours de graph en quatre temps -- et non pas en trois.
 		
 		Nous avons donc créé une nouvelle variable, \textbf{?populationStatement}, contenant toutes les propriétés utilisées dans la classe \textbf{population} grâce au préfixe \textbf{p}\footnote{Pour ce faire, nous avons consulté la liste de préfixes Wikidata : \url{https://www.wikidata.org/wiki/EntitySchema:E49}.}. Pour obtenir le nombre d'habitants, nous avons utilisé le préfixe \textbf{ps} permettant d'obtenir la valeur de la propriété relative à la population :
 		
-		\begin{verbatim}
-			?pays p:P1082 ?populationStatement.
-			?populationStatement ps:P1082 ?population.
-		\end{verbatim}
+\begin{lstlisting}[language=SPARQL]
+	?pays p:P1082 ?populationStatement.
+	?populationStatement ps:P1082 ?population.
+\end{lstlisting}
 		
 		Enfin, nous avons utilisé le préfixe \textbf{pq} pour récupérer la valeur chronologique dans la variable \textbf{?date}. Un filtre a été appliqué pour exprimer les limites de notre période, soit \textbf{NOW} pour 2023 et \textbf{-30} pour 1993 :
 		
-		\begin{verbatim}
-			?populationStatement pq:P585 ?date.
-			FILTER(YEAR(?date) >= (YEAR(NOW()) - 30)).
-		\end{verbatim}
+\begin{lstlisting}[language=SPARQL]
+	?populationStatement pq:P585 ?date.
+	FILTER(YEAR(?date) >= (YEAR(NOW()) - 30)).
+\end{lstlisting}
 		
 		La toute dernière ligne de la requête -- couplée à la toute première -- permet de contraindre l'affichage des résultats. Lorsque la requête s'exécute, le service Wikidata renvoie le nom de chaque pays (\textbf{?paysLabel}) par ordre alphabétique, le nombre d'habitants (\textbf{?population}) et l'année correspondante (\textbf{?date}) par ordre croissant :
 		
-		\begin{verbatim}
-			SELECT ?paysLabel ?population ?date
-			ORDER BY ?paysLabel ?date
-		\end{verbatim}
+\begin{lstlisting}[language=SPARQL]
+	SELECT ?paysLabel ?population ?date
+	ORDER BY ?paysLabel ?date
+\end{lstlisting}
 		
 		Nous nous sommes heurtés à plusieurs erreurs avant de rendre la requête fonctionnelle. Nous avons dû nous éloigner du parcours de graphique à trois étapes vu en cours et comprendre la nécessité de recourir à la variable \textbf{?paysStatement}. La documentation a été d'un grand secours pour nous aider à saisir l'utilisation des propriétés \textbf{population}\footnote{\emph{Confer}. \url{https://www.wikidata.org/wiki/Property:P1082}.} et \textbf{date}\footnote{\emph{Confer}. \url{https://www.wikidata.org/wiki/Property:P585}.}.
 		
@@ -146,27 +159,26 @@
 		
 		Tel que mentionné \emph{supra}\footnote{Mettre le renvoi}, nous avons adapté notre requête pour récupérer les codes CIO des pays, et ce grâce à l'ajout d'une unique ligne :
 		
-		\begin{verbatim}
-			?pays wdt:P984 ?cio.
-		\end{verbatim}
+\begin{lstlisting}[language=SPARQL]
+	?pays wdt:P984 ?cio.
+\end{lstlisting}
 		
 		Voici, en somme, notre requête SPARQL :
 		
-		\begin{verbatim}
-			SELECT ?paysLabel ?population ?date ?cio
-			WHERE 
-			{
-				?pays wdt:P31 wd:Q6256.
-				?pays wdt:P984 ?cio.
-				?pays p:P1082 ?populationStatement.
-				?populationStatement ps:P1082 ?population. 
-				?populationStatement pq:P585 ?date.
-				FILTER(YEAR(?date) >= (YEAR(NOW()) - 30)).
-				SERVICE wikibase:label { bd:serviceParam wikibase:language
-					"[AUTO_LANGUAGE],fr". }
-			}
-			ORDER BY ?paysLabel ?date
-		\end{verbatim}
+\begin{lstlisting}[language=SPARQL]
+	SELECT ?paysLabel ?population ?date ?cio
+	WHERE 
+	{
+		?pays wdt:P31 wd:Q6256.
+		?pays wdt:P984 ?cio.
+		?pays p:P1082 ?populationStatement.
+		?populationStatement ps:P1082 ?population. 
+		?populationStatement pq:P585 ?date.
+		FILTER(YEAR(?date) >= (YEAR(NOW()) - 30)).
+		SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],fr". }
+	}
+	ORDER BY ?paysLabel ?date
+\end{lstlisting}
 		
 
 	\section{Traitement des données}

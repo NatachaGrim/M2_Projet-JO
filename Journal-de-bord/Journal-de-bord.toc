@@ -1,18 +1,18 @@
 \babel@toc {french}{}\relax 
-\contentsline {section}{\numberline {0.1}Introduction}{1}{section.0.1}%
-\contentsline {section}{\numberline {0.2}Jeux de données}{2}{section.0.2}%
-\contentsline {subsection}{\numberline {0.2.1}Jeux collectés}{2}{subsection.0.2.1}%
-\contentsline {subsubsection}{Jeu de Kaggle}{2}{section*.1}%
-\contentsline {subsubsection}{Jeu du FMI}{2}{section*.2}%
-\contentsline {subsubsection}{Jeu du ministère des sports et des jeux olympiques et paralympiques}{3}{section*.3}%
-\contentsline {subsubsection}{Jeu de Sport England}{3}{section*.4}%
-\contentsline {subsubsection}{Jeu de la Banque mondiale}{3}{section*.5}%
-\contentsline {subsection}{\numberline {0.2.2}Enrichissement Wikidata \emph {via} requête SPARQL}{3}{subsection.0.2.2}%
-\contentsline {section}{\numberline {0.3}Traitement des données}{6}{section.0.3}%
-\contentsline {subsection}{\numberline {0.3.1}Objectif du traitement}{6}{subsection.0.3.1}%
-\contentsline {subsection}{\numberline {0.3.2}Chaîne de traitement}{6}{subsection.0.3.2}%
-\contentsline {subsubsection}{Semaine du 1\textsuperscript {er} janvier 2024}{6}{section*.6}%
-\contentsline {section}{\numberline {0.4}Visualisation des données}{7}{section.0.4}%
-\contentsline {subsection}{\numberline {0.4.1}Présentation des visualisations}{7}{subsection.0.4.1}%
-\contentsline {subsection}{\numberline {0.4.2}Analyse}{7}{subsection.0.4.2}%
-\contentsline {section}{\numberline {0.5}Sitographie}{8}{section.0.5}%
+\contentsline {section}{\numberline {1}Introduction}{1}{section.1}%
+\contentsline {section}{\numberline {2}Jeux de données}{2}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Jeux collectés}{2}{subsection.2.1}%
+\contentsline {subsubsection}{\numberline {2.1.1}Jeu de Kaggle}{2}{subsubsection.2.1.1}%
+\contentsline {subsubsection}{\numberline {2.1.2}Jeu du FMI}{3}{subsubsection.2.1.2}%
+\contentsline {subsubsection}{\numberline {2.1.3}Jeu du ministère des sports et des jeux olympiques et paralympiques}{3}{subsubsection.2.1.3}%
+\contentsline {subsubsection}{\numberline {2.1.4}Jeu de Sport England}{3}{subsubsection.2.1.4}%
+\contentsline {subsubsection}{\numberline {2.1.5}Jeu de la Banque mondiale}{3}{subsubsection.2.1.5}%
+\contentsline {subsection}{\numberline {2.2}Enrichissement Wikidata \emph {via} requête SPARQL}{3}{subsection.2.2}%
+\contentsline {section}{\numberline {3}Traitement des données}{7}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Objectif du traitement}{7}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Chaîne de traitement}{7}{subsection.3.2}%
+\contentsline {subsubsection}{\numberline {3.2.1}Semaine du 1\textsuperscript {er} janvier 2024}{7}{subsubsection.3.2.1}%
+\contentsline {section}{\numberline {4}Visualisation des données}{8}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Présentation des visualisations}{8}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Analyse}{8}{subsection.4.2}%
+\contentsline {section}{\numberline {5}Sitographie}{9}{section.5}%

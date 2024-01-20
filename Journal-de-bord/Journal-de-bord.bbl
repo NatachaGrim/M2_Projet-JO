@@ -40,6 +40,23 @@
     \field{urlyear}{2024}
   \endentry
 
+  \entry{ru}{online}{}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{A}
+    \field{sortinithash}{A}
+    \field{title}{Active Places Power}
+    \verb{url}
+    \verb https://www.activeplacespower.com/
+    \endverb
+    \verb{file}
+    \verb Active Places Power:/home/port-pret-etu01/Zotero/storage/552E9KNA/www
+    \verb .activeplacespower.com.html:text/html
+    \endverb
+    \field{urlday}{20}
+    \field{urlmonth}{01}
+    \field{urlyear}{2024}
+  \endentry
+
   \entry{ministere}{online}{}
     \field{labeltitlesource}{title}
     \field{sortinit}{D}
@@ -78,6 +95,105 @@
     \verb e-database.html:text/html
     \endverb
     \field{urlday}{17}
+    \field{urlmonth}{01}
+    \field{urlyear}{2024}
+  \endentry
+
+  \entry{wikidate}{online}{}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{P}
+    \field{sortinithash}{P}
+    \field{abstract}{%
+    date something took place, existed or a statement was true; for providing
+  time use the "refine date" property (P4241)%
+    }
+    \field{title}{point in time}
+    \verb{url}
+    \verb https://www.wikidata.org/wiki/Property:P585
+    \endverb
+    \field{langid}{english}
+    \verb{file}
+    \verb Snapshot:/home/port-pret-etu01/Zotero/storage/KIDARMC8/PropertyP585.h
+    \verb tml:text/html
+    \endverb
+    \field{urlday}{20}
+    \field{urlmonth}{01}
+    \field{urlyear}{2024}
+  \endentry
+
+  \entry{wikipop}{online}{}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{P}
+    \field{sortinithash}{P}
+    \field{abstract}{%
+    number of people inhabiting the place; number of people of subject%
+    }
+    \field{title}{population}
+    \verb{url}
+    \verb https://www.wikidata.org/wiki/Property:P1082
+    \endverb
+    \field{langid}{english}
+    \verb{file}
+    \verb Snapshot:/home/port-pret-etu01/Zotero/storage/6ZF9HSLG/PropertyP1082.
+    \verb html:text/html
+    \endverb
+    \field{urlday}{20}
+    \field{urlmonth}{01}
+    \field{urlyear}{2024}
+  \endentry
+
+  \entry{wikiprefixes}{online}{}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{W}
+    \field{sortinithash}{W}
+    \field{title}{Wikidata prefixes (E49) - Wikidata}
+    \verb{url}
+    \verb https://www.wikidata.org/wiki/EntitySchema:E49
+    \endverb
+    \verb{file}
+    \verb Wikidata prefixes (E49) - Wikidata:/home/port-pret-etu01/Zotero/stora
+    \verb ge/UJKREETY/EntitySchemaE49.html:text/html
+    \endverb
+    \field{urlday}{20}
+    \field{urlmonth}{01}
+    \field{urlyear}{2024}
+  \endentry
+
+  \entry{wiki1960}{online}{}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{W}
+    \field{sortinithash}{W}
+    \field{title}{Wikidata Query Service}
+    \verb{url}
+    \verb https://w.wiki/8uHH
+    \endverb
+    \verb{file}
+    \verb Wikidata Query Service:/home/port-pret-etu01/Zotero/storage/49IXZ73K/
+    \verb query.wikidata.org.html:text/html
+    \endverb
+    \field{urlday}{20}
+    \field{urlmonth}{01}
+    \field{urlyear}{2024}
+  \endentry
+
+  \entry{worldbank}{online}{}
+    \field{labeltitlesource}{title}
+    \field{sortinit}{W}
+    \field{sortinithash}{W}
+    \field{abstract}{%
+    Free and open access to global development data%
+    }
+    \field{titleaddon}{World Bank Open Data}
+    \field{title}{World Bank Open Data}
+    \verb{url}
+    \verb https://data.worldbank.org
+    \endverb
+    \field{langid}{english}
+    \verb{file}
+    \verb Snapshot:/home/port-pret-etu01/Zotero/storage/SLD3EPYJ/NY.GDP.MKTP.ht
+    \verb ml:text/html
+    \endverb
+    \field{urlday}{20}
     \field{urlmonth}{01}
     \field{urlyear}{2024}
   \endentry

@@ -107,7 +107,7 @@
     date something took place, existed or a statement was true; for providing
   time use the "refine date" property (P4241)%
     }
-    \field{title}{point in time}
+    \field{title}{Point in time}
     \verb{url}
     \verb https://www.wikidata.org/wiki/Property:P585
     \endverb
@@ -128,7 +128,7 @@
     \field{abstract}{%
     number of people inhabiting the place; number of people of subject%
     }
-    \field{title}{population}
+    \field{title}{Population}
     \verb{url}
     \verb https://www.wikidata.org/wiki/Property:P1082
     \endverb

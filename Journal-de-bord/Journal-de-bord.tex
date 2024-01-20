@@ -18,6 +18,8 @@
 \usepackage[dvipsnames]{xcolor}
 \usepackage{listings}
 
+\newcommand{\code}[1]{\colorbox{LightGray}{\texttt{#1}}}
+
 \definecolor{LightGray}{rgb}{0.97,0.97,0.97}
 \definecolor{red}{RGB}{255,0,0}
 \definecolor{brown}{RGB}{139,69,19}
@@ -56,8 +58,6 @@
 	otherkeywords={?},
 }
 
-\newcommand{\code}[1]{\colorbox{LightGray}{\texttt{#1}}}
-
 \bibliography{Journal-de-bord-bibliographie}
 
 \title{Projet Jeux Olympiques - Journal de bord}
@@ -68,20 +68,21 @@
 
 \setstretch{1.5}
 \maketitle
-	
+
+
 \section{Introduction}
-	
+
 Nous sommes une équipe de datajournalistes chargée, à l'approche des Jeux Olympiques de Paris, d'étudier l'existence ou non de liens entre le succès d'un pays aux Jeux Olympiques et sa richesse. Notre rôle sera de comparer le nombre de médailles remportées par pays et par sport à diverses éditions des Jeux pour cerner la présence ou l'absence d'une logique économique.
-	
+
 Notre hypothèse de départ est la suivante : les pays développés gagnent significativement plus de médailles en raison de leur niveau d'investissement dans le sport. À l’aune de l’examen et du traitement des données, nous avons pour ambition de déterminer si la politique d’investissement dans les infrastructures sportives de ces pays influe -- tant positivement que négativement -- sur leurs résultats aux différentes épreuves des Jeux Olympiques.
-	
+
 Notre travail consistera, dans un deuxième temps, en une analyse comparative de la politique d'investissement du Royaume-Uni et de la France. Plusieurs points de convergence distinguent ces deux pays : leur nombre d'habitants, leur économie et leur qualité de pays organisateur des Jeux.
 	
 Le résultat du traitement des données constituera une base à la réalisation de datavisualisations et d'une application web pouvant servir de base à l'écriture d'articles journalistiques.
-	
-	
+
+
 \section{Jeux de données}
-	
+
 \subsection{Jeux collectés}
 
 En amont du traitement des données, nos jeux étaient au nombre de quatre et présentent les informations suivantes :
@@ -89,7 +90,7 @@ En amont du traitement des données, nos jeux étaient au nombre de quatre et pr
 \item Nombre de médailles remportées par sport et par pays sur 120 ans\autocite{kaggle} ;
 \item PIB par habitant, investissements dans le domaine sportif\autocite{fmi} ;
 \item Investissements dans les infrastructures sportives en France\autocite{ministere} ;
-\item Investissements dans les infrastructures sportives au Royaume-Uni\autocite{ru} .
+\item Investissements dans les infrastructures sportives au Royaume-Uni\autocite{ru}.
 \end{itemize}
 
 Un cinquième jeu a dû faire son entrée au cours du traitement, pour pallier la maigre qualité des données fournies par le Fonds Monétaire International (\emph{confer infra}. p. \pageref{banquemondiale}). Ce jeu provient du site de la Banque mondiale\autocite{worldbank}.
@@ -116,15 +117,16 @@ Analyse du jeu à fournir.
 		
 \subsection{Enrichissement Wikidata \emph{via} requête SPARQL}
 
-Dans l'optique d'enrichir nos données \emph{via} Wikidata, nous avons mis au point une requête SPARQL à même de renvoyer le nombre d'habitants de l'ensemble des pays du monde sur une période de trente ans (1993 - 2003). En voici la première version :
+Dans l'optique d'enrichir nos données \emph{via} Wikidata, nous avons mis au point une requête SPARQL à même de renvoyer le nombre d'habitants de l'ensemble des pays du monde sur une période de trente ans (1993 - 2003) :
 		
 \begin{lstlisting}[language=SPARQL]
-	SELECT ?paysLabel ?population ?date
-	WHERE
+	SELECT ?paysLabel ?population ?date ?cio
+	WHERE 
 	{
 		?pays wdt:P31 wd:Q6256.
+		?pays wdt:P984 ?cio.
 		?pays p:P1082 ?populationStatement.
-		?populationStatement ps:P1082 ?population.
+		?populationStatement ps:P1082 ?population. 
 		?populationStatement pq:P585 ?date.
 		FILTER(YEAR(?date) >= (YEAR(NOW()) - 30)).
 		SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],fr". }
@@ -138,9 +140,15 @@ Dans l'optique d'enrichir nos données \emph{via} Wikidata, nous avons mis au po
 	?pays wdt:P31 wd:Q6256.
 \end{lstlisting}
 
+Le deuxième triplet constitue un ajout tardif, destiné à faciliter les jointures avec les autres jeux de données. Comme nous travaillons sur les Jeux Olympiques, les pays peuvent être non seulement identifiés par les codes basés sur la norme ISO 3166 mais aussi par les codes du CIO (Comité International Olympique). Nous avons donc récupéré cette donnée grâce à la propriété Wikidata correspondante -- notée \code{wdt:P984} :
+
+\begin{lstlisting}[language=SPARQL]
+	?pays wdt:P984 ?cio.
+\end{lstlisting}
+
 La deuxième partie de notre requête doit renvoyer le nombre d'habitants par pays en prenant en compte une dimension chronologique. La complexité de cette demande requiert un parcours de graphique en quatre temps.
 
-Pour ce faire, nous avons consulté la liste de préfixes\autocite{wikiprefixes} de Wikidata afin de créer une nouvelle variable, \code{?populationStatement}. Le deuxième triplet a recours à la classe \code{population} -- notée \code{p:P1082} -- et signifie que la variable \code{?populationStatement} a pour valeur la population des pays :
+Pour ce faire, nous avons consulté la liste de préfixes\autocite{wikiprefixes} de Wikidata afin de créer une nouvelle variable, \code{?populationStatement}. Le troisième triplet a recours à la classe \code{population} -- notée \code{p:P1082} -- et signifie que la variable \code{?populationStatement} a pour valeur la population des pays :
 
 \begin{lstlisting}[language=SPARQL]
 	?pays p:P1082 ?populationStatement.
@@ -159,66 +167,42 @@ Enfin, nous avons rédigé le dernier triplet sur la base du préfixe \code{pq} 
 	FILTER(YEAR(?date) >= (YEAR(NOW()) - 30)).
 \end{lstlisting}
 
-La toute dernière ligne de la requête -- couplée à la toute première -- permet de contraindre l'affichage des résultats. Lorsque la requête s'exécute, le service Wikidata renvoie le nom de chaque pays (\textbf{?paysLabel}) par ordre alphabétique, le nombre d'habitants (\textbf{?population}) et l'année correspondante (\textbf{?date}) par ordre croissant :
+La première et dernière ligne permettent de cadrer l'affichage des résultats. Lorsque la requête s'exécute, Wikidata renvoie le nom de chaque pays (\code{?paysLabel}) par ordre alphabétique, le nombre d'habitants (\code{?population}) et l'année correspondante (\code{?date}) par ordre croissant :
 
 \begin{lstlisting}[language=SPARQL]
 	SELECT ?paysLabel ?population ?date
 	ORDER BY ?paysLabel ?date
 \end{lstlisting}
-		
-Nous nous sommes heurtés à plusieurs erreurs avant de rendre la requête fonctionnelle. Nous avons dû nous éloigner du parcours de graphique à trois étapes vu en cours et comprendre la nécessité de recourir à la variable \textbf{?paysStatement}. La documentation a été d'un grand secours pour nous aider à saisir l'utilisation des propriétés \textbf{population}\autocite{wikipop} et \textbf{date}\autocite{wikidate}.
-		
-Nous avons également pris en exemple la requête \emph{Population in Europe after 1960}\autocite{wiki1960}. La consulter a été l'occasion d'un meilleur apprentissage sur les propriétés Wikidata, une porte ouverte à la lecture de la documentation et à l'appréhension des requêtes en deux temps : d'abord la collecte des propriétés d'une classe puis le requêtage de chacune d'elles en fonction de notre besoin.
-		
-Tel que mentionné \emph{infra} (page \pageref{CIO}), nous avons adapté notre requête pour récupérer les codes CIO des pays, et ce grâce à l'ajout d'une unique ligne :
-		
-\begin{lstlisting}[language=SPARQL]
-	?pays wdt:P984 ?cio.
-\end{lstlisting}
-		
-Voici, en somme, notre requête SPARQL :
-		
-\begin{lstlisting}[language=SPARQL]
-	SELECT ?paysLabel ?population ?date ?cio
-	WHERE 
-	{
-		?pays wdt:P31 wd:Q6256.
-		?pays wdt:P984 ?cio.
-		?pays p:P1082 ?populationStatement.
-		?populationStatement ps:P1082 ?population. 
-		?populationStatement pq:P585 ?date.
-		FILTER(YEAR(?date) >= (YEAR(NOW()) - 30)).
-		SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],fr". }
-	}
-	ORDER BY ?paysLabel ?date
-\end{lstlisting}
-		
+
+Nous nous sommes heurtés à plusieurs obstacles avant de rendre la requête fonctionnelle. Il nous a fallu un certain temps avant de comprendre la nécessité d'un parcours de graphique en quatre temps et du recours à une variable telle que \code{?paysStatement}. À cet égard, la documentation sur l'utilisation des propriétés \code{population}\autocite{wikipop} et \code{date}\autocite{wikidate} a été d'un grand secours. 
+
+Nous avons également pris en exemple la requête \emph{Population in Europe after 1960}\autocite{wiki1960}. La consulter a été l'occasion d'une meilleure compréhension des propriétés Wikidata ainsi qu'une porte ouverte à la lecture de la documentation et à l'appréhension des requêtes en deux temps (collecte des propriétés d'une classe puis requêtage en fonction de notre besoin).
+
 
 \section{Traitement des données}
 	
 \subsection{Objectif du traitement}
 		
 \subsection{Chaîne de traitement}
-		
-\subsubsection{Semaine du 1\textsuperscript{er} janvier 2024}
 
-\label{CIO}Au cours du traitement, nous avons réalisé que le jeu de données de Kaggle ne représentait pas les pays grâce aux codes basés sur la norme ISO 3166 mais aux code du CIO (Comité International Olympique). Nous avons donc adapté notre requête SPARQL pour les obtenir pour être en mesure de réaliser une jointure en bout de chaîne de traitement.
+\subsubsection{Semaine du 1\textsuperscript{er} janvier 2024}
 		
-Également, le jeu de données du FMI est trop avare en données fiables (données manquantes, valeurs aberrantes\footnote{Donner des exemples.}) à propos des investissements en pourcentage du PIB dans le domaine du sport. Nous avons donc fait le choix d'utiliser les valeurs absolues\footnote{?} que nous croiserons avec le PIB par habitant de chaque pays. En somme, nous pallions les données fautives du FMI.
+Nous avons constaté que le jeu de données du FMI est trop avare en données fiables (données manquantes, valeurs aberrantes\footnote{Donner des exemples.}) à propos des investissements en pourcentage du PIB dans le domaine du sport. Nous avons donc fait le choix d'utiliser les valeurs absolues\footnote{?} que nous croiserons avec le PIB par habitant de chaque pays.
 		
 Pour ce faire, nous avions de prime abord songé à rédiger une autre requête SPARQL. Nonobstant, le résultat ne concernait que les années 2021 et 2022 -- les années précédentes sont vraisemblablement absentes de Wikidata.
 		
-\label{banquemondiale}Nous avons donc dû trouver un jeu de données contenant le PIB par habitant. Parmi les données sources de Wikidata se trouvait un jeu hébergé sur le site de la Banque mondiale\autocite{worldbank}. Les données correspondent à une profondeur temporelle suffisante pour le cadre de notre projet. Cela nous a permis de résoudre le problème de mauvaise qualité du jeu du FMI.
+\label{banquemondiale}Nous avons donc dû trouver un jeu de données contenant le PIB par habitant. Parmi les données sources de Wikidata se trouvait un jeu hébergé sur le site de la Banque mondiale. Les données correspondent à une profondeur temporelle suffisante pour le cadre de notre projet. Cela nous a permis de résoudre le problème de mauvaise qualité du jeu du FMI.
 
 
 \section{Visualisation des données}
-	
+
 \subsection{Présentation des visualisations}
-		
+
 \subsection{Analyse}
-		
+
 Qu'apprend-on en regardant les visualisations ? Quels sont les biais ?
 \newpage
+
 
 \section{Sitographie}
 \printbibliography[heading=none]

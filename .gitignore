@@ -1,4 +1,4 @@
-## LaTeX:
+## LaTeX :
 *.aux
 *.lof
 *.log
@@ -14,8 +14,6 @@
 *.pyg
 *.gz
 *.brf
-
-## LaTeX bibliography:
 *.bbl
 *.bcf
 *.blg
@@ -23,7 +21,7 @@
 *-blx.bib
 *.run.xml
 
-## Python:
+## Python :
 __pycache__/
 */venv
 .env

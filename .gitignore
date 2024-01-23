@@ -1,4 +1,4 @@
-## Core latex/pdflatex auxiliary files:
+## LaTeX:
 *.aux
 *.lof
 *.log
@@ -13,8 +13,9 @@
 .*.lb
 *.pyg
 *.gz
+*.brf
 
-## Bibliography auxiliary files (bibtex/biblatex/biber):
+## LaTeX bibliography:
 *.bbl
 *.bcf
 *.blg
@@ -22,5 +23,6 @@
 *-blx.bib
 *.run.xml
 
-# hyperref
-*.brf
+## Python:
+
+__pycache__/

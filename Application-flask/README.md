@@ -14,7 +14,7 @@ Notre application dispose des fonctionnalités suivantes :
 ## Variables
 Les variables sont indispensables au bon fonctionnement de l'application. 
 
-## Instructions : un premier lancement
+## Instructions : un premier lancement
 
 ### Étape 1 : installer Python
 - Ouvrez votre terminal et saisissez : ```sudo apt install python3```
@@ -39,7 +39,7 @@ Les variables sont indispensables au bon fonctionnement de l'application.
 - Dans le terminal, saisissez ```source env/bin/activate```
 - Saisissez ensuite ```pip install -r requirements.txt```
 
-## Étape 7 : lancer l'application
+## Étape 7 : lancer l'application
 - Saisissez ```python run.py```, l'application devrait démarrer
 - Ouvrez votre navigateur web
 - Saisissez une route dans la barre d'URL : ```localhost:5000/nomDeRoute```

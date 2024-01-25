@@ -33,7 +33,7 @@ Les variables sont indispensables au bon fonctionnement de l'application.
 
 ### Étape 5 : saisir les variables
 - Dans le terminal, saisissez ```touch .env```
-- Ouvrez le fichier .env et copiez-collez les variables indiquées ci-dessus
+- Ouvrez le fichier ```.env``` et copiez-collez les variables indiquées [ci-dessus](https://github.com/NatachaGrim/M2_Projet-JO/tree/main/Application-flask#variables)
 
 ## Étape 6 : installer les dépendances
 - Dans le terminal, saisissez ```source env/bin/activate```

@@ -12,7 +12,7 @@ Les personnes ayant contribué sont :
 Notre application dispose des fonctionnalités suivantes :
 
 ## Variables
-Les variables sont indispensables au bon fonctionnement de l'application. 
+Les variables sont indispensables au bon fonctionnement de l'application. Vous devrez les ajouter manuellement dans un fichier. Copiez-collez simplement ce bloc de texte :
 
 ## Instructions : un premier lancement
 

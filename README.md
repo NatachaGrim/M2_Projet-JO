@@ -12,4 +12,5 @@
 
 ### Sur l'application Flask
 
-- Un [cahier des charges](Cahier-des-charges/cahier_des_charges.pdf), décrivant notre application Flask.
+- Un [cahier des charges](Cahier-des-charges/cahier_des_charges.pdf), décrivant notre application Flask ;
+- Le [dossier de l'application](Application-flask), dont le contenu permet de la faire tourner.

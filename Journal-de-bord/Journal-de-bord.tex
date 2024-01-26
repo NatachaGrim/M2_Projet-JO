@@ -103,26 +103,6 @@
 \setstretch{1.5}
 \maketitle
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 \section{Introduction}
 
 Nous sommes une équipe de datajournalistes chargée, à l'approche des Jeux Olympiques de Paris, d'étudier l'existence ou non de liens entre le succès d'un pays aux Jeux Olympiques et sa richesse. Notre rôle sera de comparer le nombre de médailles remportées par pays et par sport à six éditions des Jeux (1996, 2000, 2004, 2008, 2012, 2016) pour cerner la présence ou l'absence d'une logique économique dans la réussite des pays.
@@ -190,6 +170,34 @@ Le jeu présente 41 colonnes pour 7715 lignes. Il est issu d'un requêtage depui
 29 colonnes correspondent aux années couvertes par le FMI : de 1993 à 2022. Notre intérêt repose singulièrement sur les colonnes de 1996 à 2016 en plus des colonnes \emph{Country Name}, \emph{COFOG Function Name} laquelle correspond aux investissement dans les infrastructures sportives et \emph{Unit Name}, c'est-à-dire l'échelle de mesure, soit en PIB soit en monnaie courante.
 
 Ce jeu est de loin le moins bien structuré et le plus fautif. En guise d'exemple, les trois dernières colonnes (Indicator Code ; Global DSD Time Series Code ; col\_41) sont d'une opacité confondante et témoignent du majeur problème du jeu : énormément de données sont vides, nulles ou incompréhensibles (\enquote{GERS\_G14\_GDP\_PT} pour la colonne) \emph{Indicator Code}, \enquote{A|GB|S1311|W0|S1|G2M|\_Z|\_Z|GF0801|XDC|\_T|\_X} pour la colonne \emph{Global DSD Time Series Code}). En somme, ce jeu représente un véritable enjeu de nettoyage et de croisement des données.
+
+
+
+
+
+
+
+
+Nous avons constaté que le jeu de données du FMI est trop avare en données fiables (données manquantes, valeurs aberrantes\footnote{Donner des exemples.}) à propos des investissements en pourcentage du PIB dans le domaine du sport. Nous avons donc fait le choix d'utiliser les valeurs absolues\footnote{?} que nous croiserons avec le PIB par habitant de chaque pays.
+
+\label{banquemondiale}Nous avons donc dû trouver un jeu de données contenant le PIB par habitant. Parmi les données sources de Wikidata se trouvait un jeu hébergé sur le site de la Banque mondiale. Les données correspondent à une profondeur temporelle suffisante pour le cadre de notre projet. Cela nous a permis de résoudre le problème de mauvaise qualité du jeu du FMI.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -342,20 +350,74 @@ L'intégralité des données sont des entiers. Les entrées vides ou équivalent
 
 
 \section{Traitement des données}
-	
+
 \subsection{Objectif du traitement}
-		
-\subsection{Chaîne de traitement}
 
-\subsubsection{Semaine du 1\textsuperscript{er} janvier 2024}
-		
-Nous avons constaté que le jeu de données du FMI est trop avare en données fiables (données manquantes, valeurs aberrantes\footnote{Donner des exemples.}) à propos des investissements en pourcentage du PIB dans le domaine du sport. Nous avons donc fait le choix d'utiliser les valeurs absolues\footnote{?} que nous croiserons avec le PIB par habitant de chaque pays.
-		
-Pour ce faire, nous avions de prime abord songé à rédiger une autre requête SPARQL. Nonobstant, le résultat ne concernait que les années 2021 et 2022 -- les années précédentes sont vraisemblablement absentes de Wikidata.
-		
-\label{banquemondiale}Nous avons donc dû trouver un jeu de données contenant le PIB par habitant. Parmi les données sources de Wikidata se trouvait un jeu hébergé sur le site de la Banque mondiale. Les données correspondent à une profondeur temporelle suffisante pour le cadre de notre projet. Cela nous a permis de résoudre le problème de mauvaise qualité du jeu du FMI.
+À l'aune de notre approche, notre premier \emph{flow} aura pour ambition de faire ressortir les données suivantes : les codes des pays attribués par le \emph{National Olympic Committee} -- que nous nous permettrons d'abréger \enquote{code NOC} -- le nombre de médailles remportées aux éditions six des Jeux Olympiques et le pourcentage d'investissement des pays dans le domaine sportif par rapport à leur PIB et à leur population.
 
 
+\subsection{Chaîne de traitement du premier \emph{flow}}
+
+\subsubsection{Préparation du jeu de la Banque Mondiale}
+
+La première recette appliquée au jeu est une préparation. Elle consiste en la suppression de toutes les lignes vides -- soit une ligne sur deux, rappelons-le -- et en la conservation de seulement 7 colonnes sur 67 :
+\begin{itemize}
+	\item \emph{Country Code} ;
+	\item Les éditions des Jeux de 1996 à 2016.
+\end{itemize}
+Les codes NOC seront fondamentaux pour réaliser de futures jointures et les années 1996, 2000, 2004, 2008, 2012 et 2016 correspondent aux limites chronologiques de notre approche.
+
+Deux autres étapes composent la recette : le renommage des 7 colonnes restantes (ainsi, \emph{Country Code } et renommée \emph{NOC} et les colonnes des années sont renommées selon le même motif : \emph{1996} devient \emph{1996 - GDP} pour \emph{Gross Domestic Product}, c'est-à-dire le Produit Intérieur Brut.) et le passage de toutes les valeurs décimales en entiers, selon une logique d'arrondissement. 
+
+\subsubsection{Préparation du jeu de Kaggle}
+
+Ce jeu a fait l'objet de trois recettes. La première, une préparation, nous a permis de conserver uniquement 3 colonnes sur 15 :
+\begin{itemize}
+	\item \emph{NOC} ;
+	\item \emph{Medal} ;
+	\item \emph{Year}.
+\end{itemize}
+Nous avons également épuré la colonne \emph{Year} pour ne conserver que les années des Jeux relatives à notre sujet. Les entrées de la colonnes \emph{Medal} correspondant à des valeurs nulles (exemplairement \emph{N/A}) ont été supprimées. 
+
+L'étape suivante consiste en la réalisation d'un pivot : les années présentes dans les lignes sont devenues des colonnes dont les lignes ont pris pour valeur les entrées de la colonne \emph{Medal}. 6 nouvelles colonnes ont donc été créées, une par édition des Jeux Olympiques, entre 1996 et 2016.
+
+Enfin, nous avons compté les occurrences des trois types de médailles (bronze, argent, or) et créé des colonnes de sorties pour chaque type pour chaque édition. Par exemple, la colonne \emph{1996} a donné lieu à la création des colonnes \emph{1996 - Bronze} ; \emph{1996 - Silver} ; \emph{1996 - Gold}.
+
+La deuxième recette est un \emph{group}. Le \emph{dataset} présente les médailles reportées par les athlètes, or nous n'avons conservé aucun donnée à leur endroit. Nonobstant, la répartition des médailles reposait toujours sur cette logique.
+
+Nous avons donc réalisé un groupement pour réunir les doublons et compter les occurrences de chaque type de médaille remportée pour les six éditions des Jeux. Admettons qu'aux Jeux de 2016, un athlète français ait remporté une médaille de bronze et un autre deux. La recette a pour effet d'afficher le chiffre 3 pour l'entrée \enquote{France} sur la colonne \emph{2016 - Bronze}.
+
+La troisième et dernière recette en amont des jointures est également une préparation. Elle nous a permis, pour chacune des six éditions, de créer une nouvelle colonne présentant la somme de toutes les médailles remportées par les pays. En guise d'exemple, nous savons qu'à l'édition de 2008, l'Australie a remporté un total de 110 médailles.
+
+\subsubsection{Préparation du jeu de Wikidata}
+
+L'enrichissement \emph{via} les données de Wikidata a été soumis a deux recettes. Une préparation où nous avons supprimé 8 colonnes -- lesquelles représentaient un considérable bruit documentaire dans la mesure où notre requête SPARQL ne les sollicitaient pas (exemplairement à propos des \enquote{types} de données : \emph{population.type}, \emph{date.type}, \emph{date.datatype}). 
+
+Trois colonnes ont été renommées : \emph{cio.value} est devenu \emph{NOC} ; \emph{isoCode.value} est devenu \emph{Pays} et \emph{paysLabel.value} est devenu \emph{Nom - Pays}.
+
+Nous avons modifié le format des dates : sur l'année, le jour, le mois et l'heure, nous n'avons conservé que l'année dans une colonne de sortie avant de supprimer la colonne initiale. Les années des six éditions mises à part, toutes les autres ont été supprimées et un nouveau pivot a été réalisé : les années en ligne sont passées en colonne et ont pris pour valeur le nombre d'habitants par pays. Ce pivot a permis la suppression des colonnes \emph{Année} et \emph{population.value}. Enfin, les colonnes des années ont été renommées selon un motif commun : \emph{1996} est devenu \emph{1996 - Pop}.
+
+La dernière étape de cette recette consiste en la suppression de trois valeurs vides présentes dans la colonne \emph{NOC}.
+
+À l'instar du jeu de Kaggle, nous avons appliqué une recette \emph{group} au jeu de Wikidata. Le groupe s'est effectué sur les colonnes \emph{NOC}, \emph{Pays} et \emph{Nom - Pays} afin de regrouper le nombre d'habitants par année sur une même ligne.
+
+\subsubsection{Préparation du jeu de GitHub}
+
+Le jeu de GitHub n'a nécessité qu'une maigre recette de préparation : nous avons supprimé les colonnes \emph{Alpha-2 Code} et \emph{Numeric Code} pour ne conserver que la colonne \emph{Alpha-3 Code} pour faciliter les jointures.
+
+Nous avons également supprimé les entrées que Dataiku ne reconnaissait pas comme pays pour enfin renommer deux colonnes : \emph{Country} est devenu \emph{Pays} et \emph{Alpha-3 Code} est devenu \emph{Code}.
+
+\subsubsection{Préparation du jeu du FMI}
+
+À la faveur de la première recette, une préparation, nous avons supprimé de la colonne \emph{Unit Name} les lignes où la valeur était \emph{Domestic currency} pour ne conserver que le pourcentage du Produit Intérieur Brut (\emph{Percent of GDP}) investi par les pays dans le domaine du sport.
+
+Nous avons uniquement conservé 7 colonnes : \emph{Country Name} ainsi que les dates des six éditions des Jeux. La dernière étape de la préparation consistait en la suppression de lignes vides pour la colonne \emph{2016}. À partir de cette étape, Dataiku se figeait et nous laissait dans l'impossibilité d'ajouter de nouvelles étapes. Nous avons donc dû ajouter une autre recette de préparation pour que le \emph{run} fonctionne et reprendre le traitement.
+
+Dans cette deuxième préparation, les 6 colonnes correspondant aux éditions des Jeux selon le motif suivant : \emph{1996} devient \emph{1996 - FMI}. 
+
+Il nous a fallu manuellement modifier 13 valeurs dans la colonne \emph{Country Name} pour une meilleure reconnaissance des pays par Dataiku. Par exemple : \emph{Russian Federation}, \emph{Czech Rep.} ne sont pas reconnus, tandis que \emph{Russia} et \emph{Czech Republic} le sont. Ces modifications ont donné lieu à la création d'une colonne de sortie \emph{Pays} car il nous était impossible de modifier les noms des pays directement dans la colonne d'origine. Nous avons naturellement supprimé la colonne \emph{Country Name}, une fois ces modifications effectuées. 
+
+Nous avons rencontré un problème de valeurs aberrantes dans les valeurs indiquées pour les investissements par rapport au PIB. La nature du problème repose sur des conversions mathématiques fautives : les pour mille et pour cent ont subi la même opération. Nous avons donc entrepris de corriger ces données par l'intermédiaire d'une recette Python que voici :
 
 \begin{lstlisting}[language=python]
 import dataiku
@@ -368,14 +430,109 @@ FMI_prepared2_df = FMI_prepared2.get_dataframe()
 colonnes_a_traiter = ['1996 - FMI', '2000 - FMI', '2004 - FMI', '2008 - FMI', '2012 - FMI', '2016 - FMI']
 
 for colonne in colonnes_a_traiter:
-	condition = FMI_prepared2_df[colonne] > 0.1
-	FMI_prepared2_df.loc[condition, colonne] /= 10
+				condition = FMI_prepared2_df[colonne] > 0.1
+				FMI_prepared2_df.loc[condition, colonne] /= 10
 
 FMI_prepared2_df.drop_duplicates(subset=['Pays'], keep='first', inplace=True)
 
 FMI_Python = dataiku.Dataset("FMI_Python")
 FMI_Python.write_with_schema(FMI_prepared2_df)
 \end{lstlisting}
+
+Le code ci-dessus intervient sur les colonnes des six éditions des Jeux :
+
+\begin{lstlisting}[language=python]	
+colonnes_a_traiter = ['1996 - FMI', '2000 - FMI', '2004 - FMI', '2008 - FMI', '2012 - FMI', '2016 - FMI']
+\end{lstlisting}
+
+Et modifie leur contenu grâce à une boucle \code{for} : si les colonnes contiennent des valeurs supérieures à \code{0.1}, ces dernières sont divisées par \code{10} pour obtenir la juste valeur d'investissement :
+
+\begin{lstlisting}[language=python]
+for colonne in colonnes_a_traiter:
+				condition = FMI_prepared2_df[colonne] > 0.1
+				FMI_prepared2_df.loc[condition, colonne] /= 10
+\end{lstlisting}
+
+La bonne valeur des données est ainsi rétablie, et l'ensemble de nos jeux sont prêts pour les jointures.
+
+\subsubsection{Première jointure}
+
+La première jointure concerne les jeux préparés de Kaggle et de Wikidata, sur la colonne \emph{NOC}. Il en résulte la création du jeu \emph{Med-Pop}, pour \enquote{Médailles-Population}. La jointure s'est réalisée sans suppression et n'a pas occasionné une perte significative d'informations.
+
+\subsubsection{Deuxième jointure}
+
+La deuxième jointure regroupe les jeux \emph{Med-Pop} et \emph{GDP} (jeu de la Banque mondiale) -- également sur la colonne \emph{NOC}, sans suppression ni perte significative d'informations. Le jeu \emph{Med-Pop-GDP} a ainsi été créé.
+
+\subsubsection{Troisième jointure}
+
+La troisième jointure est un croisement du jeu \emph{lien\_pays} (issu de GitHub) et du jeu \emph{FMI}, sur la colonne \emph{Pays} du jeu du FMI. Tous les pays reconnus dans le ce jeu-ci ont été enrichis par les données du jeu de GitHub, soit par les données de longitude, de latitude et par un code similaire au code NOC. Le jeu \emph{FMI-Liens} a ainsi été créé.
+
+\subsubsection{Quatrième jointure}
+
+Enfin, la quatrième jointure rassemble les jeux \emph{Med-Pop-GDP} et \emph{FMI-Liens} sur les colonnes \emph{Pays} (du jeu \emph{Med-Pop-GDP}) et \emph{Code} (du jeu \emph{FMI-Liens}). Dans la mesure où les médailles remportées constituent les données les plus importantes, la jointure a été réalisée de telle sorte à ce que les pertes touchent le jeu \emph{FMI-Liens} et non pas \emph{Med-Pop-GDP}.
+
+\subsubsection{Préparation du jeu final}
+
+Notre dernier jeu alors créé, \emph{Reunion}, a subi une recette de préparation afin de nettoyer les données une dernière fois. Les données sur la population ont été arrondies, les colonnes dont l'entête est en français ont été renommées pour harmoniser la nomenclature de notre \emph{dataset} de sortie. Enfin, les colonnes ont été organisées de la manière suivante : les deux premières colonnes sont \emph{NOC} et \emph{Country - Name} puis chaque édition des Jeux est présentée comme suit :
+
+\begin{center}
+	\begin{figure}[H]
+		\includegraphics[scale=0.4]{tableaufinal.png}
+	\end{figure}
+\end{center}
+
+
+Et les deux dernières colonnes, \emph{Latitde (average)} et \emph{Longitude (average)} présentent les coordonnées géographiques des pays.
+
+
+\subsection{Chaîne de traitement du second \emph{flow}}
+
+SPARQL England :
+
+Suppression de toutes les colonnes sauf 3 : geopoint.value ; RegionLabel.value ; population.value car c'est aussi du bruit documentaire.
+
+Modification des valeurs de geopoint.value : from Point(0.41 52.24) 0.41 52.24.
+
+Conservation d'une seule valeur de population par région + groupement pour avoir une seule ligne par région.
+
+Renommage de certains noms de région pour faciliter la jointure
+
+
+SWIMMINGPOOLS : conservation de la seule colonne \emph{FacilityID} pour faire la jointure partant du principe que 1 ID = 1 installation
+
+GEOGRAPHICS : conservation de FacilityID, de Region Name et de Latitude et Longitude
+
+1re jointure : SWIMMINGPOOLS et GEOGRAPHICS. Une inner join propre sur les ID, aucun souci. Donne le jeu \emph{InfraEnglandeJoin1}
+
+2e jointure : SPARQL et InfraEnglandeJoin1. Jointure sur le nom de la région
+
+Autre recette : group sur population.value avec copie de la colonne population pour la conserver.
+
+Ensuite : produit en croix pour aboutir au nombre de piscine pour 100.000 habitants avec arrondissement pour cette colonne
+
+
+
+
+
+POUR LA FRANCE
+
+SPARQL, même opération. SPARQL a extrait toutes les régions de France mais nous n'avons gardé que celles de la France métropolitaine 
+
+Jeu de la France : conservation des colonnes qui nous intéressent (type_equipement, longitude, latitude, regionLabel, dans type équipement : remplacement de toutes les données qui nous intéressent en \enquote{piscine centre aquatique}
+
+JOINTURE : inner join sur le nom de la region et le labelRegion 
+
+JOINTURE : inner join aussi sur le nom de la région
+
+
+Regroupement : jointure sur type_equipement sans garder la longitude et la latitude 
+
+
+
+
+
+
+
 
 
 
@@ -391,6 +548,8 @@ Mauvaise surprise : alors que nous voulions produire un autre flow afin de rempl
 \end{center}
 
 ll est probable que cette erreur soit apparue après l’installation d’une version de JDK supérieure à celle prise en charge par Dataiku. Il aurait ainsi fallu rétrograder notre version de JDK, mais nous craignons que cette manipulation entraîne des difficultés dans d’autres projets que nous menons. Nous ne pouvons dès lors nous appuyer que sur un seul ordinateur, qui possède une version inférieure de JDK, ce qui a causé d’importants soucis organisationnels à la fin du mois de janvier.
+
+\subsection{Chaîne de traitement du second \emph{flow}}
 
 
 \section{Visualisation des données}

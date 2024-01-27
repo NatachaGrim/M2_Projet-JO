@@ -378,29 +378,180 @@ Cette requête ayant été saisie dans l'urgence de devoir déboguer la réalisa
 
 \subsection{Jeux du second \emph{flow}}
 
-Notre deuxième \emph{flow} repose sur la comparaison entre les investissements de la France et du Royaume-Uni, en l'occurrence à l'endroit des infrastructures de natation. En amont du traitement, nos jeux de données étaient au nombre de trois et présentent les informations suivantes :
+Notre deuxième \textit{flow} repose sur une comparaison entre la France et le Royaume-Uni à l'endroit de la natation. En amont du traitement, nos jeux étaient au nombre de cinq : trois pour le Royaume-Uni, deux pour la France.
 
-\begin{itemize}
-	\item Investissements dans les infrastructures sportives en France\autocite{ministere} ;
-	\item Investissements dans les infrastructures sportives au Royaume-Uni\autocite{ru}.
-\end{itemize}
+Sur le Royaume-Uni, un premier jeu résulte d'une requête SPARQL, laquelle génère un jeu listant le nom des régions du pays, leur nombre d'habitants et leurs coordonnées. Les deux autres jeux proviennent du même site\autocite{ru}, l'un situe les infrastructures sportives par rapport à leur région, l'autre les décrit d'un point de vue davantage technique. 
+
+Sur la France, l'un des deux jeux est également une requête SPARQL, renvoyant là aussi le nom des régions du pays, leur nombre d'habitants et leurs coordonnées. Le second jeu, fourni par le ministère de l'Éducation nationale, de la Jeunesse, des Sports et des Jeux Olympiques et Paralympiques\autocite{ministere} présente les infrastructures sportives et les relie aux régions françaises.
+
+Au cours du traitement, nous avons réalisé qu'il nous fallait relier tôt ou tard ces divers jeux aux médailles remportées par les deux pays. C'est pourquoi nous avons fait usage d'une version du jeu de Kaggle issu de notre premier \textit{flow}, où se trouvent les données nécessaires.
 
 
-\subsubsection{Jeu du ministère des sports et des jeux olympiques et paralympiques}
 
-Le jeu présente 114 colonnes pour 143192 lignes. Par souci de concision, nous ne nous attarderons que sur les données qui seront conservées. Les colonnes concernées sont \emph{Type d'équipement sportif} et \emph{Commune Ancienne}, laquelle renseigne les codes postaux.
 
-Sur l'ensemble du jeu, les données sont grossièrement saisies. Les \emph{Type d'équipement sportif} sont par exemple au nombre de 354 sans harmonisation commune dans la nomenclature avec présence de données aberrantes (citons \enquote{3 2}, \enquote{PETIT MORNAS} ou encore \enquote{Puy}). Nous nous appuierons sur la colonne \emph{Commune Ancienne} non pas sur la colonne \emph{Région Nom} car les données sont également mal saisies et aberrantes (\enquote{CC du Pays Châtillonnais}, \enquote{4.84405}, etc.).
 
-\subsubsection{Jeu de Sport England}
+%
 
-À l'endroit du Royaume-Uni : deux jeux nous intéressent. Le premier, nommé \emph{Geographics} présente -- sur 25 colonnes et 118655 lignes -- des données géographiques à propos d'infrastructures sportives. Chaque infrastructure possède son ID (\emph{FacilityID}) et est rattachée à une région. Les autres colonnes fournissent des informations à propos des régions, selon un principe de colonne jumelles avec d'une part les ID, d'autre part les noms (Parliamentary Constituency ID ; Ward, Local Authority, Country, Active Partnership, Region). Deux colonnes concernent les coordonnées (\emph{Latitude} ; \emph{Longitude}).
 
-Sur la propreté des données, certaines colonnes sont entièrement vides (\emph{Metro Name} ; \emph{Core City Name} ; \emph{LDP Code} ; \emph{LDP Name}) mais nous ne comptons pas les conserver au cours du traitement. Nonobstant, les données des coordonnées correspondent aux infrastructures, non pas aux régions. Cela pourra avoir des conséquences sur les visualisations dans la mesure où la myriade de points ne saura faire ressortir les contours des régions. 
 
-Le second jeu se nomme \emph{SwimmingPool} et fournit des données sur la répartition des équipements de natation au Royaume-Uni. L'essentiel des colonnes donne des détails techniques sur les infrastructures (\emph{Length} ; \emph{Maximum Depth} ; \emph{Movable Floor} ; \emph{Seating}, etc.).
 
-L'intégralité des données sont des entiers. Les entrées vides ou équivalentes à zéro sont derechef légion. Cependant, seule la colonne \emph{FacilityID} nous est nécessaire afin de réaliser des jointures avec le jeu \emph{Geographics}. 
+
+\subsubsection{Jeu de Wikidata (régions de France)}
+
+\label{queryfr}Cette requête interroge la base de données de Wikidata selon le prisme des régions. Nous voulons ici afficher leur nom (\code{?RegionLabel}), leur nombre d'habitants (\code{?population}) et leurs coordonnées (\code{?geopoint}) :
+
+\begin{lstlisting}[language=SPARQL]
+SELECT ?RegionLabel ?population ?geopoint
+WHERE 
+{
+	?Region wdt:P31 wd:Q36784.
+	?Region wdt:P1082 ?population.
+	?Region wdt:P625 ?geopoint.
+	SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],fr". }
+}
+ORDER BY ?Region
+\end{lstlisting}
+
+Le premier triplet nous permet de faire correspondre la variable \code{?Region} à l'objet \enquote{région de France} noté \code{wd:Q48091}, derechef grâce à la propriété \code{wdt:P31} nous permettant de préciser la nature de notre sujet :
+
+\begin{lstlisting}[language=SPARQL]
+	?Region wdt:P31 wd:Q36784.
+\end{lstlisting}
+
+Le deuxième triplet assigne à la variable \code{?population} la valeur de la propriété \code{wdt:P1082}, c'est-à-dire la population -- ici des régions :
+
+\begin{lstlisting}[language=SPARQL]
+	?Region wdt:P1082 ?population.
+\end{lstlisting}
+
+Selon la même logique, le dernier triplet récupère les coordonnées des régions grâce à la variable \code{?geopoint} et à la propriété \enquote{coordonnées géographiques} notée \code{wdt:P625} :
+
+\begin{lstlisting}[language=SPARQL]
+	?Region wdt:P625 ?geopoint.
+\end{lstlisting}
+
+Et nous trions les résultats selon l'ordre alphabétique du nom des régions :
+
+\begin{lstlisting}[language=SPARQL]
+	ORDER BY ?Region
+\end{lstlisting}
+
+Le jeu ainsi généré est composé de 9 colonnes et 18 lignes. Nous n'expliciterons pas de nouveau les logiques d'atomisation des données en deux ou trois colonnes. Le jeu présente le nom des régions (\textit{RegionLabel.type}), leur nombre d'habitants (\textit{population.value}) et leurs coordonnées (\textit{geopoint.value}) et ce en français.
+
+
+
+
+
+%
+
+
+
+
+
+\subsubsection{Jeu du ministère}
+
+Le jeu est composé de 104 colonnes et 143.192 lignes. Par souci de concision, nous ne nous attarderons que sur les colonnes que nous comptons conserver au cours du traitement. Ces dernières sont au nombre de quatre : \textit{Type d'équipement sportif}, \textit{Longitude (WGS84)}, \textit{Latitude (WGS84)} et \textit{Région Nom}.
+
+La colonne \textit{Type d'équipement sportif} représente un véritable enjeu de nettoyage. La nomenclature est très libre, les dénominations sont d'apparence toutes en bas-de-casse avec une majuscule initiale mais plusieurs exceptions perturbent ce schéma (\enquote{Parcours Acrobatique en Hauteur/Site d'accrobranche}, \enquote{Structure Artificielle d'Escalade}).
+
+De surcroît,nombre d'entrées font l'objet de multi-nommage avec par l'intermédiaire de la barre oblique (\enquote{Multisports/City-stades}, \enquote{Salles polyvalentes / des fêtes / non spécialisées}, \enquote{Piste d’aérodrome / d'aéroport}, etc.) et d'autres sont accompagnées de précisions entre parenthèses : \enquote{Salle multisports (gymnase)}, \enquote{Aire mixte (décollage et atterissage)}, etc.
+
+Les noms de régions sont saisies en bas-de-casse avec conservation des majuscules initiales. Enfin, la longitude et la latitude se basent sur le système \textit{WGS 84} -- \textit{World Geodetic System 1984}, un système géodésique mondial comprenant, entre autres, un modèle pour l'expression de coordonnées.
+
+
+
+
+
+%
+
+
+
+
+
+\subsubsection{Jeu de Wikidata (régions d'Angleterre)}
+
+Cette requête est l'identique stricte de celle sur les régions de France (\textit{cf}. \textit{supra} p. \pageref{queryfr}). La description des triplets sera d'autant plus brève. Nous voulons afficher le nom des régions d'Angleterre (\code{?RegionLabel}), leur nombre d'habitants (\code{?population}) et leurs coordonnées (\code{?geopoint}) :
+
+\begin{lstlisting}[language=SPARQL]
+SELECT DISTINCT ?RegionLabel ?population ?geopoint
+WHERE
+{
+	?Region wdt:P31 wd:Q48091.
+	?Region wdt:P1082 ?population.
+	?Region wdt:P625 ?geopoint.
+	SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
+}
+\end{lstlisting}
+
+Le premier triplet fait correspondre la variable \code{?Region} à l'objet \enquote{région d'Angleterre} (\code{wd:Q48091}), grâce à la propriété \enquote{région} (\code{wdt:P31}) :
+
+\begin{lstlisting}[language=SPARQL]
+	?Region wdt:P31 wd:Q48091.
+\end{lstlisting}
+
+Le deuxième triplet assigne à la variable \code{?population} la population (\code{wdt:P1082}) de notre sujet, c'est-à-dire les régions (\code{?Region}) :
+
+\begin{lstlisting}[language=SPARQL]
+	?Region wdt:P1082 ?population.
+\end{lstlisting}
+
+Le dernier triplet récupère les coordonnées (\code{wdt:P625}) des régions (\code{?Region}) et les assigne à la variable \code{?geopoint} :
+
+\begin{lstlisting}[language=SPARQL]
+	?Region wdt:P625 ?geopoint.
+\end{lstlisting}
+
+Il en ressort un jeu composé de 9 colonnes et 36 lignes. Nous n'expliciterons pas de nouveau les logiques d'atomisation des données en deux ou trois colonnes. Le jeu présente strictement les mêmes colonnes que le jeu résultant de la requête sur les régions de France : le nom des régions (\textit{RegionLabel.type}), leur nombre d'habitants (\textit{population.value}) et leurs coordonnées (\textit{geopoint.value}) et ce en langue anglaise.
+
+
+
+
+
+%
+
+
+
+
+
+\subsubsection{Jeux de \textit{Sport England}}
+
+Le premier jeu provenant de \textit{Sport England}, nommé \textit{Geographics} est composé de 25 colonnes et 118.655 lignes. Comme son nom le suggère, les données présentées sont relatives aux infrastructures sportives d'Angleterre. Chacune possède un identifiant unique, répertorié dans la colonne \textit{FACILITYID} et est rattachée à une région, grâce à la colonne \textit{Region Name}. Leur nom est en anglais et en bas-de-casse, avec conservation des majuscules initiales. Les 2 autres colonnes qui survivront au traitement sont \textit{Latitude} et \textit{Longitude}.
+
+Les 21 colonnes restantes fournissent une plus grande quantité de données sur la situation géographique et administrative des infrastructures -- selon un schéma soit d'identifiants (\textit{SiteID}), soit de code (\textit{Output Area Code}), soit de colonnes en duo avec d'une part les noms (\textit{Ward Name}, \textit{Local Authority Name}, etc.), d'autre part les codes (\textit{Ward Code}, \textit{Local Authority Code}, etc.)
+
+Le système de nommage et de dénomination ne laisse pas place à l'opacité. Certaines colonnes manquent cruellement de données (\textit{Metro Name} ; \textit{Core City Name} ; \textit{LDP Code} ; \textit{LDP Name}) mais nous ne comptons pas les conserver le moment du traitement venu.
+\newline
+
+Le deuxième jeux, nommé \textit{SwimmingPool}, est composé de 24 colonnes et 6.474 lignes. Exception faite de la première colonne, \textit{FacilityID}, l'intégralité des données sont à propos de détails techniques et matériels sur les infrastructures (\textit{Length} ; \textit{Maximum Depth} ; \textit{Movable Floor} ; \textit{Seating}, etc.).
+
+Toutes les données sont de type numérique -- soit des entiers, soit des décimaux. Certaines colonnes (\textit{Designated Accessible Provision}, \textit{Designated Accessible Provision - Covered}, \textit{Designated Accessible Provision - Uncovered}, \textit{Seating - Covered}, \textit{Seating - Uncovered}, \textit{Standing}, \textit{Standing - Covered}, \textit{Standing - Uncovered}) ont la singularité de faire se côtoyer des entrées vides et des entrées égales à zéro. Cependant, seule la colonne \emph{FacilityID} nous importe afin de réaliser une jointure avec le jeu \textit{Geographics}.
+
+
+
+
+
+%
+
+
+
+
+
+\subsubsection{Jeu de Kaggle}
+
+Cette version du jeu \textit{Kaggle} issu de notre premier \textit{flow} est composée de 26 colonnes et 780 lignes. 2 colonnes, \textit{NOC} et \textit{Sport} correspondent respectivement aux codes CIO des pays et à l'intitulé du sport (en langue anglaise et bas-de-casse, avec conservation des majuscules initiales) ayant fait l'objet d'au moins épreuve aux Jeux Olympiques.
+
+Les 24 autres colonnes correspondent aux six éditions des Jeux selon le schéma suivant : chaque année fait l'objet de 4 colonnes. 3 pour les types de médailles (bronze, argent, or) et 1 pour la somme de l'ensemble des médailles. Ainsi, les colonnes de l'année 2008 sont nommées comme suit : \textit{2008 - Bronze}, \textit{2008 - Silver}, \textit{2008 - Gold}, \textit{2008 - Médailles}.
+
+
+
+
+
+%
+
+
+
+
+
 
 
 
@@ -549,7 +700,7 @@ Notre dernier jeu alors créé, \emph{Reunion}, a subi une recette de préparati
 
 \begin{center}
 	\begin{figure}[H]
-		\includegraphics[scale=0.4]{tableaufinal.png}
+		\includegraphics[scale=0.4]{images/tableaufinal.png}
 	\end{figure}
 \end{center}
 
@@ -615,7 +766,7 @@ Mauvaise surprise : alors que nous voulions produire un autre flow afin de rempl
 
 \begin{center}
 	\begin{figure}[H]
-		\includegraphics[scale=0.5]{bogue.png}
+		\includegraphics[scale=0.5]{images/bogue.png}
 	\end{figure}
 \end{center}
 

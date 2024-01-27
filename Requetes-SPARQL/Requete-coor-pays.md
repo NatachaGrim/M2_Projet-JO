@@ -1,4 +1,4 @@
-# Requête SPARQL (coordonnées)
+# Coordonnées des pays
 
 La présente requête concerne tous les pays du monde et affiche leur nom, leurs coordonnées et leur code CIO. Pour plus de détails, veuillez consulter le [journal de bord](../Journal-de-bord/Journal-de-bord.pdf).
 

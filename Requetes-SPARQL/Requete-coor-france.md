@@ -1,4 +1,4 @@
-# Requête SPARQL (régions de France)
+# Régions de France
 
 La présente requête concerne les régions de France et affiche leur nom, leur nombre d'habitants et leurs coordonnées. Pour plus de détails, veuillez consulter le [journal de bord](../Journal-de-bord/Journal-de-bord.pdf).
 

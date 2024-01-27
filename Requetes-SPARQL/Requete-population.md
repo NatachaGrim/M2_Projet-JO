@@ -1,4 +1,4 @@
-# Requête SPARQL (population)
+# Population des pays
 
 La présente requête concerne tous les pays du monde et affiche leur nom, leur nombre d'habitants sur trente ans (1993 - 2023) et leur code CIO. Pour plus de détails, veuillez consulter le [journal de bord](../Journal-de-bord/Journal-de-bord.pdf).
 

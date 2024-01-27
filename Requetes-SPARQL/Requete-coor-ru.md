@@ -1,4 +1,4 @@
-# Requête SPARQL (régions du Royaume-Uni)
+# Régions du Royaume-Uni
 
 La présente requête concerne les régions d'Angleterre et affiche leur nom, leur nombre d'habitants et leurs coordonnées. Pour plus de détails, veuillez consulter le [journal de bord](../Journal-de-bord/Journal-de-bord.pdf).
 

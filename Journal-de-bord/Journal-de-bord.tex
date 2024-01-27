@@ -45,13 +45,13 @@
 	framexbottommargin=.5em,
 	framexrightmargin=.5em,
 	%
-	morekeywords=[1]{paysLabel,population,date,cio,pays,populationStatement},
+	morekeywords=[1]{paysLabel,population,date,cio,pays,populationStatement,noc,geopoint},
 	keywordstyle=[1]\color{green},
 	%
-	morekeywords=[2]{wd,Q6256,wdt,P31,p,P1082,ps,pq,P585,wikibase,P984,label,bd,serviceParam,language},
+	morekeywords=[2]{wd,Q6256,wdt,P31,p,P1082,ps,pq,P585,wikibase,P984,label,bd,serviceParam,language,P625},
 	keywordstyle=[2]\color{MidnightBlue},
 	%
-	morekeywords=[3]{SELECT,ORDER,BY,WHERE,FILTER,YEAR,NOW,SERVICE},
+	morekeywords=[3]{SELECT,ORDER,BY,WHERE,FILTER,YEAR,NOW,SERVICE,DISTINCT},
 	keywordstyle=[3]\color{red},
 	%
 	morestring=[b][\color{brown}]",
@@ -91,7 +91,6 @@
 	otherkeywords={?},
 }
 
-
 \bibliography{Journal-de-bord-bibliographie}
 
 \title{Projet Jeux Olympiques - Journal de bord}
@@ -103,31 +102,33 @@
 \setstretch{1.5}
 \maketitle
 
+
+
+
+
+%
+
+
+
+
+
 \section{Introduction}
 
-Nous sommes une équipe de datajournalistes chargée, à l'approche des Jeux Olympiques de Paris, d'étudier l'existence ou non de liens entre le succès d'un pays aux Jeux Olympiques et sa richesse. Notre rôle sera de comparer le nombre de médailles remportées par pays et par sport à six éditions des Jeux (1996, 2000, 2004, 2008, 2012, 2016) pour cerner la présence ou l'absence d'une logique économique dans la réussite des pays.
+Nous somme une équipe de datajournalistes chargée, à l'approche des Jeux Olympiques de Paris, d'étudier l'existence ou non de liens entre le succès d'une pays aux Jeux et sa richesse. Notre hypothèse de départ est la suivante : les pays développés gagnent significativement plus de médailles en raison de leur niveau d'investissement dans le domaine sportif. 
 
-Notre hypothèse de départ est la suivante : les pays développés gagnent significativement plus de médailles en raison de leur niveau d'investissement dans le sport. À l’aune de l’examen et du traitement des données, nous avons pour ambition de déterminer si la politique d’investissement dans les infrastructures sportives de ces pays influe -- tant positivement que négativement -- sur leurs résultats aux différentes épreuves des Jeux Olympiques.
+À l'aune de l'examen et du traitement des données que nous avons à notre disposition, nous avons pour ambition de déterminer si la politique d'investissement dans les infrastructures sportives des pays a une quelconque influence sur leurs résultats aux épreuves des Jeux.
 
-Notre travail consistera, dans un deuxième temps, en une analyse comparative de la politique d'investissement du Royaume-Uni et de la France. Plusieurs points de convergence distinguent ces deux pays : leur nombre d'habitants, leur économie et leur qualité de pays organisateur des Jeux.
-	
-Le résultat du traitement des données constituera une base à la réalisation de datavisualisations et d'une application web pouvant servir de base à l'écriture d'articles journalistiques.
+Notre travail sera divisé en deux temps. Nous mettrons en relief le nombre de médailles remportées par les pays lors de six éditions des Jeux Olympiques (1996, 2000, 2004, 2008, 2012, 2016) par rapport à leur population, leur Produit Intérieur Brut, au pourcentage de ce dernier investi dans le domaine sportif. Un second temps sera consacré à l'examen de la réussite de la France et du Royaume-Uni aux épreuves de natation sur la base du nombre d'infrastructures relatives pour 100.000 habitants.
 
+Le choix de ces pays repose sur divers points de convergence : leur nombre d'habitants, leur économie et leur qualité de pays organisateur des Jeux. 
 
-
-
+Le résultat du traitement des données constituera une base à la réalisation de datavisualisations et d'une application web exploitables pour l'écriture d'articles journalistiques sur le sujet des Jeux Olympiques.
 
 
 
 
 
-
-
-
-
-
-
-
+%
 
 
 
@@ -135,19 +136,23 @@ Le résultat du traitement des données constituera une base à la réalisation 
 
 \section{Jeux de données}
 
-\subsection{Jeux du premier \emph{flow}}
+\subsection{Jeux du premier \textit{flow}}
 
-En amont de la constitution de notre premier \emph{flow}, nos jeux étaient au nombre de deux. Ils présentent les informations suivantes :
-\begin{itemize}
-	\item Nombre de médailles remportées par sportif et par pays sur 120 ans\autocite{kaggle} ;
-	\item Le PIB des pays et leur investissement dans le domaine du sport\autocite{fmi} ;
-\end{itemize}
+Notre premier \textit{flow} concerne les médailles remportées par les pays lors des six éditions des Jeux Olympiques sur lesquelles nous avons décidé de travailler. En amont du traitement, nos jeux étaient au nombre de deux. Le premier présente le nombre de médailles remportées par sportif aux Jeux sur une période de 120 ans\autocite{kaggle}. Le deuxième, le Produit Intérieur Brut des pays et son pourcentage investi dans le domaine sportif\autocite{fmi}.
 
-Un troisième jeu a dû faire son entrée au cours du traitement pour pallier la maigre qualité des données fournies par le Fonds Monétaire International (\emph{confer infra}. p. \pageref{banquemondiale}), singulièrement à propos du PIB. Ce jeu provient du site de la Banque mondiale\autocite{worldbank}.
+Nous avons enrichi ces jeux grâce au résultat d'une requête SPARQL, saisie sur le service de Wikidata. Le jeu ainsi produit présente le nombre d'habitants de l'ensemble des pays répertoriés dans la base de Wikidata, sur une période de trente ans (1993 - 2023)\autocite{wikiquerypop}.
 
-Enfin, un problème récurrent nous a poussé à la recherche d'un quatrième jeu. Lorsque Dataiku identifie des données comme \emph{country}, nous pensions pouvoir en extraire les coordonnées et les croiser avec d'autres jeux. L'extension \emph{reverse geocoding plugin} aurait dû nous le permettre -- sans succès. Nos suppositions portent sur notre version gratuite de Dataiku et de son nombre réduit de fonctionnalités. Nous avons rapidement trouvé un jeu, mis à disposition sur GitHub\autocite{github}, rassemblant les données nécessaires.
+Trois autres jeux ont dû faire leur entrée au cours du traitement pour pallier de nombreux manquements. Nous avons constaté qu'en dépit d'indiquer le pourcentage du Produit Intérieur Brut investi dans le domaine sportif, le jeu du Fonds Monétaire International ne contenait pas le PIB des pays. Nous avons introduit un jeu de la Banque mondiale\autocite{worldbank} dans le \textit{flow} -- lequel contient le montant du PIB avec une profondeur chronologique suffisante.
 
-Une opération obligatoire dans notre traitement consiste à enrichir ces jeux avec le résultat d'une requête SPARQL, saisie sur le service de Wikidata. Ce premier \emph{flow} a donc a sa base un ensemble de cinq jeux.
+Les deux autres jeux concernent un problème de coordonnées. Lorsque Dataiku identifie des données de type \textit{country}, nous pensions pouvoir en récupérer les coordonnées -- notamment afin de les exploiter pour les datavisualisations. L'extension \textit{reverse geocoding plugin} aurait pu nous le permettre, sans succès. Nos suppositions portent sur notre version gratuite de Dataiku et de son nombre réduit de fonctionnalités.
+
+Ne disposant d'aucun budget pour disposer d'une version payante, nous avons recherché un jeu contenant les coordonnées des pays et l'avons trouvé sur la plateforme GitHub\autocite{github}. Nonobstant, les longitudes et latitudes des pays ainsi récupérées se sont avérées être fautives le moment des datavisualisations venu. C'est pourquoi nous avons mis au point une deuxième SPARQL, capable de renvoyer les bonnes coordonnées de tous les pays présents dans la base de Wikidata. Le jeu ainsi récupéré correspond au dernier renfort dont nous avons eu besoin pour être en mesure de réaliser des datavisualisations.
+
+
+
+
+
+%
 
 
 
@@ -155,9 +160,17 @@ Une opération obligatoire dans notre traitement consiste à enrichir ces jeux a
 
 \subsubsection{Jeu de Kaggle}
 
-Le jeu présente 15 colonnes pour 271117 lignes. Il contient des colonnes informatives sur les athlètes (ID ; Name ; Sex ; Age ; Height ; Weight), sur leur pays (Team ; NOC) et sur les Jeux : l'édition, l'année, la saison, la ville d'accueil, le sport et l'épreuve (Games ; Year ; Season ; City ; Sport ; Event) ainsi que sur les médailles remportées (Medal).
+Le jeu est composé de 15 colonnes et 271.117 lignes. 7 colonnes fournissent des informations sur les athlètes (\textit{ID}, \textit{Name}, \textit{Sex}, \textit{Age}, \textit{Height}, \textit{Weight}, \textit{Medal}) ; 2 colonnes sur leurs pays (\textit{Team}, \textit{NOC}) et 6 sur les éditions des Jeux Olympiques (\textit{Games} ; \textit{Year} ; \textit{Season} ; \textit{City} ; \textit{Sport} ; \textit{Event}).
 
-La propreté du jeu est notable, seules certaines données sur la taille et le poids des athlètes sont manquantes. La gravité de ces absences est toute relative dans la mesure où ne comptons pas conserver ces données. Un problème plus préoccupant concerne le nom de certains États, aujourd'hui obsolète (Allemagne de l'Est, Yougoslavie, Tchécoslovaquie, Union Soviétique, etc.).
+Les données sont exprimées en langue anglaise. La casse des chaînes de caractère suit le schéma d'une majuscule à chaque nouveau mot -- exception faite des unités de mesure dans la colonne \textit{Event} (comprendre \textit{Épreuve}) : le terme \textit{metres} est toujours noté en bas-de-casse. Les données sur la taille et le poids des athlètes sont des entiers. 2 colonnes, \textit{Games} et \textit{Year} contiennent des données de date, exprimées en année. La colonne \textit{Games} a ceci de particulier qu'elle agrège une donnée de date et une donnée textuelle. Les Jeux Olympiques d'été de 1992 sont notés \enquote{1992 Summer}.
+
+Le jeu ne présente pas de défauts majeurs sur les colonnes que nous comptons conserver lors du traitement. Un problème plus préoccupant concerne la dénomination des pays, parfois obsolète (\textit{Soviet Union}, \textit{West Germany}) ou impropres (\textit{Japan-1}, \textit{Switzerland-2}). Nous effectuerons les jointures sur le code NOC des pays (un code unique attribué par le \textit{National Olympic Committee} -- le Comité National Olympique) pour plus de fiabilité.
+
+
+
+
+
+%
 
 
 
@@ -165,83 +178,52 @@ La propreté du jeu est notable, seules certaines données sur la taille et le p
 
 \subsubsection{Jeu du FMI}
 
-Le jeu présente 41 colonnes pour 7715 lignes. Il est issu d'un requêtage depuis le site du FMI pour récupérer les données avec lesquelles nous souhaitions travailler. Le potentiel de croisement est limité car un certain nombre de colonnes fournit des codes et des désignations propres au FMI (Country Code ; COFOG Function Name ; COFOG function Code ; Sector Name ; Unit Name ; Unit Code ; Attribute).
+Le jeu est composé de 42 colonnes pour 7.715 lignes. La colonne \textit{Country Name} permet d'identifier les pays. Celle nommée \textit{COFOG Function Name} correspond au secteur des investissements et a pour unique valeur \textit{Expenditure on recreational \& sporting services}. La colonne \textit{Unit Name} précise l'échelle de calcul des investissements (soit en pourcentage du PIB, \textit{Percent of GDP}, soit en monnaie courante \textit{Domestic currency}). Le montant des investissements est renseigné sur 30 colonnes (1993 - 2022).
 
-29 colonnes correspondent aux années couvertes par le FMI : de 1993 à 2022. Notre intérêt repose singulièrement sur les colonnes de 1996 à 2016 en plus des colonnes \emph{Country Name}, \emph{COFOG Function Name} laquelle correspond aux investissement dans les infrastructures sportives et \emph{Unit Name}, c'est-à-dire l'échelle de mesure, soit en PIB soit en monnaie courante.
+Les 9 autres colonnes correspondent à des codes et des dénominations propres au FMI (\textit{Country Code}, \textit{COFOG Function Code}, \textit{Sector Name}, \textit{Sector Code}, \textit{Unit Code}, \textit{Attribute}, \textit{Indicator Code}, \textit{Global DSD Time Series Code}, \textit{col\_41}). Le potentiel de croisement avec d'autres jeux étant par la force des choses très limité, nous n'utiliserons pas ces données.  
 
-Ce jeu est de loin le moins bien structuré et le plus fautif. En guise d'exemple, les trois dernières colonnes (Indicator Code ; Global DSD Time Series Code ; col\_41) sont d'une opacité confondante et témoignent du majeur problème du jeu : énormément de données sont vides, nulles ou incompréhensibles (\enquote{GERS\_G14\_GDP\_PT} pour la colonne) \emph{Indicator Code}, \enquote{A|GB|S1311|W0|S1|G2M|\_Z|\_Z|GF0801|XDC|\_T|\_X} pour la colonne \emph{Global DSD Time Series Code}). En somme, ce jeu représente un véritable enjeu de nettoyage et de croisement des données.
+L'ensemble du jeu est rédigé en langue anglaise. Noms de pays, sigles, codes, acronymes et unités de mesure (notées \enquote{Cash}, \enquote{Non Cash}, \enquote{Gross}, \enquote{Net}) à part, la casse des données textuelles implique la présence d'une seule majuscule en début de chaîne. Nous notons l'utilisation de caractères spéciaux, à l'instar de l'esperluette ou de la barre oblique.
 
+Exception faite des \textit{Country Code} et du code correspondant à la valeur \enquote{Domestic currency}, l'intégralité des codes sont un mélange de caractères numériques et textuels en haut-de-casse (\enquote{S13112} pour la colonne \textit{Sector Code} ou \enquote{XDC\_R\_B1GQ} dans la colonne \textit{Unit Code}).
 
+Les noms de pays souffrent d'un problème d'harmonisation et d'actualité (\textit{West Bank and Gaza}, \textit{Russian Federation}, \textit{China, P.R.: Mainland}).
 
-
-
-
-
-
-Nous avons constaté que le jeu de données du FMI est trop avare en données fiables (données manquantes, valeurs aberrantes\footnote{Donner des exemples.}) à propos des investissements en pourcentage du PIB dans le domaine du sport. Nous avons donc fait le choix d'utiliser les valeurs absolues\footnote{?} que nous croiserons avec le PIB par habitant de chaque pays.
-
-\label{banquemondiale}Nous avons donc dû trouver un jeu de données contenant le PIB par habitant. Parmi les données sources de Wikidata se trouvait un jeu hébergé sur le site de la Banque mondiale. Les données correspondent à une profondeur temporelle suffisante pour le cadre de notre projet. Cela nous a permis de résoudre le problème de mauvaise qualité du jeu du FMI.
+Ce jeu est de loin le moins bien structuré et le plus fautif. Bien que nous ne comptions pas les conserver au cours du traitement, les trois dernières colonnes (\textit{Indicator Code}, \textit{Global DSD Time Series Code}, \textit{col\_41}) sont d'une opacité confondante et témoignent du problème majeur du jeu : énormément de données sont vides, nulles ou incompréhensibles (\enquote{GERS\_G14\_GDP\_PT} pour la colonne) \textit{Indicator Code}, \enquote{A|GB|S1311|W0|S1|G2M|\_Z|\_Z|GF0801|
+	XDC|\_T|\_X} pour la colonne \textit{Global DSD Time Series Code}).
+également
+Au sein des colonnes correspondant au montant des investissements par année, se côtoient des lignes vides et des sigles (\enquote{NA}, \enquote{NP}, \enquote{AC}), sans justification ni harmonisation aucune. En somme, ce jeu représente un véritable enjeu de nettoyage et de croisement des données.
 
 
 
 
 
+%
 
 
 
 
 
+\subsubsection{Jeu de Wikidata (population)}
 
+En préambule de l'analyse du jeu de Wikidata, revenons un instant sur l'élaboration de la requête nous ayant permis de l'obtenir. Celle-ci renvoie le nombre d'habitants de l'ensemble des pays présents dans la base de données de Wikidata, sur une période de trente ans (1993 - 2023) :
 
-
-
-
-
-
-
-
-
-
-
-\subsubsection{Jeu de la Banque mondiale}
-
-Le jeu présente 67 colonnes pour 541 lignes -- en réalité 271 : il faut soustraire une ligne (l'entête) et diviser le nombre de lignes par deux car chaque ligne pleine est séparée de la suivante par une ligne vide. L'essentiel des colonnes correspondent à une période chronologique : de 1960 à 2022. Les autres fournissent des informations à propos des pays (Country Name ; Country Code) et leur PIB (Indicator Name ; Indicator Code) -- notons que tout est indiqué en dollar courant, il n'y a pas de monnaie domestique.
-
-Les premières décennies souffrent d'un cruel manque de données mais plus nous avançons dans le temps, plus le jeu est complet. 
-
-
-
-
-
-\subsubsection{Jeu de GitHub}
-
-Le jeu présente 6 colonnes pour 245 lignes. Une colonne \emph{Country} pour le nom des pays, les colonnes \emph{Alpha-2 code}, \emph{Alpha-3 code}, \emph{Numeric code} correspondent à des codes prévus par la norme ISO 3166-1 et \emph{Latitude (average)} et \emph{Longitude (average)} pour les coordonnées géographiques. Le niveau de propreté est remarquable, sans donnée manquante ou fautive.
-
-
-
-
-
-\subsubsection{Enrichissement Wikidata sur la population}
-
-Dans l'optique d'enrichir nos données \emph{via} Wikidata, nous avons mis au point une requête SPARQL à même de renvoyer le nombre d'habitants de l'ensemble des pays du monde sur une période de trente ans (1993 - 2003) :
-		
-\begin{lstlisting}[language=SPARQL]
-	SELECT ?paysLabel ?population ?date ?cio
-	WHERE 
-	{
-		?pays wdt:P31 wd:Q6256.
-		?pays wdt:P984 ?cio.
-		?pays p:P1082 ?populationStatement.
-		?populationStatement ps:P1082 ?population. 
-		?populationStatement pq:P585 ?date.
-		FILTER(YEAR(?date) >= (YEAR(NOW()) - 30)).
-		SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],fr". }
-	}
-	ORDER BY ?paysLabel ?date
+\label{query1}\begin{lstlisting}[language=SPARQL]
+SELECT ?paysLabel ?population ?date ?cio
+WHERE 
+{
+	?pays wdt:P31 wd:Q6256.
+	?pays wdt:P984 ?cio.
+	?pays p:P1082 ?populationStatement.
+	?populationStatement ps:P1082 ?population. 
+	?populationStatement pq:P585 ?date.
+	FILTER(YEAR(?date) >= (YEAR(NOW()) - 30)).
+	SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],fr". }
+}
+ORDER BY ?paysLabel ?date
 \end{lstlisting}
 
 Être en mesure de requêter l'intégralité des pays a été la première étape de la construction de notre requête. Le premier triplet permet de spécifier la nature -- notée \code{wdt:P31} -- de notre variable inconnue \code{?pays} en la faisant correspondre à l'objet \code{country} -- noté \code{wd:Q6256} :
-		
+
 \begin{lstlisting}[language=SPARQL]
 	?pays wdt:P31 wd:Q6256.
 \end{lstlisting}
@@ -261,13 +243,13 @@ Pour ce faire, nous avons consulté la liste de préfixes\autocite{wikiprefixes}
 \end{lstlisting}
 
 L'obtention du nombre d'habitants a nécessité le recours au préfixe \code{ps}, lequel permet de récupérer la valeur de la propriété relative à la population :
-		
+
 \begin{lstlisting}[language=SPARQL]
 	?populationStatement ps:P1082 ?population.
 \end{lstlisting}
 
 Enfin, nous avons rédigé le dernier triplet sur la base du préfixe \code{pq} pour attribuer la valeur chronologique à la variable \code{?date}. Un filtre y a été appliqué pour exprimer les limites extrêmes de notre période, soit \code{NOW} pour 2023 et \code{-30} pour 1993 :
-	
+
 \begin{lstlisting}[language=SPARQL]
 	?populationStatement pq:P585 ?date.
 	FILTER(YEAR(?date) >= (YEAR(NOW()) - 30)).
@@ -284,21 +266,111 @@ Nous nous sommes heurtés à plusieurs obstacles avant de rendre la requête fon
 
 Nous avons également pris en exemple la requête \emph{Population in Europe after 1960}\autocite{wiki1960}. La consulter a été l'occasion d'une meilleure compréhension des propriétés Wikidata ainsi qu'une porte ouverte à la lecture de la documentation et à l'appréhension des requêtes en deux temps (collecte des propriétés d'une classe puis requêtage en fonction de notre besoin).
 
+La rédaction de cette première requête a été d'une grande aide pour les autres recours à Wikidata qui ont émaillé notre chaîne de traitement.
+\newline
+
+Le jeu ainsi généré est composé de 13 colonnes et 3.737 lignes. Les lignes de la colonne, \textit{paysLabel.xml:lang} sont composées d'une même et unique donnée : \enquote{fr}. Il s'agit de langue dans laquelle les noms des pays sont renvoyés. 
+
+\label{query1tab}Sur les 12 colonnes restantes, 6 fonctionnent selon une logique de duo et 6 autres selon une logique de trio. Pour chaque donnée, le jeu indique sont \textit{type}, sa \textit{value} et, pour les trio, son \textit{datatype}. Ainsi, la donnée \enquote{cio} fait l'objet de 2 colonnes : \textit{cio.type}, \textit{cio.value} (\textit{idem} pour les données \enquote{isoCode} et \enquote{paysLabel}) et la donnée \enquote{date} fait l'objet de 3 colonnes : \textit{date.datatype}, \textit{date.type}, \textit{date.value} (\textit{idem} pour la donnée \enquote{population}). 
+
+Bien que notre requête ne précise vouloir recueillir ni le \textit{type} ni le \textit{datatype} des données, ces colonnes sont malgré tout présentes dans le jeu de sortie. Les données textuelles sont exprimées en anglais (mis à part les noms de pays) et sont en bas-de-casse -- exception faite des sigles et des noms de pays. Les dates sont exprimées selon le schéma YYYY-MM-DDThh\!\!:mm\!\!:ssZ. L'intégralité des \textit{types} correspondent à \enquote{literal}. Les colonnes \textit{datatype} ont pour valeur des liens renvoyant à des schémas XML du W3C.
+
+Le jeu est d'une propreté exemplaire, les données sont harmonisées et correctement typées, ce qui nous sera d'une grande aide lors des jointures.
 
 
 
 
 
+%
 
 
 
 
 
+\subsubsection{Jeu de la Banque mondiale}
+
+Le jeu se compose de 68 colonnes pour 533 lignes. Chaque ligne pleine est en réalité séparée de la suivante par une ligne vide. De surcroît, la dernière colonne est intégralement vide et ne porte que le sommaire nom de \textit{col\_67}. Sur l'ensemble du jeu, 63 colonnes correspondent aux années pour lesquelles le PIB des pays est renseigné (1960- 2022). 2 autres colonnes donnent des informations sur les pays : leur nom, leur code (\textit{Country Name}, \textit{Country Code}) et les 2 restantes, sur la donnée économique -- en l'occurrence le PIB (\textit{Indicator Name}, \textit{Indicator Code}), en dollars courant. 
+
+Les données textuelles sont en langue anglaise. Les noms des pays portent une majuscule initiale. Les codes sont exclusivement en haut-de-casse. Les données numériques sont exprimées en décimaux.
+
+Notons que certaines entrées de la colonne \textit{Country Name} témoignent d'une certaine originalité dans la mesure où ils ne sont pas références à des pays nommément explicites (\enquote{Heavily indebted poor countries (HIPC)}, \enquote{IBRD only}, \enquote{Low \& middle income}, etc.). Ces excentricités soulignent l'importance des codes des pays pour effectuer les jointures et faire l'économie des entrées impropres. Enfin, les premières décennies souffrent d'un cruel manque de données mais plus nous avançons dans le temps, plus le jeu est complet sur l'ensemble des pays.
 
 
 
 
 
+%
+
+
+
+
+
+\subsubsection{Jeu de GitHub}
+
+Le jeu se compose de 6 colonnes et 263 lignes. 2 de ces colonnes correspondent à la latitude et longitude (\textit{Latitude (average)}, \textit{Longitude (average)}) des pays dont le nom nous est donné dans la colonne \textit{Country}. Les trois autres colonnes (\textit{Alpha-2 code}, \textit{Alpha-3 code}, \textit{Numeric code}) correspondent à des codes de pays prévus par la norme ISO 3166-1.
+
+Les données textuelles sont exprimées en langue anglaise. Nonobstant, nous comptons nous appuyer sur les codes des pays pour réaliser les jonctions. Le jeu ne présente aucune donnée manquante. 
+
+
+
+
+
+%
+
+
+
+
+
+\subsubsection{Jeu de Wikidata (coordonnées)}
+
+Revenons derechef sur le détail de notre requête SPARQL, rédigée pour nous permettre de récupérer les coordonnée des pays recensés dans la base de données de Wikidata :
+
+\begin{lstlisting}[language=SPARQL]
+SELECT DISTINCT ?paysLabel ?geopoint ?noc
+WHERE 
+{
+	?pays wdt:P31 wd:Q6256.
+	?pays wdt:P984 ?noc.
+	?pays wdt:P625 ?geopoint
+	SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
+}
+\end{lstlisting}
+
+Nous indiquons vouloir récupérer les données selon les colonnes suivantes : le nom du pays (noté \code{?paysLabel}), leurs coordonnées (notées \code{?geopoint}) et leur code CIO (noté \code{?noc}) :
+
+\begin{lstlisting}[language=SPARQL]
+	SELECT DISTINCT ?paysLabel ?geopoint ?noc
+\end{lstlisting}
+
+Le premier triplet est \textit{stricto sensu} le même que celui de notre première requête Wikidata sur les populations (\textit{cf}. \textit{supra} p. \pageref{query1}).
+
+Il permet de signifier que notre variable inconnue \code{?pays} est de nature (notée \code{wdt:P31}) \enquote{pays} (noté \code{wd:Q6256}) :
+
+\begin{lstlisting}[language=SPARQL]
+	?pays wdt:P31 wd:Q6256.
+\end{lstlisting}
+
+Le deuxième triplet est également tout à fait similaire à son homonyme de la requête sur les populations (\textit{cf}. \textit{supra} p. \pageref{query1}). Il assigne à la variable \code{?noc} les codes des pays prévus par le Comité Olympique International grâce à la propriété relative notée \code{wdt:P984} :
+
+\begin{lstlisting}[language=SPARQL]
+	?pays wdt:P984 ?noc.
+\end{lstlisting}
+
+Enfin, le dernier triplet récupère les coordonnées géographiques des pays grâce à la propriété correspondante, notée \code{wdt:P625} :
+
+\begin{lstlisting}[language=SPARQL]
+	?pays wdt:P625 ?geopoint
+\end{lstlisting}
+
+Il en ressort un jeu composé de 8 colonnes et 185 lignes. Il présente la même logique de duo et de trio que notre autre jeu Wikidata (\textit{cf}. \textit{supra} p. \pageref{query1tab}) : les données \enquote{noc} et \enquote{paysLabel} font l'objet de 2 colonnes et les coordonnées, \enquote{geopoint}, font l'objet de trois colonnes. La longitude et la latitude sont regroupées au sein de la même colonne, \textit{geopoint.value} et sont présentées comme suit : \enquote{Point(<longitude> <latitude>)}. L'Islande a ainsi pour coordonnées \enquote{Point(-19.0 65.0)}.
+
+Cette requête ayant été saisie dans l'urgence de devoir déboguer la réalisation des datavisualisations et la rédaction du présent journal de bord à moins d'une semaine de la date butoir, les noms de pays sont exprimés en langue anglaise et les résultats n'ont pas été ordonnés par ordre alphabétique à l'instar de la requête sur la population. Nonobstant, la forme des données qui nous préoccupent -- en l'occurrence, les codes NOC et les coordonnées -- ne dépend pas de la langue pourvu que l'alphabet soit le même.
+
+
+
+
+
+%
 
 
 
@@ -518,14 +590,14 @@ POUR LA FRANCE
 
 SPARQL, même opération. SPARQL a extrait toutes les régions de France mais nous n'avons gardé que celles de la France métropolitaine 
 
-Jeu de la France : conservation des colonnes qui nous intéressent (type_equipement, longitude, latitude, regionLabel, dans type équipement : remplacement de toutes les données qui nous intéressent en \enquote{piscine centre aquatique}
+Jeu de la France : conservation des colonnes qui nous intéressent (type\_equipement, longitude, latitude, regionLabel, dans type équipement : remplacement de toutes les données qui nous intéressent en \enquote{piscine centre aquatique}
 
 JOINTURE : inner join sur le nom de la region et le labelRegion 
 
 JOINTURE : inner join aussi sur le nom de la région
 
 
-Regroupement : jointure sur type_equipement sans garder la longitude et la latitude 
+Regroupement : jointure sur type\_equipement sans garder la longitude et la latitude 
 
 
 

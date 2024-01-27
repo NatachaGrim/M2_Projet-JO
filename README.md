@@ -6,8 +6,8 @@
 - Une [note de cadrage](Note-de-cadrage.pdf), offrant une vue d'ensemble sur notre projet.
 
 ### Sur le traitement des données
- 
-- Une [requête SPARQL](Requete-SPARQL.md), constituant un enrichissement de nos données _via_ Wikidata ;
+
+- Un ensemble de [requêtes SPARQL](Requetes-SPARQL), constituant un enrichissement de nos données _via_ Wikidata ;
 - Un [journal de bord](Journal-de-bord/Journal-de-bord.pdf), rendant compte de notre traitement des données.
 
 ### Sur l'application Flask

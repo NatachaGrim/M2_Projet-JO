@@ -1,6 +1,6 @@
-# Requête SPARQL
+# Requête SPARQL (population)
 
-Enrichissement obligatoire de nos données avec Wikidata _via_ une requête SPARQL. La présente requête concerne tous les pays du monde et affiche leur nom, leur nombre d'habitants sur trente ans (1993 - 2023) et leur code CIO. Pour plus de détails, veuillez consulter le [journal de bord](Journal-de-bord/Journal-de-bord.pdf).
+La présente requête concerne tous les pays du monde et affiche leur nom, leur nombre d'habitants sur trente ans (1993 - 2023) et leur code CIO. Pour plus de détails, veuillez consulter le [journal de bord](../Journal-de-bord/Journal-de-bord.pdf).
 
 Pour tester la requête : [Wikidata : Service des requêtes SPARQL](https://w.wiki/8uTN).
 

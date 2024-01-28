@@ -1,10 +1,13 @@
-\documentclass[hidelinks, 12pt]{article}
+\documentclass[hidelinks, 12pt]{report}
 \usepackage{fontspec}
 \usepackage{xunicode}
 \usepackage[french]{babel}
 
 \usepackage{csquotes}
 \usepackage[style=verbose-ibid,backend=bibtex]{biblatex}
+
+\usepackage{titlesec}
+\titleformat{\chapter}{}{}{0em}{\bf\LARGE}
 
 \usepackage{hyperref}
 \usepackage{enumitem}
@@ -45,10 +48,10 @@
 	framexbottommargin=.5em,
 	framexrightmargin=.5em,
 	%
-	morekeywords=[1]{paysLabel,population,date,cio,pays,populationStatement,noc,geopoint},
+	morekeywords=[1]{paysLabel,population,date,cio,pays,populationStatement,noc,geopoint,RegionLabel,Region},
 	keywordstyle=[1]\color{green},
 	%
-	morekeywords=[2]{wd,Q6256,wdt,P31,p,P1082,ps,pq,P585,wikibase,P984,label,bd,serviceParam,language,P625},
+	morekeywords=[2]{wd,Q6256,wdt,P31,p,P1082,ps,pq,P585,wikibase,P984,label,bd,serviceParam,language,P625,Q36784,Q48091},
 	keywordstyle=[2]\color{MidnightBlue},
 	%
 	morekeywords=[3]{SELECT,ORDER,BY,WHERE,FILTER,YEAR,NOW,SERVICE,DISTINCT},
@@ -111,10 +114,9 @@
 
 
 
+\chapter{Introduction}
 
-\section{Introduction}
-
-Nous somme une équipe de datajournalistes chargée, à l'approche des Jeux Olympiques de Paris, d'étudier l'existence ou non de liens entre le succès d'une pays aux Jeux et sa richesse. Notre hypothèse de départ est la suivante : les pays développés gagnent significativement plus de médailles en raison de leur niveau d'investissement dans le domaine sportif. 
+Nous sommes une équipe de datajournalistes chargée, à l'approche des Jeux Olympiques de Paris, d'étudier l'existence ou non de liens entre le succès d'une pays aux Jeux et sa richesse. Notre hypothèse de départ est la suivante : les pays développés gagnent significativement plus de médailles en raison de leur niveau d'investissement dans le domaine sportif. 
 
 À l'aune de l'examen et du traitement des données que nous avons à notre disposition, nous avons pour ambition de déterminer si la politique d'investissement dans les infrastructures sportives des pays a une quelconque influence sur leurs résultats aux épreuves des Jeux.
 
@@ -122,7 +124,9 @@ Notre travail sera divisé en deux temps. Nous mettrons en relief le nombre de m
 
 Le choix de ces pays repose sur divers points de convergence : leur nombre d'habitants, leur économie et leur qualité de pays organisateur des Jeux. 
 
-Le résultat du traitement des données constituera une base à la réalisation de datavisualisations et d'une application web exploitables pour l'écriture d'articles journalistiques sur le sujet des Jeux Olympiques.
+Travailler sur une période de vingt ans nous semble suffisant pour cerner ou non le début d'une tendance économique vis-à-vis de la réussite des pays aux Jeux Olympiques. Le temps et les ressources dont nous disposons tendent à confirmer le choix de cette période -- suffisamment éloquente pour nous permettre de travailler sur une quantité honorable de données sans qu'il ne faille faire entorse à nos capacités financières -- strictement égales à zéro -- et humaines -- strictement égales à quatre.
+
+Le résultat du traitement des données constituera une base à la réalisation de datavisualisations et d'une application web exploitables pour l'écriture d'articles journalistiques sur le sujet des Jeux Olympiques. Les données mises à disposition, exception faite du nom des régions de France, sont en langue anglaise dans l'idée d'une exploitation par la presse internationale.
 
 
 
@@ -134,19 +138,19 @@ Le résultat du traitement des données constituera une base à la réalisation 
 
 
 
-\section{Jeux de données}
+\chapter{Jeux de données}
 
-\subsection{Jeux du premier \textit{flow}}
+\section{Jeux du premier flux}
 
-Notre premier \textit{flow} concerne les médailles remportées par les pays lors des six éditions des Jeux Olympiques sur lesquelles nous avons décidé de travailler. En amont du traitement, nos jeux étaient au nombre de deux. Le premier présente le nombre de médailles remportées par sportif aux Jeux sur une période de 120 ans\autocite{kaggle}. Le deuxième, le Produit Intérieur Brut des pays et son pourcentage investi dans le domaine sportif\autocite{fmi}.
+Notre premier flux concerne les médailles remportées par les pays lors des six éditions des Jeux Olympiques sur lesquelles nous avons décidé de travailler. En amont du traitement, nos jeux étaient au nombre de deux. Le premier présente le nombre de médailles remportées par sportif aux Jeux sur une période de 120 ans\autocite{kaggle}. Le deuxième, le Produit Intérieur Brut des pays et son pourcentage investi dans le domaine sportif\autocite{fmi}.
 
 Nous avons enrichi ces jeux grâce au résultat d'une requête SPARQL, saisie sur le service de Wikidata. Le jeu ainsi produit présente le nombre d'habitants de l'ensemble des pays répertoriés dans la base de Wikidata, sur une période de trente ans (1993 - 2023)\autocite{wikiquerypop}.
 
-Trois autres jeux ont dû faire leur entrée au cours du traitement pour pallier de nombreux manquements. Nous avons constaté qu'en dépit d'indiquer le pourcentage du Produit Intérieur Brut investi dans le domaine sportif, le jeu du Fonds Monétaire International ne contenait pas le PIB des pays. Nous avons introduit un jeu de la Banque mondiale\autocite{worldbank} dans le \textit{flow} -- lequel contient le montant du PIB avec une profondeur chronologique suffisante.
+Trois autres jeux ont dû faire leur entrée au cours du traitement pour pallier de nombreux manquements. Nous avons constaté qu'en dépit d'indiquer le pourcentage du Produit Intérieur Brut investi dans le domaine sportif, le jeu du Fonds Monétaire International ne contenait pas le PIB des pays. Nous avons introduit un jeu de la Banque mondiale\autocite{worldbank} dans le flux -- lequel contient le montant du PIB avec une profondeur chronologique suffisante.
 
 Les deux autres jeux concernent un problème de coordonnées. Lorsque Dataiku identifie des données de type \textit{country}, nous pensions pouvoir en récupérer les coordonnées -- notamment afin de les exploiter pour les datavisualisations. L'extension \textit{reverse geocoding plugin} aurait pu nous le permettre, sans succès. Nos suppositions portent sur notre version gratuite de Dataiku et de son nombre réduit de fonctionnalités.
 
-Ne disposant d'aucun budget pour disposer d'une version payante, nous avons recherché un jeu contenant les coordonnées des pays et l'avons trouvé sur la plateforme GitHub\autocite{github}. Nonobstant, les longitudes et latitudes des pays ainsi récupérées se sont avérées être fautives le moment des datavisualisations venu. C'est pourquoi nous avons mis au point une deuxième SPARQL, capable de renvoyer les bonnes coordonnées de tous les pays présents dans la base de Wikidata. Le jeu ainsi récupéré correspond au dernier renfort dont nous avons eu besoin pour être en mesure de réaliser des datavisualisations.
+Ne disposant d'aucun budget pour disposer d'une version payante, nous avons recherché un jeu contenant les coordonnées des pays et l'avons trouvé sur la plateforme GitHub\autocite{github}. Nonobstant, les longitudes et latitudes des pays ainsi récupérées se sont avérées être fautives le moment des datavisualisations venu. C'est pourquoi nous avons mis au point une deuxième SPARQL, capable de renvoyer les bonnes coordonnées de tous les pays présents dans la base de Wikidata\autocite{wikiquerycoor}. Le jeu ainsi récupéré correspond au dernier renfort dont nous avons eu besoin pour être en mesure de réaliser des datavisualisations.
 
 
 
@@ -158,7 +162,7 @@ Ne disposant d'aucun budget pour disposer d'une version payante, nous avons rech
 
 
 
-\subsubsection{Jeu de Kaggle}
+\subsection{Jeu de Kaggle}
 
 Le jeu est composé de 15 colonnes et 271.117 lignes. 7 colonnes fournissent des informations sur les athlètes (\textit{ID}, \textit{Name}, \textit{Sex}, \textit{Age}, \textit{Height}, \textit{Weight}, \textit{Medal}) ; 2 colonnes sur leurs pays (\textit{Team}, \textit{NOC}) et 6 sur les éditions des Jeux Olympiques (\textit{Games} ; \textit{Year} ; \textit{Season} ; \textit{City} ; \textit{Sport} ; \textit{Event}).
 
@@ -176,7 +180,7 @@ Le jeu ne présente pas de défauts majeurs sur les colonnes que nous comptons c
 
 
 
-\subsubsection{Jeu du FMI}
+\subsection{Jeu du FMI}
 
 Le jeu est composé de 42 colonnes pour 7.715 lignes. La colonne \textit{Country Name} permet d'identifier les pays. Celle nommée \textit{COFOG Function Name} correspond au secteur des investissements et a pour unique valeur \textit{Expenditure on recreational \& sporting services}. La colonne \textit{Unit Name} précise l'échelle de calcul des investissements (soit en pourcentage du PIB, \textit{Percent of GDP}, soit en monnaie courante \textit{Domestic currency}). Le montant des investissements est renseigné sur 30 colonnes (1993 - 2022).
 
@@ -203,7 +207,7 @@ Au sein des colonnes correspondant au montant des investissements par année, se
 
 
 
-\subsubsection{Jeu de Wikidata (population)}
+\subsection{Jeu de Wikidata (population)}
 
 En préambule de l'analyse du jeu de Wikidata, revenons un instant sur l'élaboration de la requête nous ayant permis de l'obtenir. Celle-ci renvoie le nombre d'habitants de l'ensemble des pays présents dans la base de données de Wikidata, sur une période de trente ans (1993 - 2023) :
 
@@ -273,7 +277,7 @@ Le jeu ainsi généré est composé de 13 colonnes et 3.737 lignes. Les lignes d
 
 \label{query1tab}Sur les 12 colonnes restantes, 6 fonctionnent selon une logique de duo et 6 autres selon une logique de trio. Pour chaque donnée, le jeu indique sont \textit{type}, sa \textit{value} et, pour les trio, son \textit{datatype}. Ainsi, la donnée \enquote{cio} fait l'objet de 2 colonnes : \textit{cio.type}, \textit{cio.value} (\textit{idem} pour les données \enquote{isoCode} et \enquote{paysLabel}) et la donnée \enquote{date} fait l'objet de 3 colonnes : \textit{date.datatype}, \textit{date.type}, \textit{date.value} (\textit{idem} pour la donnée \enquote{population}). 
 
-Bien que notre requête ne précise vouloir recueillir ni le \textit{type} ni le \textit{datatype} des données, ces colonnes sont malgré tout présentes dans le jeu de sortie. Les données textuelles sont exprimées en anglais (mis à part les noms de pays) et sont en bas-de-casse -- exception faite des sigles et des noms de pays. Les dates sont exprimées selon le schéma YYYY-MM-DDThh\!\!:mm\!\!:ssZ. L'intégralité des \textit{types} correspondent à \enquote{literal}. Les colonnes \textit{datatype} ont pour valeur des liens renvoyant à des schémas XML du W3C.
+\label{nongrata}Bien que notre requête ne précise vouloir recueillir ni le \textit{type} ni le \textit{datatype} des données, ces colonnes sont malgré tout présentes dans le jeu de sortie. Les données textuelles sont exprimées en anglais (mis à part les noms de pays) et sont en bas-de-casse -- exception faite des sigles et des noms de pays. Les dates sont exprimées selon le schéma YYYY-MM-DDThh\!\!:mm\!\!:ssZ. L'intégralité des \textit{types} correspondent à \enquote{literal}. Les colonnes \textit{datatype} ont pour valeur des liens renvoyant à des schémas XML du W3C.
 
 Le jeu est d'une propreté exemplaire, les données sont harmonisées et correctement typées, ce qui nous sera d'une grande aide lors des jointures.
 
@@ -287,7 +291,7 @@ Le jeu est d'une propreté exemplaire, les données sont harmonisées et correct
 
 
 
-\subsubsection{Jeu de la Banque mondiale}
+\subsection{Jeu de la Banque mondiale}
 
 Le jeu se compose de 68 colonnes pour 533 lignes. Chaque ligne pleine est en réalité séparée de la suivante par une ligne vide. De surcroît, la dernière colonne est intégralement vide et ne porte que le sommaire nom de \textit{col\_67}. Sur l'ensemble du jeu, 63 colonnes correspondent aux années pour lesquelles le PIB des pays est renseigné (1960- 2022). 2 autres colonnes donnent des informations sur les pays : leur nom, leur code (\textit{Country Name}, \textit{Country Code}) et les 2 restantes, sur la donnée économique -- en l'occurrence le PIB (\textit{Indicator Name}, \textit{Indicator Code}), en dollars courant. 
 
@@ -305,7 +309,7 @@ Notons que certaines entrées de la colonne \textit{Country Name} témoignent d'
 
 
 
-\subsubsection{Jeu de GitHub}
+\subsection{Jeu de GitHub}
 
 Le jeu se compose de 6 colonnes et 263 lignes. 2 de ces colonnes correspondent à la latitude et longitude (\textit{Latitude (average)}, \textit{Longitude (average)}) des pays dont le nom nous est donné dans la colonne \textit{Country}. Les trois autres colonnes (\textit{Alpha-2 code}, \textit{Alpha-3 code}, \textit{Numeric code}) correspondent à des codes de pays prévus par la norme ISO 3166-1.
 
@@ -321,7 +325,7 @@ Les données textuelles sont exprimées en langue anglaise. Nonobstant, nous com
 
 
 
-\subsubsection{Jeu de Wikidata (coordonnées)}
+\subsection{Jeu de Wikidata (coordonnées)}
 
 Revenons derechef sur le détail de notre requête SPARQL, rédigée pour nous permettre de récupérer les coordonnée des pays recensés dans la base de données de Wikidata :
 
@@ -376,15 +380,15 @@ Cette requête ayant été saisie dans l'urgence de devoir déboguer la réalisa
 
 
 
-\subsection{Jeux du second \emph{flow}}
+\section{Jeux du second flux}
 
-Notre deuxième \textit{flow} repose sur une comparaison entre la France et le Royaume-Uni à l'endroit de la natation. En amont du traitement, nos jeux étaient au nombre de cinq : trois pour le Royaume-Uni, deux pour la France.
+Notre deuxième flux repose sur une comparaison entre la France et le Royaume-Uni à l'endroit de la natation. En amont du traitement, nos jeux étaient au nombre de cinq : trois pour le Royaume-Uni, deux pour la France.
 
-Sur le Royaume-Uni, un premier jeu résulte d'une requête SPARQL, laquelle génère un jeu listant le nom des régions du pays, leur nombre d'habitants et leurs coordonnées. Les deux autres jeux proviennent du même site\autocite{ru}, l'un situe les infrastructures sportives par rapport à leur région, l'autre les décrit d'un point de vue davantage technique. 
+Sur le Royaume-Uni, un premier jeu résulte d'une requête SPARQL, laquelle génère un jeu listant le nom des régions du pays, leur nombre d'habitants et leurs coordonnées\autocite{wikiqueryeng}. Les deux autres jeux proviennent du même site\autocite{ru}, l'un situe les infrastructures sportives par rapport à leur région, l'autre les décrit d'un point de vue davantage technique.
 
-Sur la France, l'un des deux jeux est également une requête SPARQL, renvoyant là aussi le nom des régions du pays, leur nombre d'habitants et leurs coordonnées. Le second jeu, fourni par le ministère de l'Éducation nationale, de la Jeunesse, des Sports et des Jeux Olympiques et Paralympiques\autocite{ministere} présente les infrastructures sportives et les relie aux régions françaises.
+Sur la France, l'un des deux jeux est également une requête SPARQL, renvoyant là aussi le nom des régions du pays, leur nombre d'habitants et leurs coordonnées\autocite{wikiqueryfr}. Le second jeu, fourni par le ministère de l'Éducation nationale, de la Jeunesse, des Sports et des Jeux Olympiques et Paralympiques\autocite{ministere} présente les infrastructures sportives et les relie aux régions françaises.
 
-Au cours du traitement, nous avons réalisé qu'il nous fallait relier tôt ou tard ces divers jeux aux médailles remportées par les deux pays. C'est pourquoi nous avons fait usage d'une version du jeu de Kaggle issu de notre premier \textit{flow}, où se trouvent les données nécessaires.
+Au cours du traitement, nous avons réalisé qu'il nous fallait relier tôt ou tard ces divers jeux aux médailles remportées par les deux pays. C'est pourquoi nous avons fait usage d'une version du jeu de Kaggle issu de notre premier flux, où se trouvent les données nécessaires.
 
 
 
@@ -396,7 +400,7 @@ Au cours du traitement, nous avons réalisé qu'il nous fallait relier tôt ou t
 
 
 
-\subsubsection{Jeu de Wikidata (régions de France)}
+\subsection{Jeu de Wikidata (régions de France)}
 
 \label{queryfr}Cette requête interroge la base de données de Wikidata selon le prisme des régions. Nous voulons ici afficher leur nom (\code{?RegionLabel}), leur nombre d'habitants (\code{?population}) et leurs coordonnées (\code{?geopoint}) :
 
@@ -448,7 +452,7 @@ Le jeu ainsi généré est composé de 9 colonnes et 18 lignes. Nous n'explicite
 
 
 
-\subsubsection{Jeu du ministère}
+\subsection{Jeu du ministère}
 
 Le jeu est composé de 104 colonnes et 143.192 lignes. Par souci de concision, nous ne nous attarderons que sur les colonnes que nous comptons conserver au cours du traitement. Ces dernières sont au nombre de quatre : \textit{Type d'équipement sportif}, \textit{Longitude (WGS84)}, \textit{Latitude (WGS84)} et \textit{Région Nom}.
 
@@ -468,7 +472,7 @@ Les noms de régions sont saisies en bas-de-casse avec conservation des majuscul
 
 
 
-\subsubsection{Jeu de Wikidata (régions d'Angleterre)}
+\subsection{Jeu de Wikidata (régions d'Angleterre)}
 
 Cette requête est l'identique stricte de celle sur les régions de France (\textit{cf}. \textit{supra} p. \pageref{queryfr}). La description des triplets sera d'autant plus brève. Nous voulons afficher le nom des régions d'Angleterre (\code{?RegionLabel}), leur nombre d'habitants (\code{?population}) et leurs coordonnées (\code{?geopoint}) :
 
@@ -513,7 +517,7 @@ Il en ressort un jeu composé de 9 colonnes et 36 lignes. Nous n'expliciterons p
 
 
 
-\subsubsection{Jeux de \textit{Sport England}}
+\subsection{Jeux de \textit{Sport England}}
 
 Le premier jeu provenant de \textit{Sport England}, nommé \textit{Geographics} est composé de 25 colonnes et 118.655 lignes. Comme son nom le suggère, les données présentées sont relatives aux infrastructures sportives d'Angleterre. Chacune possède un identifiant unique, répertorié dans la colonne \textit{FACILITYID} et est rattachée à une région, grâce à la colonne \textit{Region Name}. Leur nom est en anglais et en bas-de-casse, avec conservation des majuscules initiales. Les 2 autres colonnes qui survivront au traitement sont \textit{Latitude} et \textit{Longitude}.
 
@@ -536,9 +540,9 @@ Toutes les données sont de type numérique -- soit des entiers, soit des décim
 
 
 
-\subsubsection{Jeu de Kaggle}
+\subsection{Jeu de Kaggle}
 
-Cette version du jeu \textit{Kaggle} issu de notre premier \textit{flow} est composée de 26 colonnes et 780 lignes. 2 colonnes, \textit{NOC} et \textit{Sport} correspondent respectivement aux codes CIO des pays et à l'intitulé du sport (en langue anglaise et bas-de-casse, avec conservation des majuscules initiales) ayant fait l'objet d'au moins épreuve aux Jeux Olympiques.
+Cette version du jeu \textit{Kaggle} issu de notre premier flux est composée de 26 colonnes et 780 lignes. 2 colonnes, \textit{NOC} et \textit{Sport} correspondent respectivement aux codes CIO des pays et à l'intitulé du sport (en langue anglaise et bas-de-casse, avec conservation des majuscules initiales) ayant fait l'objet d'au moins épreuve aux Jeux Olympiques.
 
 Les 24 autres colonnes correspondent aux six éditions des Jeux selon le schéma suivant : chaque année fait l'objet de 4 colonnes. 3 pour les types de médailles (bronze, argent, or) et 1 pour la somme de l'ensemble des médailles. Ainsi, les colonnes de l'année 2008 sont nommées comme suit : \textit{2008 - Bronze}, \textit{2008 - Silver}, \textit{2008 - Gold}, \textit{2008 - Médailles}.
 
@@ -552,95 +556,163 @@ Les 24 autres colonnes correspondent aux six éditions des Jeux selon le schéma
 
 
 
+\chapter{Traitement des données}
+
+\section{Objectif du traitement}
+
+À l'aune de notre approche, notre premier flux aura pour ambition de faire ressortir les données suivantes : les codes des pays attribués par le \emph{National Olympic Committee} -- que nous nous permettrons d'abréger \enquote{code NOC} -- le nombre de médailles remportées aux éditions six des Jeux Olympiques et le pourcentage d'investissement des pays dans le domaine sportif par rapport à leur PIB et à leur population.
 
 
 
 
 
+%
 
 
 
 
 
+\section{Chaîne de traitement du premier flux}
+
+\subsection{Préparation du jeu de la Banque mondiale}
+
+Le jeu de la Banque mondiale, nommé \textit{GDP} dans Dataiku, correspond à cette partie du flux :
+
+\begin{center}
+	\begin{figure}[H]
+		\setlength{\belowcaptionskip}{-35pt}
+		\includegraphics[scale=0.35]{images/flow-medals-gdp.png}
+		\caption{Chaîne de traitement du jeu \textit{GDP}}
+	\end{figure}
+\end{center}
+
+La première recette appliquée est une préparation. Elle consiste en la suppression de toutes les lignes vides -- soit une ligne sur deux -- et la conservation de seulement 7 colonnes sur 68 : \textit{Country Code} pour les codes NOC (fondamentaux pour réaliser de futures jointures) et les 6 colonnes correspondant aux éditions des Jeux Olympiques couvertes par notre travail.
+
+Les colonnes ainsi sélectionnées ont été renommées : \textit{Country Code} devient \textit{NOC} et les colonnes des années suivent le même motif : \textit{1996} devient \textit{1996 - GDP} (pour \textit{Gross Domestic Product}, c'est-à-dire le Produit Intérieur Brut). Enfin, toutes les valeurs décimales ont été arrondies en entier.
+
+Les prochaines étapes du traitement correspondent à des jointures avec d'autres jeux. Nous les détaillerons (\textit{cf}. \textit{infra} p. \pageref{join}) une fois les recettes appliquées à l'ensemble des jeux en amont décrites.
 
 
 
 
 
+%
 
 
 
 
 
-\section{Traitement des données}
+\subsection{Préparation du jeu de Kaggle}
 
-\subsection{Objectif du traitement}
+Le jeu de Kaggle, nommé \textit{Kaggle} dans Dataiku, correspond à cette partie du flux :
 
-À l'aune de notre approche, notre premier \emph{flow} aura pour ambition de faire ressortir les données suivantes : les codes des pays attribués par le \emph{National Olympic Committee} -- que nous nous permettrons d'abréger \enquote{code NOC} -- le nombre de médailles remportées aux éditions six des Jeux Olympiques et le pourcentage d'investissement des pays dans le domaine sportif par rapport à leur PIB et à leur population.
+\begin{center}
+	\begin{figure}[H]
+		\setlength{\belowcaptionskip}{-35pt}
+		\includegraphics[scale=0.35]{images/flow-medals-kaggle.png}
+		\caption{Chaîne de traitement du jeu \textit{Kaggle}}
+	\end{figure}
+\end{center}
 
+En amont des jointures, ce jeu a fait l'objet de trois recettes. La première, une préparation, nous a permis d'uniquement conserver 3 colonnes sur 15 : \textit{NOC}, \textit{Medal}, \textit{Year}. La colonne \textit{Year} a été épurée pour que seules les années des six éditions deux Jeux y apparaissent. Également, les entrées de la colonne \textit{Medal} correspondant à des valeurs nulles (noté \enquote{N/A}) ont été supprimées.
 
-\subsection{Chaîne de traitement du premier \emph{flow}}
-
-\subsubsection{Préparation du jeu de la Banque Mondiale}
-
-La première recette appliquée au jeu est une préparation. Elle consiste en la suppression de toutes les lignes vides -- soit une ligne sur deux, rappelons-le -- et en la conservation de seulement 7 colonnes sur 67 :
-\begin{itemize}
-	\item \emph{Country Code} ;
-	\item Les éditions des Jeux de 1996 à 2016.
-\end{itemize}
-Les codes NOC seront fondamentaux pour réaliser de futures jointures et les années 1996, 2000, 2004, 2008, 2012 et 2016 correspondent aux limites chronologiques de notre approche.
-
-Deux autres étapes composent la recette : le renommage des 7 colonnes restantes (ainsi, \emph{Country Code } et renommée \emph{NOC} et les colonnes des années sont renommées selon le même motif : \emph{1996} devient \emph{1996 - GDP} pour \emph{Gross Domestic Product}, c'est-à-dire le Produit Intérieur Brut.) et le passage de toutes les valeurs décimales en entiers, selon une logique d'arrondissement. 
-
-\subsubsection{Préparation du jeu de Kaggle}
-
-Ce jeu a fait l'objet de trois recettes. La première, une préparation, nous a permis de conserver uniquement 3 colonnes sur 15 :
-\begin{itemize}
-	\item \emph{NOC} ;
-	\item \emph{Medal} ;
-	\item \emph{Year}.
-\end{itemize}
-Nous avons également épuré la colonne \emph{Year} pour ne conserver que les années des Jeux relatives à notre sujet. Les entrées de la colonnes \emph{Medal} correspondant à des valeurs nulles (exemplairement \emph{N/A}) ont été supprimées. 
-
-L'étape suivante consiste en la réalisation d'un pivot : les années présentes dans les lignes sont devenues des colonnes dont les lignes ont pris pour valeur les entrées de la colonne \emph{Medal}. 6 nouvelles colonnes ont donc été créées, une par édition des Jeux Olympiques, entre 1996 et 2016.
+L'étape suivante consiste en la réalisation d'un pivot. Les années présentes dans les lignes de la colonne \textit{Year} sont devenues des colonnes dont les lignes ont pris pour valeur les entrées de la colonne \textit{Medal}. 6 nouvelles colonnes ont donc été créés, une par édition des Jeux entre 1996 et 2016.
 
 Enfin, nous avons compté les occurrences des trois types de médailles (bronze, argent, or) et créé des colonnes de sorties pour chaque type pour chaque édition. Par exemple, la colonne \emph{1996} a donné lieu à la création des colonnes \emph{1996 - Bronze} ; \emph{1996 - Silver} ; \emph{1996 - Gold}.
 
-La deuxième recette est un \emph{group}. Le \emph{dataset} présente les médailles reportées par les athlètes, or nous n'avons conservé aucun donnée à leur endroit. Nonobstant, la répartition des médailles reposait toujours sur cette logique.
+La deuxième recette est un \emph{group}. Le \emph{dataset} présente les médailles reportées par les athlètes, or nous n'avons conservé aucun donnée à leur endroit. Nonobstant, la répartition des médailles repose toujours sur cette logique.
 
 Nous avons donc réalisé un groupement pour réunir les doublons et compter les occurrences de chaque type de médaille remportée pour les six éditions des Jeux. Admettons qu'aux Jeux de 2016, un athlète français ait remporté une médaille de bronze et un autre deux. La recette a pour effet d'afficher le chiffre 3 pour l'entrée \enquote{France} sur la colonne \emph{2016 - Bronze}.
 
-La troisième et dernière recette en amont des jointures est également une préparation. Elle nous a permis, pour chacune des six éditions, de créer une nouvelle colonne présentant la somme de toutes les médailles remportées par les pays. En guise d'exemple, nous savons qu'à l'édition de 2008, l'Australie a remporté un total de 110 médailles.
+La troisième et dernière recette avant la réalisation des jointures est également une préparation. Elle nous a permis, pour chacune des six éditions, de créer une nouvelle colonne présentant la somme de toutes les médailles remportées par les pays. En guise d'exemple, nous savons qu'à l'édition de 2008, l'Australie a remporté un total de 110 médailles.
 
-\subsubsection{Préparation du jeu de Wikidata}
 
-L'enrichissement \emph{via} les données de Wikidata a été soumis a deux recettes. Une préparation où nous avons supprimé 8 colonnes -- lesquelles représentaient un considérable bruit documentaire dans la mesure où notre requête SPARQL ne les sollicitaient pas (exemplairement à propos des \enquote{types} de données : \emph{population.type}, \emph{date.type}, \emph{date.datatype}). 
 
-Trois colonnes ont été renommées : \emph{cio.value} est devenu \emph{NOC} ; \emph{isoCode.value} est devenu \emph{Pays} et \emph{paysLabel.value} est devenu \emph{Nom - Pays}.
 
-Nous avons modifié le format des dates : sur l'année, le jour, le mois et l'heure, nous n'avons conservé que l'année dans une colonne de sortie avant de supprimer la colonne initiale. Les années des six éditions mises à part, toutes les autres ont été supprimées et un nouveau pivot a été réalisé : les années en ligne sont passées en colonne et ont pris pour valeur le nombre d'habitants par pays. Ce pivot a permis la suppression des colonnes \emph{Année} et \emph{population.value}. Enfin, les colonnes des années ont été renommées selon un motif commun : \emph{1996} est devenu \emph{1996 - Pop}.
+
+%
+
+
+
+
+
+\subsection{Préparation du jeu de Wikidata (population)}
+
+Le jeu généré grâce à la requête SPARQL sur la population, nommé \textit{Sparql-pop}, correspond à cette partie du flux :
+
+\begin{center}
+	\begin{figure}[H]
+		\setlength{\belowcaptionskip}{-35pt}
+		\includegraphics[scale=0.35]{images/flow-medals-sparql-pop.png}
+		\caption{Chaîne de traitement du jeu \textit{Sparql-pop}}
+	\end{figure}
+\end{center}
+
+Ce jeu a été soumis à deux recette. Une préparation où nous avons supprimé les 8 colonnes dont le suffixe était autre que \enquote{.value} -- lesquelles n'étaient pas sollicitées par notre requête SPARQL (\textit{cf}. \textit{supra} p. \pageref{nongrata}). Trois colonnes ont été renommées : \textit{cio.value} est devenu \textit{NOC} ; \textit{isoCode.value} est devenu \textit{Pays} et \textit{paysLabel.value} est devenu \textit{Nom - Pays}.
+
+Nous avons modifié le format des dates : sur l'année, le jour, le mois et l'horaire, nous n'avons conservé que l'année dans une colonne de sortie avant de supprimer la colonne initiale. Les années des six éditions mises à part, toutes les autres ont été supprimées et un nouveau pivot a été réalisé : les années en ligne sont passées en colonne et ont pris pour valeur le nombre d'habitants par pays. Ce pivot a permis la suppression des colonnes \emph{Année} et \emph{population.value}. Enfin, les colonnes des années ont été renommées selon un motif commun : \emph{1996} est devenu \emph{1996 - Pop}.
 
 La dernière étape de cette recette consiste en la suppression de trois valeurs vides présentes dans la colonne \emph{NOC}.
 
 À l'instar du jeu de Kaggle, nous avons appliqué une recette \emph{group} au jeu de Wikidata. Le groupe s'est effectué sur les colonnes \emph{NOC}, \emph{Pays} et \emph{Nom - Pays} afin de regrouper le nombre d'habitants par année sur une même ligne.
 
-\subsubsection{Préparation du jeu de GitHub}
 
-Le jeu de GitHub n'a nécessité qu'une maigre recette de préparation : nous avons supprimé les colonnes \emph{Alpha-2 Code} et \emph{Numeric Code} pour ne conserver que la colonne \emph{Alpha-3 Code} pour faciliter les jointures.
 
-Nous avons également supprimé les entrées que Dataiku ne reconnaissait pas comme pays pour enfin renommer deux colonnes : \emph{Country} est devenu \emph{Pays} et \emph{Alpha-3 Code} est devenu \emph{Code}.
 
-\subsubsection{Préparation du jeu du FMI}
 
-À la faveur de la première recette, une préparation, nous avons supprimé de la colonne \emph{Unit Name} les lignes où la valeur était \emph{Domestic currency} pour ne conserver que le pourcentage du Produit Intérieur Brut (\emph{Percent of GDP}) investi par les pays dans le domaine du sport.
+%
 
-Nous avons uniquement conservé 7 colonnes : \emph{Country Name} ainsi que les dates des six éditions des Jeux. La dernière étape de la préparation consistait en la suppression de lignes vides pour la colonne \emph{2016}. À partir de cette étape, Dataiku se figeait et nous laissait dans l'impossibilité d'ajouter de nouvelles étapes. Nous avons donc dû ajouter une autre recette de préparation pour que le \emph{run} fonctionne et reprendre le traitement.
 
-Dans cette deuxième préparation, les 6 colonnes correspondant aux éditions des Jeux selon le motif suivant : \emph{1996} devient \emph{1996 - FMI}. 
+
+
+
+\subsection{Préparation du jeu de GitHub}
+
+Le jeu provenant de la plateforme GitHub, nommé \textit{Github} dans Dataiku, correspond à cette partie du flux :
+
+\begin{center}
+	\begin{figure}[H]
+		\setlength{\belowcaptionskip}{-35pt}
+		\includegraphics[scale=0.35]{images/flow-medals-github.png}
+		\caption{Chaîne de traitement du jeu \textit{Github}}
+	\end{figure}
+\end{center}
+
+Le jeu n'a nécessité qu'une maigre recette de préparation : nous avons supprimé les colonnes \textit{Alpha-2 Code} et \textit{Numeric Code} pour ne conserver que la colonne \textit{Alpha-3 Code} pour faciliter les jointures.
+
+Nous avons également supprimé les entrées que Dataiku ne reconnaissait pas comme pays. Enfin, nous avons renommé 2 colonnes : \textit{Country} est devenu \textit{Pays} et \textit{Alpha-3 Code} est devenu \textit{Code}.
+
+
+
+
+
+%
+
+
+
+
+
+\subsection{Préparation du jeu du FMI}
+
+Le jeu du Fonds Monétaire International, nommé \textit{FMI} dans Dataiku, correspond à cette partie du flux :
+
+\begin{center}
+	\begin{figure}[H]
+		\setlength{\belowcaptionskip}{-35pt}
+		\includegraphics[scale=0.35]{images/flow-medals-fmi.png}
+		\caption{Chaîne de traitement du jeu \textit{FMI}}
+	\end{figure}
+\end{center}
+
+À la faveur de la première recette -- une préparation -- nous avons supprimé de la colonne \textit{Unit Name} les lignes où la valeur était \enquote{Domestic currency} pour ne conserver que le pourcentage du Produit Intérieur Brut (\enquote{Percent of GDP}) investi par les pays dans le domaine du sport.
+
+Nous avons uniquement conservé 7 colonnes : \textit{Country Name} ainsi que les dates des six éditions des Jeux. La dernière étape de la préparation consistait en la suppression de lignes vides pour la colonne \textit{2016}. À partir de ce moment, Dataiku se figeait et nous laissait dans l'impossibilité d'ajouter de nouvelles étapes. Nous avons donc dû ajouter une autre recette de préparation pour que le \textit{run} fonctionne et reprendre le traitement.
+
+Dans cette deuxième préparation, les colonnes des années des Jeux ont été renommées selon le motif suivant : \textit{1996} devient \textit{1996 - FMI}.
 
 Il nous a fallu manuellement modifier 13 valeurs dans la colonne \emph{Country Name} pour une meilleure reconnaissance des pays par Dataiku. Par exemple : \emph{Russian Federation}, \emph{Czech Rep.} ne sont pas reconnus, tandis que \emph{Russia} et \emph{Czech Republic} le sont. Ces modifications ont donné lieu à la création d'une colonne de sortie \emph{Pays} car il nous était impossible de modifier les noms des pays directement dans la colonne d'origine. Nous avons naturellement supprimé la colonne \emph{Country Name}, une fois ces modifications effectuées. 
 
-Nous avons rencontré un problème de valeurs aberrantes dans les valeurs indiquées pour les investissements par rapport au PIB. La nature du problème repose sur des conversions mathématiques fautives : les pour mille et pour cent ont subi la même opération. Nous avons donc entrepris de corriger ces données par l'intermédiaire d'une recette Python que voici :
+Nous avons rencontré un problème de données aberrantes dans les valeurs indiquées pour les investissements par rapport au PIB. La nature du problème repose sur des conversions mathématiques fautives : les pour mille et pour cent ont subi la même opération. Nous avons donc entrepris de corriger ces données par l'intermédiaire d'une recette Python que voici :
 
 \begin{lstlisting}[language=python]
 import dataiku
@@ -649,7 +721,6 @@ from dataiku import pandasutils as pdu
 
 FMI_prepared2 = dataiku.Dataset("FMI_prepared2")
 FMI_prepared2_df = FMI_prepared2.get_dataframe()
-
 colonnes_a_traiter = ['1996 - FMI', '2000 - FMI', '2004 - FMI', '2008 - FMI', '2012 - FMI', '2016 - FMI']
 
 for colonne in colonnes_a_traiter:
@@ -657,7 +728,6 @@ for colonne in colonnes_a_traiter:
 				FMI_prepared2_df.loc[condition, colonne] /= 10
 
 FMI_prepared2_df.drop_duplicates(subset=['Pays'], keep='first', inplace=True)
-
 FMI_Python = dataiku.Dataset("FMI_Python")
 FMI_Python.write_with_schema(FMI_prepared2_df)
 \end{lstlisting}
@@ -668,7 +738,7 @@ Le code ci-dessus intervient sur les colonnes des six éditions des Jeux :
 colonnes_a_traiter = ['1996 - FMI', '2000 - FMI', '2004 - FMI', '2008 - FMI', '2012 - FMI', '2016 - FMI']
 \end{lstlisting}
 
-Et modifie leur contenu grâce à une boucle \code{for} : si les colonnes contiennent des valeurs supérieures à \code{0.1}, ces dernières sont divisées par \code{10} pour obtenir la juste valeur d'investissement :
+Le contenu de ces colonnes est modifié grâce à une boucle \code{for} : si elles contiennent des valeurs supérieures à \code{0.1}, ces dernières sont divisées par \code{10} pour obtenir la juste valeur d'investissement :
 
 \begin{lstlisting}[language=python]
 for colonne in colonnes_a_traiter:
@@ -676,116 +746,371 @@ for colonne in colonnes_a_traiter:
 				FMI_prepared2_df.loc[condition, colonne] /= 10
 \end{lstlisting}
 
-La bonne valeur des données est ainsi rétablie, et l'ensemble de nos jeux sont prêts pour les jointures.
+La bonne valeur des données est ainsi rétablie.
 
-\subsubsection{Première jointure}
 
-La première jointure concerne les jeux préparés de Kaggle et de Wikidata, sur la colonne \emph{NOC}. Il en résulte la création du jeu \emph{Med-Pop}, pour \enquote{Médailles-Population}. La jointure s'est réalisée sans suppression et n'a pas occasionné une perte significative d'informations.
 
-\subsubsection{Deuxième jointure}
 
-La deuxième jointure regroupe les jeux \emph{Med-Pop} et \emph{GDP} (jeu de la Banque mondiale) -- également sur la colonne \emph{NOC}, sans suppression ni perte significative d'informations. Le jeu \emph{Med-Pop-GDP} a ainsi été créé.
 
-\subsubsection{Troisième jointure}
+%
 
-La troisième jointure est un croisement du jeu \emph{lien\_pays} (issu de GitHub) et du jeu \emph{FMI}, sur la colonne \emph{Pays} du jeu du FMI. Tous les pays reconnus dans le ce jeu-ci ont été enrichis par les données du jeu de GitHub, soit par les données de longitude, de latitude et par un code similaire au code NOC. Le jeu \emph{FMI-Liens} a ainsi été créé.
 
-\subsubsection{Quatrième jointure}
 
-Enfin, la quatrième jointure rassemble les jeux \emph{Med-Pop-GDP} et \emph{FMI-Liens} sur les colonnes \emph{Pays} (du jeu \emph{Med-Pop-GDP}) et \emph{Code} (du jeu \emph{FMI-Liens}). Dans la mesure où les médailles remportées constituent les données les plus importantes, la jointure a été réalisée de telle sorte à ce que les pertes touchent le jeu \emph{FMI-Liens} et non pas \emph{Med-Pop-GDP}.
 
-\subsubsection{Préparation du jeu final}
 
-Notre dernier jeu alors créé, \emph{Reunion}, a subi une recette de préparation afin de nettoyer les données une dernière fois. Les données sur la population ont été arrondies, les colonnes dont l'entête est en français ont été renommées pour harmoniser la nomenclature de notre \emph{dataset} de sortie. Enfin, les colonnes ont été organisées de la manière suivante : les deux premières colonnes sont \emph{NOC} et \emph{Country - Name} puis chaque édition des Jeux est présentée comme suit :
+\subsection{Préparation du jeu de Wikidata (coordonnées)}
+
+Rappelons que nous avons dû trouver des données à même de corriger les coordonnées impropres du jeu de GitHub. Ce jeu, également issu d'une requête SPARQL et nommé \textit{Sparql-coor} dans Dataiku, correspond à cette partie du flux :
 
 \begin{center}
 	\begin{figure}[H]
-		\includegraphics[scale=0.4]{images/tableaufinal.png}
+		\setlength{\belowcaptionskip}{-35pt}
+		\includegraphics[scale=0.35]{images/flow-medals-sparql-coor.png}
+		\caption{Chaîne de traitement du jeu \textit{Sparql-coor}}
+	\end{figure}
+\end{center}
+
+Une seule recette de préparation a été derechef nécessaire en amont des jointures. Celle-ci ne conserve que les colonnes \textit{noc.value} et \textit{geopoint.value}.
+
+Les deux autres étapes de la recette nous permettent de correctement typer et extraire les coordonnées de la colonne \textit{geopoint.value} afin de correctement les exploiter pour réaliser nos datavisualisations. \label{casse}Les données sont écrites comme suit : \enquote{point(11.0 65.0)}. Nous avons pu les extraire et créer une colonne \textit{Latitude} et une autre \textit{Longitude}.
+
+Nonobstant, les données ainsi typées sont effectivement reconnues par le logiciel de datavisualisation Tableau Public comme étant des coordonnées mais équivalent toutes à \enquote{Null} une fois importées. Nous avons essayé de résoudre le problème directement depuis Tableau Public, sans succès car le logiciel considérait les coordonnées comme des chaînes de caractères et ne pouvait bien entendu pas calculer une longitude et une latitude.
+
+Nous avons finalement compris que le problème était la casse : pour que les données soient correctement typées, il fallait que tous les caractères soient en haut-de-casse (non pas \enquote{point(11.0 65.0)} mais \enquote{POINT(11.0 65.0)}). Nous avons donc ajouté cette étape dans la recette avant d'extraire les longitudes et latitudes dans 2 colonnes distinctes.
+
+
+
+
+
+%
+
+
+
+
+
+\label{join}\subsection{Première jointure}
+
+La première jointure concerne les jeux préparés \textit{Kaggle} et \textit{Sparql-pop}, selon la colonne \textit{NOC}. Il en résulte la création du jeu \textit{Med-Pop-Join}, lequel contient 33 colonnes. 2 colonnes sur le code des pays, 1 sur leur nom, 6 colonnes sur la population des années correspondant aux éditions des Jeux et 4 colonnes par année : 3 pour les types de médailles et 1 pour la somme de ces dernières.
+
+Cette \textit{left join} s'est réalisée sans suppression et n'a pas occasionné de pertes significatives de données.
+
+
+
+
+
+%
+
+
+
+
+
+\subsection{Deuxième jointure}
+
+À la suite de cette première jointure s'effectue une deuxième \textit{left join} : les jeux \textit{Med-Pop-Join} et \textit{GDP} sont ainsi regroupés -- également selon la colonne \textit{NOC} -- engendrant le jeu \textit{Med-Pop-GDP-Join}. 6 colonnes ont été alors ajoutées aux 33 du jeu \textit{Med-Pop-Join}. Elles correspondent au PIB des pays pour chaque année d'édition des Jeux Olympiques.
+
+
+
+
+
+%
+
+
+
+
+
+\subsection{Troisième jointure}
+
+Une troisième \textit{left join} croise les jeux \textit{FMI} et \textit{Github}, selon la colonne \textit{Pays} du jeu \textit{FMI}. Le jeu \textit{FMI-Github-Join} est créé et contient 10 colonnes. Les données du Fonds Monétaire International ont ainsi été enrichies par le code et les coordonnées des pays, fournis par le jeu de GitHub.
+
+
+
+
+
+%
+
+
+
+
+
+\subsection{Quatrième jointure}
+
+La quatrième jointure rassemble les jeux \textit{Med-Pop-GDP-Join} et \textit{FMI-Github-Join}. Dans la mesure où les médailles remportées constituent les données les plus importantes à nos yeux, la \textit{left join} a été réalisée de telle sorte à ce que les pertes, s'il devait y en avoir, aient des conséquences sur les données du jeu \textit{FMI-Github-Join} -- non pas sur celles du jeu \textit{Med-Pop-GDP-Join}.
+
+
+
+
+
+%
+
+
+
+
+
+\subsection{Préparation du jeu final}
+
+Le jeu créé, nommé \textit{Tab-Out-1} a subi une recette de préparation afin de nettoyer (nous le pensions) une dernière fois les données. \label{orga}42 de ses 47 colonnes ont été réorganisées selon un même schéma pour chaque édition des Jeux :
+
+\begin{center}
+	\begin{figure}[H]
+		\setlength{\belowcaptionskip}{-35pt}
+		\includegraphics[scale=0.5]{images/tab-out.png}
+		\caption{Extrait du jeu \textit{Tab-Out-1}}
+	\end{figure}
+\end{center}
+
+Les 5 autres colonnes présentent le nom des pays, leurs codes et leurs coordonnées. Nous pensions que ce jeu ainsi nettoyé, nommé \textit{Tab-Out-2} était la dernière étape du flux. Cependant, une fois importé dans Tableau Public, les coordonnées se sont révélées inutilisables. C'est pourquoi la seconde requête SPARQL sur les coordonnées des pays était nécessaire. 
+
+Nous avons donc réalisé une dernière jointure sur les jeux \textit{Sparql-coor} et \textit{Tab-Out-2}. Il s'agit d'une \textit{inner join} selon le code NOC. Le jeu alors créé, \textit{Tab-Out-3} voit ses valeurs de coordonnées corrigées.
+
+Ce jeu de sortie a fait l'objet d'un dernier nettoyage tardif. D'une part, la colonne \textit{2004 - GDP} avait échappé à l'étape d'organisation précédemment décrite (\textit{cf}. \textit{supra} p. \pageref{orga}). D'autre part, nous ne suivions pas un mode de nommage de colonnes tout à fait rigoureux. Comme nous avions prévu de présenter des données en langue anglaise, nous avons renommé toutes les colonnes dont tout ou partie de l'intitulé était encore en français.
+
+Est créé notre jeu final : \textit{Medals-Pop-GDP}, au terme du flux ci-dessous.
+
+\begin{center}
+	\begin{figure}[H]
+		\setlength{\belowcaptionskip}{-35pt}
+		\includegraphics[scale=0.35]{images/flow-medals-full.png}
+		\caption{Flux de traitement sur les médailles et les investissements}
 	\end{figure}
 \end{center}
 
 
-Et les deux dernières colonnes, \emph{Latitde (average)} et \emph{Longitude (average)} présentent les coordonnées géographiques des pays.
 
 
-\subsection{Chaîne de traitement du second \emph{flow}}
 
-SPARQL England :
-
-Suppression de toutes les colonnes sauf 3 : geopoint.value ; RegionLabel.value ; population.value car c'est aussi du bruit documentaire.
-
-Modification des valeurs de geopoint.value : from Point(0.41 52.24) 0.41 52.24.
-
-Conservation d'une seule valeur de population par région + groupement pour avoir une seule ligne par région.
-
-Renommage de certains noms de région pour faciliter la jointure
-
-
-SWIMMINGPOOLS : conservation de la seule colonne \emph{FacilityID} pour faire la jointure partant du principe que 1 ID = 1 installation
-
-GEOGRAPHICS : conservation de FacilityID, de Region Name et de Latitude et Longitude
-
-1re jointure : SWIMMINGPOOLS et GEOGRAPHICS. Une inner join propre sur les ID, aucun souci. Donne le jeu \emph{InfraEnglandeJoin1}
-
-2e jointure : SPARQL et InfraEnglandeJoin1. Jointure sur le nom de la région
-
-Autre recette : group sur population.value avec copie de la colonne population pour la conserver.
-
-Ensuite : produit en croix pour aboutir au nombre de piscine pour 100.000 habitants avec arrondissement pour cette colonne
+%
 
 
 
 
 
-POUR LA FRANCE
+\section{Chaîne de traitement du second flux}
 
-SPARQL, même opération. SPARQL a extrait toutes les régions de France mais nous n'avons gardé que celles de la France métropolitaine 
+Ce deuxième flux est composé de plusieurs petits flux qu'il ne faisait pas sens de joindre en bout de chaîne. 
 
-Jeu de la France : conservation des colonnes qui nous intéressent (type\_equipement, longitude, latitude, regionLabel, dans type équipement : remplacement de toutes les données qui nous intéressent en \enquote{piscine centre aquatique}
-
-JOINTURE : inner join sur le nom de la region et le labelRegion 
-
-JOINTURE : inner join aussi sur le nom de la région
-
-
-Regroupement : jointure sur type\_equipement sans garder la longitude et la latitude 
+Et on a utilisé kaggle parce que les médailles
 
 
 
+\subsection{Préparation des jeux de \textit{Sport England}}
 
-
-
-
-
-
-
-
-\subsubsection{Semaine du 22 janvier 2024}
-
-Mauvaise surprise : alors que nous voulions produire un autre flow afin de remplir la seconde partie de notre objectif et produire des datavisualisations comparant la France et le Royaume-Uni, un bogue manifestement causé par une installation relative à Javascript perturbe l'affichage sur Dataiku. Probablement : problèmes de compatibilité.
+Les jeux \textit{Swimming-Pools} et \textit{Geographic} ont tous deux été préparés en amont de leur jointure. Ils correspondent à cette partie du flux général :
 
 \begin{center}
 	\begin{figure}[H]
-		\includegraphics[scale=0.5]{images/bogue.png}
+		\setlength{\belowcaptionskip}{-35pt}
+		\includegraphics[scale=0.55]{images/flow-swim-eng-sport.png}
+		\caption{Chaîne de traitement des jeux \textit{Swimming-Pools} et \textit{Geographic}}
 	\end{figure}
 \end{center}
 
-ll est probable que cette erreur soit apparue après l’installation d’une version de JDK supérieure à celle prise en charge par Dataiku. Il aurait ainsi fallu rétrograder notre version de JDK, mais nous craignons que cette manipulation entraîne des difficultés dans d’autres projets que nous menons. Nous ne pouvons dès lors nous appuyer que sur un seul ordinateur, qui possède une version inférieure de JDK, ce qui a causé d’importants soucis organisationnels à la fin du mois de janvier.
+Du jeu \textit{Swimming-Pools} n'a été gardée que la colonne \textit{FacilityID} -- précisément pour réaliser une jointure avec le jeu \textit{Geographic}. Dans la mesure où chaque identifiant unique d'infrastructure compte pour 1, nous n'avons besoin d'aucune autre colonne pour la suite du traitement.
 
-\subsection{Chaîne de traitement du second \emph{flow}}
+Un processus similaire de sélection a été appliqué au jeu \textit{Geographic} : nous n'avons conservé que 4 colonnes, \textit{FACILITYID}, \textit{Region Name}, \textit{Latitude}, \textit{Longitude}. La présence des identifiants uniques dans les deux jeux nous a permis de réaliser une jointure interne et ainsi de lier les infrastructures de natation aux régions d'Angleterre, dans le jeu \textit{England-Infra-Join} nouvellement créé.
 
 
-\section{Visualisation des données}
+
+
+
+%
+
+
+
+
+
+\subsection{Préparation du jeu de Wikidata (régions Angleterre)}
+
+La requête SPARQL, ici nommée \textit{Sparql-England-Region}, correspond à cette partie du flux :
+
+\begin{center}
+	\begin{figure}[H]
+		\setlength{\belowcaptionskip}{-35pt}
+		\includegraphics[scale=0.55]{images/flow-swim-eng-sparql.png}
+		\caption{Chaîne de traitement du jeu \textit{Sparql-England-Region}}
+	\end{figure}
+\end{center}
+
+Avant de réaliser la jointure avec les deux autres jeux de ce mini-flux, nous appliquons une recette de préparation à celui-ci. Des colonnes initiales, nous n'en conservons que 3 : \textit{population.value}, \textit{geopoint.value} et \textit{RegionLabel.value} -- soit le nombre d'habitants des régions, leurs coordonnées et leur nom.
+
+Nous évacuons les lignes vides de la colonne \textit{population.value} et renommons manuellement certaines données de la colonne \textit{RegionLabel.value} pour une meilleure reconnaissance, à la fois par Dataiku et Tableau Public. Pour que les coordonnées soient reconnues et exploitables (\textit{cf}. \textit{supra} p. \pageref{casse}), nous convertissons toutes les valeurs textuelles de la colonne \textit{geopoint.value} en haut-de-casse. Enfin, nous extrayons les valeurs de longitude et de latitude de cette même colonne et créons ainsi les colonnes \textit{Latitude} et \textit{Longitude}.
+
+
+
+
+
+%
+
+
+
+
+
+\subsection{Royaume-Uni : jointure et préparation du jeu final}
+
+La jointure interne des jeux \textit{Sparql-England-Region} et \textit{England-Infra-Join} a été effectuée sur le noms des régions. Il en ressort le jeu \textit{England-Infra-Region-Join}, composé de 5 colonnes -- le nom, les coordonnées, la population des régions et l'identifiant des infrastructures.
+
+Nous avons appliqué une recette de groupement sur ce jeu, selon les colonnes \textit{population.value} et \textit{FacilityID} pour n'avoir qu'une ligne par région et par nombre d'habitants. De ce fait, la colonne \textit{FacilityID} a donné lieu à la nouvelle colonne \textit{count}, laquelle présente la somme des infrastructures par région. Cette donnée est au cœur de la dernière recette. Celle-ci nous permet, par l'intermédiaire d'un produit en croix, de compter le nombre d'infrastructure par région pour 100.000 habitants et de l'afficher dans la colonne \textit{Swimming pools per 100k inhabitants}. Notre jeu final, \textit{England-Swimming-Pools-Per-100k-Inhabs} est ainsi créé.
+
+
+
+
+
+%
+
+
+
+
+
+\subsection{Préparation du jeu du ministère}
+
+Le jeu du ministère (\textit{France-Infra}), à l'instar du jeu de Wikidata sur les régions françaises, a été préparé avant la jointure nécessaire. Il correspond à cette partie du flux :
+
+\begin{center}
+	\begin{figure}[H]
+		\setlength{\belowcaptionskip}{-35pt}
+		\includegraphics[scale=0.55]{images/flow-swim-fra-ministere.png}
+		\caption{Chaîne de traitement du jeu \textit{France-Infra}}
+	\end{figure}
+\end{center}
+
+Seules 4 colonnes ont été conservées : \textit{Type d'équipement sportif}, \textit{Longitude (WGS84)}, \textit{Latitude (WGS84)} et \textit{Région Nom}. Nous avons ensuite examiné plus en détails les lignes de la colonne \textit{Type d'équipement sportif} et avons pu établir une liste de 5 valeurs relatives à la natation. Nous avons supprimé toutes les lignes qui n'y correspondaient pas. Ces valeurs ont été communément renommées \enquote{picisines\_centres\_aquatiques}.
+
+
+
+
+
+%
+
+
+
+
+
+\subsection{Préparation du jeu de Wikidata (régions France)}
+
+Le jeu de Wikidata sur les régions de France, nommé \textit{Sparql-Region-France} correspond à cette partie du flux :
+
+\begin{center}
+	\begin{figure}[H]
+		\setlength{\belowcaptionskip}{-35pt}
+		\includegraphics[scale=0.55]{images/flow-swim-fra-sparql.png}
+		\caption{Chaîne de traitement du jeu \textit{Sparql-Region-France}}
+	\end{figure}
+\end{center}
+
+Seules les colonnes \textit{population.value}, \textit{geopoint.value} et \textit{RegionLabel.value} ont été conservées et renommées. De la même manière que pour le jeu Wikidata sur les régions d'Angleterre, les lignes de la colonne \textit{geopoint.value} ont été mises en haut-de-casse, les longitudes et latitudes extraites dans deux nouvelles colonnes, \textit{Longitude}, \textit{Latitude}.
+
+
+
+
+
+%
+
+
+
+
+
+\subsection{France : jointure et préparation du jeu final}
+
+La jointure interne des jeux \textit{France-Infra} et \textit{Sparql-France-Region} a été réalisée selon la colonne des noms de région. Le jeu ainsi créé, \textit{France-Infra-Region-Join} est tout à fait similaire au jeu \textit{England-Infra-Region-Join}. Les dernières recettes sont \textit{de facto} analogues.
+
+Nous réalisons un groupement sur les types d'équipement et effectuons derechef un produit en croix pour générer une colonne \textit{Swimming pools per 100k inhabitants}. Le dernier jeu de ce mini-flux, nommé \textit{France-Swimming-Pools-Per-100k-Inhabitants} émerge alors. 
+
+
+
+
+
+%
+
+
+
+
+
+\subsection{Préparation du jeu de Kaggle}
+
+Enfin, le jeu \textit{Kaggle} issu de notre premier flux (précisément du jeu nommé \textit{Kaggle\_prepared2}) correspond à cette partie de la chaîne :
+
+\begin{center}
+	\begin{figure}[H]
+		\setlength{\belowcaptionskip}{-35pt}
+		\includegraphics[scale=0.55]{images/flow-swim-kaggle.png}
+		\caption{Chaîne de traitement du jeu \textit{Kaggle}}
+	\end{figure}
+\end{center}
+
+Dans une première recette de préparation, nous avons identifié les lignes de la colonne \textit{Sport} relatives à la natation, les avons renommées \enquote{Swimming\_sports} et avons supprimé toutes les autres. Également, nous n'avons conservé que les lignes où le code NOC est équivalent à \enquote{FRA} et \enquote{GBR}.
+
+Nous avons ensuite appliqué une recette de groupement pour que seules 2 lignes affichent l'ensemble des médailles remportées, d'une part par la France, d'autre part par le Royaume-Uni. L'avant-dernière recette sépare le jeu groupé en deux jeux distincts : l'un pour les médailles remportées par la France, l'autre pour les médailles remportées par le Royaume-Uni.
+
+Les deux jeux alors créés, \textit{England-Medals-Split} et \textit{France-Medals-Split} ont été identiquement nettoyés : la langue et la casse des noms de colonnes harmonisées et leur ordre basé sur le même motif que celui adopté pour le jeu du premier flux (\textit{cf}. \textit{supra} p. \pageref{orga}). Nos deux jeux finaux, \textit{England-Medals-Swim} et \textit{France-Medals-Swim} closent la chaîne de traitement de ce mini-flux.
+
+Notre deuxième grand flux a donc abouti à la création de quatre jeux de données, lesquels seront tous exploités et liés dans nos datavisualisations :
+
+\begin{center}
+	\begin{figure}[H]
+		\setlength{\belowcaptionskip}{-35pt}
+		\includegraphics[scale=0.55]{images/flow-swim-full.png}
+		\caption{Flux de traitement sur les médailles de natation}
+	\end{figure}
+\end{center}
+
+
+
+
+
+%
+
+
+
+
+
+\chapter{Visualisation des données}
 
 \subsection{Présentation des visualisations}
 
 \subsection{Analyse}
 
 Qu'apprend-on en regardant les visualisations ? Quels sont les biais ?
+
+(\textit{cf}. \textit{supra} p. \pageref{nongrata})
+
+
+
+
+
+%
+
+
+
+
+
+\chapter{Remarques et péripéties}
+
+\section{Typage de données}
+
+Un grand défi du traitement a été le typage de données, autant pour Dataiku que pour Tableau Public. Nous découvrions ces deux logiciels et parvenir à les faire dialoguer n'a pas été sans peine (exemplairement à propos des coordonnées, \textit{cf}. \textit{supra} p. \pageref{casse}). Dataiku retypait des données automatiquement en dépit de nos modifications manuelles et chaque exécution de recette et réalisation de datavisualisation était mue par le risque d'un bogue de typage et l'obligation d'intervenir derechef dans les flux.
+
+\section{Bogue Dataiku}
+
+La semaine du 22 janvier a été le lieu d'une mauvaise surprise. Alors que nous voulions examiner le premier flux sur Dataiku pour rédiger le présent journal de bord, il nous a été subitement impossible de visualiser les jeux. L'interface générale fonctionnait, nous pouvions voir le flux, cliquer sur les icônes de recettes ou de jeux mais ce faisant, la partie de l'écran devant afficher les données était vide. L'erreur renvoyée est la suivante :
+
+\begin{center}
+	\begin{figure}[H]
+		\includegraphics[scale=0.49]{images/bogue.png}
+	\end{figure}
+\end{center}
+
+Il est probable que cette erreur ait été créée après l'installation d'une version de \textit{Java Development Kit} (à l'occasion d'un cours de XQuery) supérieure à celle prise en charge par Dataiku, sur la machine où a été réalisé l'ensemble du traitement des données. Il aurait fallu rétrograder la version de JDK mais nous craignions que celle manipulation n'entraîne des difficultés sur l'ensemble des projets dépendants de JDK.
+
+Nous avons été forcés de nous appuyer sur d'autres ordinateurs pour consulter les flux et terminer le traitement (la réalisation du deuxième flux n'avait alors pas commencé, et celle du premier n'était pas tout à fait achevée). Cela a causé d'importants soucis organisationnels en cette fin de mois.
+
+\section{Sur l'utilité de Wikidata}
+
+Au cours du traitement Wikidata s'est révélé être un outil formidable pour l'enrichissement et le traitement des données. Le système de construction des requêtes SPARQL nécessite une certaine prise en main mais nous permet de très larges interrogations de la base de données.
+
+Les jeux générés sont d'une qualité exemplaire et sont d'un grand intérêt pour correctement réaliser des jointures à l'aide des nombreux codes, labels et identifiants récupérables.
 \newpage
 
 
-\section{Sitographie}
+\chapter{Sitographie}
 \printbibliography[heading=none]
 \newpage
 

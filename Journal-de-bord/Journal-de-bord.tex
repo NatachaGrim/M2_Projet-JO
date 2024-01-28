@@ -474,7 +474,7 @@ Les noms de régions sont saisies en bas-de-casse avec conservation des majuscul
 
 \subsection{Jeu de Wikidata (régions d'Angleterre)}
 
-Cette requête est l'identique stricte de celle sur les régions de France (\textit{cf}. \textit{supra} p. \pageref{queryfr}). La description des triplets sera d'autant plus brève. Nous voulons afficher le nom des régions d'Angleterre (\code{?RegionLabel}), leur nombre d'habitants (\code{?population}) et leurs coordonnées (\code{?geopoint}) :
+\label{queryeng}Cette requête est l'identique stricte de celle sur les régions de France (\textit{cf}. \textit{supra} p. \pageref{queryfr}). La description des triplets sera d'autant plus brève. Nous voulons afficher le nom des régions d'Angleterre (\code{?RegionLabel}), leur nombre d'habitants (\code{?population}) et leurs coordonnées (\code{?geopoint}) :
 
 \begin{lstlisting}[language=SPARQL]
 SELECT DISTINCT ?RegionLabel ?population ?geopoint
@@ -526,7 +526,7 @@ Les 21 colonnes restantes fournissent une plus grande quantité de données sur 
 Le système de nommage et de dénomination ne laisse pas place à l'opacité. Certaines colonnes manquent cruellement de données (\textit{Metro Name} ; \textit{Core City Name} ; \textit{LDP Code} ; \textit{LDP Name}) mais nous ne comptons pas les conserver le moment du traitement venu.
 \newline
 
-Le deuxième jeux, nommé \textit{SwimmingPool}, est composé de 24 colonnes et 6.474 lignes. Exception faite de la première colonne, \textit{FacilityID}, l'intégralité des données sont à propos de détails techniques et matériels sur les infrastructures (\textit{Length} ; \textit{Maximum Depth} ; \textit{Movable Floor} ; \textit{Seating}, etc.).
+Le deuxième jeu, nommé \textit{SwimmingPool}, est composé de 24 colonnes et 6.474 lignes. Exception faite de la première colonne, \textit{FacilityID}, l'intégralité des données sont à propos de détails techniques et matériels sur les infrastructures (\textit{Length} ; \textit{Maximum Depth} ; \textit{Movable Floor} ; \textit{Seating}, etc.).
 
 Toutes les données sont de type numérique -- soit des entiers, soit des décimaux. Certaines colonnes (\textit{Designated Accessible Provision}, \textit{Designated Accessible Provision - Covered}, \textit{Designated Accessible Provision - Uncovered}, \textit{Seating - Covered}, \textit{Seating - Uncovered}, \textit{Standing}, \textit{Standing - Covered}, \textit{Standing - Uncovered}) ont la singularité de faire se côtoyer des entrées vides et des entrées égales à zéro. Cependant, seule la colonne \emph{FacilityID} nous importe afin de réaliser une jointure avec le jeu \textit{Geographics}.
 
@@ -560,7 +560,9 @@ Les 24 autres colonnes correspondent aux six éditions des Jeux selon le schéma
 
 \section{Objectif du traitement}
 
-À l'aune de notre approche, notre premier flux aura pour ambition de faire ressortir les données suivantes : les codes des pays attribués par le \emph{National Olympic Committee} -- que nous nous permettrons d'abréger \enquote{code NOC} -- le nombre de médailles remportées aux éditions six des Jeux Olympiques et le pourcentage d'investissement des pays dans le domaine sportif par rapport à leur PIB et à leur population.
+À l'aune de notre approche, notre premier flux a pour ambition de faire ressortir les données suivantes : les codes des pays (attribués par le \textit{National Olympic Committee} -- que nous nous permettrons d'abréger \enquote{NOC} ou \enquote{CIO}) permettant de les identifier indépendamment des barrières de langue, le nombre de médailles remportées remportées aux six éditions des Jeux Olympiques ainsi que le pourcentage d'investissement des pays dans le domaine sportif par rapport à leur PIB et à leur population.
+
+Le second flux se concentrera sur les médailles remportées par la France et le Royaume-Uni pour les épreuves de natation. Nous mettrons ces données en parallèle du nombre d'infrastructures sportives reliées à la natation recensées dans ces deux pays et évaluer, en somme, le nombre d'infrastructures pour 100.000 habitants dans chaque région.
 
 
 
@@ -886,13 +888,21 @@ Est créé notre jeu final : \textit{Medals-Pop-GDP}, au terme du flux ci-dessou
 
 \section{Chaîne de traitement du second flux}
 
-Ce deuxième flux est composé de plusieurs petits flux qu'il ne faisait pas sens de joindre en bout de chaîne. 
+Notons que ce deuxième flux est composé de trois petits flux qu'il ne fait pas sens de joindre au bout de chaîne sur Dataiku. La mise en relation des quatre jeux de données finaux sera l'objet des datavisualisation.
 
-Et on a utilisé kaggle parce que les médailles
+Le premier mini-flux a pour sujet les infrastructures relatives à la natation du Royaume-Uni, le deuxième mini-flux \textit{idem} à l'égard de la France et le troisième concerne les médailles remportées par les deux pays.
 
 
 
-\subsection{Préparation des jeux de \textit{Sport England}}
+
+
+%
+
+
+
+
+
+\subsection{GBR : préparation des jeux de \textit{Sport England}}
 
 Les jeux \textit{Swimming-Pools} et \textit{Geographic} ont tous deux été préparés en amont de leur jointure. Ils correspondent à cette partie du flux général :
 
@@ -918,7 +928,7 @@ Un processus similaire de sélection a été appliqué au jeu \textit{Geographic
 
 
 
-\subsection{Préparation du jeu de Wikidata (régions Angleterre)}
+\subsection{GBR : préparation du jeu de Wikidata}
 
 La requête SPARQL, ici nommée \textit{Sparql-England-Region}, correspond à cette partie du flux :
 
@@ -944,7 +954,7 @@ Nous évacuons les lignes vides de la colonne \textit{population.value} et renom
 
 
 
-\subsection{Royaume-Uni : jointure et préparation du jeu final}
+\subsection{GBR : jointure et préparation du jeu final}
 
 La jointure interne des jeux \textit{Sparql-England-Region} et \textit{England-Infra-Join} a été effectuée sur le noms des régions. Il en ressort le jeu \textit{England-Infra-Region-Join}, composé de 5 colonnes -- le nom, les coordonnées, la population des régions et l'identifiant des infrastructures.
 
@@ -960,7 +970,7 @@ Nous avons appliqué une recette de groupement sur ce jeu, selon les colonnes \t
 
 
 
-\subsection{Préparation du jeu du ministère}
+\subsection{FRA : préparation du jeu du ministère}
 
 Le jeu du ministère (\textit{France-Infra}), à l'instar du jeu de Wikidata sur les régions françaises, a été préparé avant la jointure nécessaire. Il correspond à cette partie du flux :
 
@@ -984,7 +994,7 @@ Seules 4 colonnes ont été conservées : \textit{Type d'équipement sportif}, \
 
 
 
-\subsection{Préparation du jeu de Wikidata (régions France)}
+\subsection{FRA : préparation du jeu de Wikidata}
 
 Le jeu de Wikidata sur les régions de France, nommé \textit{Sparql-Region-France} correspond à cette partie du flux :
 
@@ -1008,7 +1018,7 @@ Seules les colonnes \textit{population.value}, \textit{geopoint.value} et \texti
 
 
 
-\subsection{France : jointure et préparation du jeu final}
+\subsection{FRA : jointure et préparation du jeu final}
 
 La jointure interne des jeux \textit{France-Infra} et \textit{Sparql-France-Region} a été réalisée selon la colonne des noms de région. Le jeu ainsi créé, \textit{France-Infra-Region-Join} est tout à fait similaire au jeu \textit{England-Infra-Region-Join}. Les dernières recettes sont \textit{de facto} analogues.
 
@@ -1024,7 +1034,7 @@ Nous réalisons un groupement sur les types d'équipement et effectuons derechef
 
 
 
-\subsection{Préparation du jeu de Kaggle}
+\subsection{Médailles : préparation du jeu de Kaggle}
 
 Enfin, le jeu \textit{Kaggle} issu de notre premier flux (précisément du jeu nommé \textit{Kaggle\_prepared2}) correspond à cette partie de la chaîne :
 
@@ -1039,6 +1049,8 @@ Enfin, le jeu \textit{Kaggle} issu de notre premier flux (précisément du jeu n
 Dans une première recette de préparation, nous avons identifié les lignes de la colonne \textit{Sport} relatives à la natation, les avons renommées \enquote{Swimming\_sports} et avons supprimé toutes les autres. Également, nous n'avons conservé que les lignes où le code NOC est équivalent à \enquote{FRA} et \enquote{GBR}.
 
 Nous avons ensuite appliqué une recette de groupement pour que seules 2 lignes affichent l'ensemble des médailles remportées, d'une part par la France, d'autre part par le Royaume-Uni. L'avant-dernière recette sépare le jeu groupé en deux jeux distincts : l'un pour les médailles remportées par la France, l'autre pour les médailles remportées par le Royaume-Uni.
+
+\subsection{Médailles : préparation du jeu final}
 
 Les deux jeux alors créés, \textit{England-Medals-Split} et \textit{France-Medals-Split} ont été identiquement nettoyés : la langue et la casse des noms de colonnes harmonisées et leur ordre basé sur le même motif que celui adopté pour le jeu du premier flux (\textit{cf}. \textit{supra} p. \pageref{orga}). Nos deux jeux finaux, \textit{England-Medals-Swim} et \textit{France-Medals-Swim} closent la chaîne de traitement de ce mini-flux.
 
@@ -1064,13 +1076,15 @@ Notre deuxième grand flux a donc abouti à la création de quatre jeux de donn�
 
 \chapter{Visualisation des données}
 
-\subsection{Présentation des visualisations}
+\subsection{Médailles remportées par pays}
 
-\subsection{Analyse}
+\subsection{Infrastructures de natation : France}
 
-Qu'apprend-on en regardant les visualisations ? Quels sont les biais ?
+\subsection{Infrastructures de natation : Royaume-Uni}
 
-(\textit{cf}. \textit{supra} p. \pageref{nongrata})
+Il nous a été impossible de créer cette visualisation directement à partir de nos jeux finaux générés sur Dataiku. Utiliser les coordonnées ne nous permet d'afficher que des points, or nous chercherons à discerner les régions grâce à leur contour. Nous pensions donc que le nom des régions nous le permettrait mais leur utilisation provoque un conflit dans Tableau Public.
+
+En revanche, cela fonctionne avec l'équivalent des codes NOC des régions. Nous avons alors songé à adapter notre requête SPARQL relative (\textit{cf}. \textit{supra} p. \pageref{queryeng}) pour récupérer ces données. Cependant, une telle propriété n'existe pas dans le service de requête de Wikidata. Nous avons donc dû l'ajouter manuellement directement au sein de Tableau Public.
 
 
 
@@ -1110,10 +1124,21 @@ Les jeux générés sont d'une qualité exemplaire et sont d'un grand intérêt 
 \newpage
 
 
+
+
+
+%
+
+
+
+
+
 \chapter{Sitographie}
 \printbibliography[heading=none]
 \newpage
 
 \tableofcontents
+
+%(\textit{cf}. \textit{supra} p. \pageref{nongrata})
 
 \end{document}

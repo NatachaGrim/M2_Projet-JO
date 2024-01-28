@@ -8,6 +8,7 @@
 ### Sur le traitement des données
 
 - Un [ensemble de requêtes SPARQL](Requetes-SPARQL), constituant un enrichissement de nos données _via_ Wikidata ;
+- L'ensemble de nos [flux de données](Flux-et-datasets) ainsi que nos fichiers de sortie ;
 - Un [journal de bord](Journal-de-bord/Journal-de-bord.pdf), rendant compte de notre traitement des données.
 
 ### Sur l'application Flask

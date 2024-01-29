@@ -501,7 +501,7 @@ Le deuxième triplet assigne à la variable \code{?population} la population (\c
 	?Region wdt:P1082 ?population.
 \end{lstlisting}
 
-Le dernier triplet récupère les coordonnées (\code{wdt:P625}) des régions (\code{?Region}) et les assigne à la variable \code{?geopoint} :
+Le dernier triplet récupère les coordonnées (\code{wdt:P625}) des régions d'Angleterre (\code{?Region}) et les assigne à la variable \code{?geopoint} :
 
 \begin{lstlisting}[language=SPARQL]
 	?Region wdt:P625 ?geopoint.
@@ -530,7 +530,7 @@ Le système de nommage et de dénomination ne laisse pas place à l'opacité. Ce
 
 Le deuxième jeu, nommé \textit{SwimmingPool}, est composé de 24 colonnes et 6.474 lignes. Exception faite de la première colonne, \textit{FacilityID}, l'intégralité des données est à propos de détails techniques et matériels sur les infrastructures (\textit{Length} ; \textit{Maximum Depth} ; \textit{Movable Floor} ; \textit{Seating}, etc.).
 
-Toutes les données sont de type numérique -- soit des entiers, soit des décimaux. Certaines colonnes (\textit{Designated Accessible Provision}, \textit{Designated Accessible Provision - Covered}, \textit{Designated Accessible Provision - Uncovered}, \textit{Seating - Covered}, \textit{Seating - Uncovered}, \textit{Standing}, \textit{Standing - Covered}, \textit{Standing - Uncovered}) ont la singularité de faire se côtoyer des entrées vides et des entrées égales à zéro. Cependant, seule la colonne \emph{FacilityID} nous importe afin de réaliser une jointure avec le jeu \textit{Geographics}.
+Toutes les données sont de type numérique -- soit des entiers, soit des décimaux. Certaines colonnes (\textit{Designated Accessible Provision}, \textit{Designated Accessible Provision - Covered}, \textit{Designated Accessible Provision - Uncovered}, \textit{Seating - Covered}, \textit{Seating - Uncovered}, \textit{Standing}, \textit{Standing - Covered}, \textit{Standing - Uncovered}) ont la singularité de faire se côtoyer des entrées vides et des entrées égales à zéro. Cependant, seule la colonne \textit{FacilityID} nous importe afin de réaliser une jointure avec le jeu \textit{Geographics}.
 
 
 
@@ -624,9 +624,9 @@ En amont des jointures, ce jeu a fait l'objet de trois recettes. La première, u
 
 L'étape suivante consiste en la réalisation d'un pivot. Les années présentes dans les lignes de la colonne \textit{Year} sont devenues des colonnes dont les lignes ont pris pour valeur les entrées de la colonne \textit{Medal}. 6 nouvelles colonnes ont donc été créés, une par édition des Jeux entre 1996 et 2016.
 
-Enfin, nous avons compté les occurrences des trois types de médailles (bronze, argent, or) et créé des colonnes de sorties pour chaque type pour chaque édition. Par exemple, la colonne \emph{1996} a donné lieu à la création des colonnes \emph{1996 - Bronze} ; \emph{1996 - Silver} ; \emph{1996 - Gold}.
+Enfin, nous avons compté les occurrences des trois types de médailles (bronze, argent, or) et créé des colonnes de sortie pour chaque type et pour chaque édition. Par exemple, la colonne \emph{1996} a donné lieu à la création des colonnes \emph{1996 - Bronze} ; \emph{1996 - Silver} ; \emph{1996 - Gold}.
 
-La deuxième recette est un \emph{group}. Le \emph{dataset} présente les médailles reportées par les athlètes, or nous n'avons conservé aucun donnée à leur endroit. Nonobstant, la répartition des médailles repose toujours sur cette logique.
+La deuxième recette est un \emph{group}. Le \emph{dataset} présente les médailles reportées par les athlètes, or nous n'avons conservé aucune donnée à leur endroit. Nonobstant, la répartition des médailles repose toujours sur cette logique.
 
 Nous avons donc réalisé un groupement pour réunir les doublons et compter les occurrences de chaque type de médaille remportée pour les six éditions des Jeux. Admettons qu'aux Jeux de 2016, un athlète français ait remporté une médaille de bronze et un autre deux. La recette a pour effet d'afficher le chiffre 3 pour l'entrée \enquote{France} sur la colonne \emph{2016 - Bronze}.
 
@@ -716,7 +716,7 @@ Nous avons uniquement conservé 7 colonnes : \textit{Country Name} ainsi que les
 
 Dans cette deuxième préparation, les colonnes des années des Jeux ont été renommées selon le motif suivant : \textit{1996} devient \textit{1996 - FMI}.
 
-Il nous a fallu manuellement modifier 13 valeurs dans la colonne \emph{Country Name} pour une meilleure reconnaissance des pays par Dataiku. Par exemple : \emph{Russian Federation}, \emph{Czech Rep.} ne sont pas reconnus, tandis que \emph{Russia} et \emph{Czech Republic} le sont. Ces modifications ont donné lieu à la création d'une colonne de sortie \emph{Pays} car il nous était impossible de modifier les noms des pays directement dans la colonne d'origine. Nous avons naturellement supprimé la colonne \emph{Country Name}, une fois ces modifications effectuées. 
+Il nous a fallu manuellement modifier 13 valeurs dans la colonne \emph{Country Name} pour une meilleure reconnaissance des pays par Dataiku. Par exemple : \enquote{Russian Federation}, \enquote{Czech Rep.} ne sont pas reconnus, tandis que \enquote{Russia} et \enquote{Czech Republic} le sont. Ces modifications ont donné lieu à la création d'une colonne de sortie \emph{Pays} car il nous était impossible de modifier les noms des pays directement dans la colonne d'origine. Nous avons donc supprimé la colonne \emph{Country Name}, une fois ces modifications effectuées. 
 
 Nous avons rencontré un problème de données aberrantes dans les valeurs indiquées pour les investissements par rapport au PIB. La nature du problème repose sur des conversions mathématiques fautives : les pour mille et pour cent ont subi la même opération. Nous avons donc entrepris de corriger ces données par l'intermédiaire d'une recette Python que voici :
 
@@ -776,13 +776,13 @@ Rappelons que nous avons dû trouver des données à même de corriger les coord
 	\end{figure}
 \end{center}
 
-Une seule recette de préparation a été derechef nécessaire en amont des jointures. Celle-ci ne conserve que les colonnes \textit{noc.value} et \textit{geopoint.value}.
+Une seule recette de préparation a derechef été nécessaire en amont des jointures. Celle-ci ne conserve que les colonnes \textit{noc.value} et \textit{geopoint.value}.
 
 Les deux autres étapes de la recette nous permettent de correctement typer et extraire les coordonnées de la colonne \textit{geopoint.value} afin de correctement les exploiter pour réaliser nos datavisualisations. \label{casse}Les données sont écrites comme suit : \enquote{point(11.0 65.0)}. Nous avons pu les extraire et créer une colonne \textit{Latitude} et une autre \textit{Longitude}.
 
 Nonobstant, les données ainsi typées sont effectivement reconnues par le logiciel de datavisualisation Tableau Public comme étant des coordonnées mais équivalent toutes à \enquote{Null} une fois importées. Nous avons essayé de résoudre le problème directement depuis Tableau Public, sans succès car le logiciel considérait les coordonnées comme des chaînes de caractères et ne pouvait bien entendu pas calculer une longitude et une latitude.
 
-Nous avons finalement compris que le problème était la casse : pour que les données soient correctement typées, il fallait que tous les caractères soient en haut-de-casse (non pas \enquote{point(11.0 65.0)} mais \enquote{POINT(11.0 65.0)}). Nous avons donc ajouté cette étape dans la recette avant d'extraire les longitudes et latitudes dans 2 colonnes distinctes.
+Nous avons finalement compris que le problème était la casse : pour que les données soient correctement typées, il fallait que tous les caractères soient en haut-de-casse : non pas \enquote{point(11.0 65.0)} mais \enquote{POINT(11.0 65.0)}. Nous avons donc ajouté cette étape dans la recette avant d'extraire les longitudes et latitudes dans 2 colonnes distinctes.
 
 
 
@@ -826,7 +826,7 @@ Cette \textit{left join} s'est réalisée sans suppression et n'a pas occasionn�
 
 \subsection{Troisième jointure}
 
-Une troisième \textit{left join} croise les jeux \textit{FMI} et \textit{Github}, selon la colonne \textit{Pays} du jeu \textit{FMI}. Le jeu \textit{FMI-Github-Join} est créé et contient 10 colonnes. Les données du Fonds Monétaire International ont ainsi été enrichies par le code et les coordonnées des pays, fournis par le jeu de GitHub.
+Une troisième \textit{left join} croise les jeux \textit{FMI} et \textit{Github}, selon la colonne \textit{Pays} du jeu \textit{FMI}. Le jeu \textit{FMI-Github-Join} est créé et contient 10 colonnes. Les données du Fonds Monétaire International ont ainsi été enrichies par le code et les coordonnées des pays, fournies par le jeu de GitHub.
 
 
 
@@ -864,7 +864,7 @@ Le jeu créé, nommé \textit{Tab-Out-1} a subi une recette de préparation afin
 	\end{figure}
 \end{center}
 
-Les 5 autres colonnes présentent le nom des pays, leurs codes et leurs coordonnées. Nous pensions que ce jeu ainsi nettoyé, nommé \textit{Tab-Out-2} était la dernière étape du flux. Cependant, une fois importé dans Tableau Public, les coordonnées se sont révélées inutilisables. C'est pourquoi la seconde requête SPARQL sur les coordonnées des pays était nécessaire. 
+Les 5 autres colonnes présentent le nom des pays, leurs codes et leurs coordonnées. Nous pensions que ce jeu ainsi nettoyé, nommé \textit{Tab-Out-2}, était la dernière étape du flux. Cependant, une fois importé dans Tableau Public, les coordonnées se sont révélées inutilisables. C'est pourquoi la seconde requête SPARQL sur les coordonnées des pays était nécessaire. 
 
 Nous avons donc réalisé une dernière jointure sur les jeux \textit{Sparql-coor} et \textit{Tab-Out-2}. Il s'agit d'une \textit{inner join} selon le code NOC. Le jeu alors créé, \textit{Tab-Out-3} voit ses valeurs de coordonnées corrigées.
 
@@ -892,9 +892,11 @@ Est créé notre jeu final : \textit{Medals-Pop-GDP}, au terme du flux ci-dessou
 
 \section{Chaîne de traitement du second flux}
 
-Notons que ce deuxième flux est composé de trois petits flux qu'il ne fait pas sens de joindre au bout de chaîne sur Dataiku. La mise en relation des quatre jeux de données finaux sera l'objet des datavisualisation.
+Notons que ce deuxième flux est composé de trois petits flux qu'il ne fait pas sens de joindre en bout de chaîne sur Dataiku. La mise en relation des quatre jeux de données finaux sera l'objet des datavisualisation.
 
 Le premier mini-flux a pour sujet les infrastructures relatives à la natation du Royaume-Uni, le deuxième mini-flux \textit{idem} à l'égard de la France et le troisième concerne les médailles remportées par les deux pays.
+
+Par souci de concision et de clarté à l'égard des intitulés des différentes étapes, nous avons fait le choix de trois entêtes distincts : \enquote{GBR} pour le mini-flux sur le Royaume-Uni, \enquote{FRA} pour le mini-flux sur la France et \enquote{MED} pour le mini-flux sur les médailles remportées par les deux pays aux épreuves de natation des Jeux.
 
 
 
@@ -960,7 +962,7 @@ Nous évacuons les lignes vides de la colonne \textit{population.value} et renom
 
 \subsection{GBR : jointure et préparation du jeu final}
 
-La jointure interne des jeux \textit{Sparql-England-Region} et \textit{England-Infra-Join} a été effectuée sur le noms des régions. Il en ressort le jeu \textit{England-Infra-Region-Join}, composé de 5 colonnes -- le nom, les coordonnées, la population des régions et l'identifiant des infrastructures.
+La jointure interne des jeux \textit{Sparql-England-Region} et \textit{England-Infra-Join} a été effectuée sur le nom des régions. Il en ressort le jeu \textit{England-Infra-Region-Join}, composé de 5 colonnes : le nom, les coordonnées, la population des régions et l'identifiant des infrastructures.
 
 Nous avons appliqué une recette de groupement sur ce jeu, selon les colonnes \textit{population.value} et \textit{FacilityID} pour n'avoir qu'une ligne par région et par nombre d'habitants. De ce fait, la colonne \textit{FacilityID} a donné lieu à la nouvelle colonne \textit{count}, laquelle présente la somme des infrastructures par région. Cette donnée est au cœur de la dernière recette. Celle-ci nous permet, par l'intermédiaire d'un produit en croix, de compter le nombre d'infrastructure par région pour 100.000 habitants et de l'afficher dans la colonne \textit{Swimming pools per 100k inhabitants}. Notre jeu final, \textit{England-Swimming-Pools-Per-100k-Inhabs} est ainsi créé.
 
@@ -1038,7 +1040,7 @@ Nous réalisons un groupement sur les types d'équipement et effectuons derechef
 
 
 
-\subsection{Médailles : préparation du jeu de Kaggle}
+\subsection{MED : préparation du jeu de Kaggle}
 
 Enfin, le jeu \textit{Kaggle} issu de notre premier flux (précisément du jeu nommé \textit{Kaggle\_prepared2}) correspond à cette partie de la chaîne :
 
@@ -1054,7 +1056,7 @@ Dans une première recette de préparation, nous avons identifié les lignes de 
 
 Nous avons ensuite appliqué une recette de groupement pour que seules 2 lignes affichent l'ensemble des médailles remportées, d'une part par la France, d'autre part par le Royaume-Uni. L'avant-dernière recette sépare le jeu groupé en deux jeux distincts : l'un pour les médailles remportées par la France, l'autre pour les médailles remportées par le Royaume-Uni.
 
-\subsection{Médailles : préparation du jeu final}
+\subsection{MED : préparation du jeu final}
 
 Les deux jeux alors créés, \textit{England-Medals-Split} et \textit{France-Medals-Split} ont été identiquement nettoyés : la langue et la casse des noms de colonnes harmonisées et leur ordre basé sur le même motif que celui adopté pour le jeu du premier flux (\textit{cf}. \textit{supra} p. \pageref{orga}). Nos deux jeux finaux, \textit{England-Medals-Swim} et \textit{France-Medals-Swim} closent la chaîne de traitement de ce mini-flux.
 
@@ -1104,7 +1106,7 @@ En revanche, cela fonctionne avec l'équivalent des codes NOC des régions. Nous
 
 \section{Typage de données}
 
-Un grand défi du traitement a été le typage de données, autant pour Dataiku que pour Tableau Public. Nous découvrions ces deux logiciels et parvenir à les faire dialoguer n'a pas été sans peine (exemplairement à propos des coordonnées, \textit{cf}. \textit{supra} p. \pageref{casse}). Dataiku retypait des données automatiquement en dépit de nos modifications manuelles et chaque exécution de recette et réalisation de datavisualisation était mue par le risque d'un bogue de typage et l'obligation d'intervenir derechef dans les flux.
+Un grand défi du traitement a été le typage de données, autant pour Dataiku que pour Tableau Public. Nous découvrions ces deux logiciels et parvenir à les faire dialoguer n'a pas été sans peine (exemplairement à propos des coordonnées, \textit{cf}. \textit{supra} p. \pageref{casse}). Dataiku retypait des données automatiquement en dépit de nos modifications manuelles et chaque exécution de recette et réalisation de datavisualisation était mue par le risque d'un bogue de typage et l'obligation d'intervenir de nouveau dans les flux.
 
 \section{Bogue Dataiku}
 

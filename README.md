@@ -13,7 +13,7 @@
 - Un [journal de bord](Journal-de-bord/Journal-de-bord.pdf), rendant compte :
   - De la conception des [requêtes SPARQL](Requetes-SPARQL) ;
   - De notre [traitement des données](Flux-et-datasets) ;
-  - De la réalisation des [datavisualisation](Datavisualisations).
+  - De la réalisation des [datavisualisations](Datavisualisations).
 
 ### Sur l'application Flask
 

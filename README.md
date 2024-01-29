@@ -9,7 +9,7 @@
 
 - Un [ensemble de requêtes SPARQL](Requetes-SPARQL) saisies sur le service de requête de Wikidata ;
 - Nos [flux de données](Flux-et-datasets) et fichiers de sortie ;
-- Nos [datavisualisation](Datavisualisations) produites à partir de nos [fichiers de sortie](Flux-et-datasets)
+- Nos [datavisualisation](Datavisualisations) produites à partir de nos [fichiers de sortie](Flux-et-datasets) ;
 - Un [journal de bord](Journal-de-bord/Journal-de-bord.pdf), rendant compte :
   - De la conception des [requêtes SPARQL](Requetes-SPARQL) ;
   - De notre [traitement des données](Flux-et-datasets) ;

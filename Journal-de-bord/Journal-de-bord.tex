@@ -91,7 +91,34 @@
 	%
 	morestring=[b][\color{brown}]",
 	morestring=[b][\color{brown}]',
-	otherkeywords={?},
+}
+
+
+\lstdefinelanguage{tableau}{
+	basicstyle=\small\ttfamily,
+	backgroundcolor=\color{LightGray},
+	%	
+	tabsize=1,
+	showstringspaces=false,
+	columns=fullflexible,
+	breaklines=true,
+	breakatwhitespace=true,
+	%
+	aboveskip=1em,
+	belowskip=1em,
+	xleftmargin=.5em,
+	xrightmargin=.5em,
+	framexleftmargin=.5em,
+	framextopmargin=.5em,
+	framexbottommargin=.5em,
+	framexrightmargin=.5em,
+	%
+	morekeywords=[1]{YEAR},
+	keywordstyle=[1]\color{DarkOrchid},
+	%
+	morekeywords=[2]{Medals,1996,2000,2004,2008,2012,2016},
+	keywordstyle=[2]\color{Bittersweet},
+	otherkeywords={1996,2000,2004,2008,2012,2016},
 }
 
 \bibliography{Journal-de-bord-bibliographie}
@@ -720,7 +747,7 @@ Il nous a fallu manuellement modifier 13 valeurs dans la colonne \emph{Country N
 
 Nous avons rencontré un problème de données aberrantes dans les valeurs indiquées pour les investissements par rapport au PIB. La nature du problème repose sur des conversions mathématiques fautives : les pour mille et pour cent ont subi la même opération. Nous avons donc entrepris de corriger ces données par l'intermédiaire d'une recette Python que voici :
 
-\begin{lstlisting}[language=python]
+\label{python}\begin{lstlisting}[language=python]
 import dataiku
 import pandas as pd
 from dataiku import pandasutils as pdu
@@ -778,9 +805,9 @@ Rappelons que nous avons dû trouver des données à même de corriger les coord
 
 Une seule recette de préparation a derechef été nécessaire en amont des jointures. Celle-ci ne conserve que les colonnes \textit{noc.value} et \textit{geopoint.value}.
 
-Les deux autres étapes de la recette nous permettent de correctement typer et extraire les coordonnées de la colonne \textit{geopoint.value} afin de correctement les exploiter pour réaliser nos datavisualisations. \label{casse}Les données sont écrites comme suit : \enquote{point(11.0 65.0)}. Nous avons pu les extraire et créer une colonne \textit{Latitude} et une autre \textit{Longitude}.
+Les deux autres étapes de la recette nous permettent de correctement typer et extraire les coordonnées de la colonne \textit{geopoint.value} afin de correctement les exploiter pour réaliser nos datavisualisations. \label{casse}Les données sont écrites comme suit : \enquote{point(11.0 65.0)}.
 
-Nonobstant, les données ainsi typées sont effectivement reconnues par le logiciel de datavisualisation Tableau Public comme étant des coordonnées mais équivalent toutes à \enquote{Null} une fois importées. Nous avons essayé de résoudre le problème directement depuis Tableau Public, sans succès car le logiciel considérait les coordonnées comme des chaînes de caractères et ne pouvait bien entendu pas calculer une longitude et une latitude.
+Cependant, les données ainsi typées sont effectivement reconnues par le logiciel de datavisualisation Tableau Public comme étant des coordonnées mais équivalent toutes à \enquote{Null} une fois importées. Nous avons essayé de résoudre le problème directement depuis Tableau Public, sans succès car le logiciel considérait les coordonnées comme des chaînes de caractères et ne pouvait bien entendu pas calculer une longitude et une latitude.
 
 Nous avons finalement compris que le problème était la casse : pour que les données soient correctement typées, il fallait que tous les caractères soient en haut-de-casse : non pas \enquote{point(11.0 65.0)} mais \enquote{POINT(11.0 65.0)}. Nous avons donc ajouté cette étape dans la recette avant d'extraire les longitudes et latitudes dans 2 colonnes distinctes.
 
@@ -1082,7 +1109,130 @@ Notre deuxième grand flux a donc abouti à la création de quatre jeux de donn�
 
 \chapter{Visualisation des données}
 
-\subsection{Médailles remportées par pays}
+\subsection{Médailles remportées par les pays : carte du monde}
+
+\subsubsection{Visée de la visualisation}
+
+\label{map}Notre première visualisation adopte le format d'une carte du monde :
+
+\begin{center}
+	\begin{figure}[H]
+		\setlength{\abovecaptionskip}{-15pt}
+		\setlength{\belowcaptionskip}{-35pt}
+		\includegraphics[scale=0.25]{images/datavis-medals-world-map.jpeg}
+		\caption{Aperçu de la visualisation \textit{title} (année 2008) sur le logiciel Tableau Public}
+	\end{figure}
+\end{center}
+
+
+
+\subsubsection{Ambition de la visualisation}
+
+Son but est de montrer le lien entre population, richesse -- matérialisée par le Produit Intérieur Brut -- et le nombre de médailles remportées à six éditions des Jeux. L'utilisateur peut naviguer entre les différentes années (1996, 2000, 2004, 2008, 2012 et 2016) en manipulant une liste déroulante et sélectionner l'année de son choix. Afin d'afficher au mieux ces trois paramètres (médailles, population, investissements), il nous a semblé pertinent de combiner différentes sortes d'indices visuels.
+
+Le nombre de médailles est présenté sous forme d'étiquette (voyez sur l'image ci-dessus, \enquote{58} pour la France ou \enquote{1} pour le Portugal).
+
+Le pourcentage des dépenses dans le sport par rapport au PIB (noté \enquote{GDP}) apparaît selon une échelle de couleurs. Nous avons pris soin de modifier la valeur \textit{center} (\textit{cf}. figure \ref{param} \textit{infra} p. \pageref{param}) pour que les valeurs égales à zéro (incluant les valeurs nulles interprétées par Tableau Public comme tel) apparaissent en gris foncé. \textit{A contrario}, l'échelle de couleur pour les valeurs non nulles et non égales à zéro va du blanc au rouge. 
+
+Nous avons également défini la valeur maximale du PIB investi à 0.09 \%. Aucun pays n'investit plus que 0.1 \% de son PIB dans le domaine sportif, les données contraires présentes dans le jeu du FMI relèvent d'erreurs de saisies que notre formule Python n'a pas été en mesure de corriger (\textit{cf}. \textit{supra} p. \pageref{python}). 
+
+Enfin, la population prend la forme de \enquote{bulles} couvrant tout ou partie du pays concerné. Plus une bulle est grande, plus un pays est fortement peuplé. Les valeurs nulles et égales à zéro sont malgré tout visibles (documentées en légende de la visualisation) sous la forme de points à la taille très réduite.
+
+\begin{center}
+	\begin{figure}[H]
+		\setlength{\belowcaptionskip}{-35pt}
+		\includegraphics[scale=0.3]{images/datavis-medals-world-param.jpeg}
+		\caption{Aperçu d'un paramètre de visualisation sur le logiciel Tableau Public}
+		\label{param}
+	\end{figure}
+\end{center}
+
+\subsubsection{Difficultés rencontrées}
+
+Si l'on met de côté l'évident problème de manque de données pour certains pays en dépit de notre traitement, nous avons été confrontés à deux obstacles majeurs au cours de la réalisation de cette visualisation.
+
+Le premier concerne l'utilisation de valeurs géographiques dans Tableau Public. Nos donnés de coordonnées étaient exprimées, dans nos différents jeux, comme ceci \enquote{POINT(56,00 -75,24)}. Dataiku les reconnaissait bien leur caractère géographique -- à l'inverse de Tableau Public. Il nous générait effectivement des latitudes et les longitudes mais considérait les données comme des chaînes de caractères et tentait donc de leur appliquer des calculs pour en extraire des coordonnées -- ce qui n'avait aucune chance d'aboutir.
+
+Nous avons donc dû contourner le problème en extrayant nous-mêmes les longitudes et latitudes dans des colonnes dédiées au sein de Dataiku afin de pouvoir les exploiter dans Tableau Public (\textit{cf}. \textit{supra} p. \pageref{casse}).
+
+La deuxième difficulté a été plus complexe a appréhender. Nous souhaitions absolument rendre possible la navigation entre les différentes années. Cependant, notre format de données ne le permettait pas, car il aurait fallu une colonne \textit{Année} sur laquelle nous aurions pu appliquer un filtre.
+
+Pour ce faire, nous aurions pu réaliser un pivot (Tableau Public propose cette fonctionnalité) mais cela aurait gravement miné la forme d'autres données que nous ne pouvions pas soumettre à un pivot (latitude, longitude, codes des pays). Nous avons alors consulté la documentation et élaboré beaucoup de tests infructueux pour finalement comprendre que nous devions procéder en deux temps. Il nous fallait d'abord créer un paramètre nommé \code{YEAR} avec pour valeur les années que nous souhaitons afficher puis créer des champs calculés (à insérer en lieu et place des années) comme ceci :
+
+\begin{lstlisting}[language=tableau]
+	IF [YEAR] == 1996 THEN [1996 - Medals]
+		ELSEIF [YEAR] == 2000 THEN [2000 - Medals]
+		ELSEIF [YEAR] == 2004 THEN [2004 - Medals]
+		ELSEIF [YEAR] == 2008 THEN [2008 - Medals]
+		ELSEIF [YEAR] == 2012 THEN [2012 - Medals]
+		ELSEIF [YEAR] == 2016 THEN [2016 - Medals]
+	END
+\end{lstlisting}
+
+Ainsi, en fonction de l'année sélectionnée dans la liste \code{YEAR}, le paramètre relatif aux médailles change en conséquence. Nous avons procédé identiquement pour les investissements et la population. Ainsi, quand l'utilisateur sélectionne une année, les données s'actualisent en un instant.
+
+\subsubsection{Regard critique et biais}
+
+Nous avons identifié un ensemble de quatre biais. En première instance, les modes de représentation que nous avons à notre disposition sur Tableau Public font ressortir les problèmes de manque de données. Si le pourcentage d'investissement d'un pays est non-nul mais que sa population n'est pas renseignée, la couleur de la bulle sera tout à fait difficile à cerner. Ce cas de figure est fort heureusement très rare car nos données sur les investissements sont très souvent concomitantes avec nos données sur la population, et \textit{vice-versa}.
+
+Un deuxième biais particulièrement visible est dû au cruel manque de données pour les nations hors pays du premier monde (le jeu du FMI et les résultats des requêtes SPARQL n'étaient que peu éloquents à leur endroit). Par voie de conséquence, il est difficile de tirer des conclusions hors continent européen à la seule consultation de la visualisation.
+
+Le troisième biais se traduit par une espèce de surcharge d'informations directement liée à l'approche de notre travail. Nous avons ici mis en relief trois dimensions : investissements, population et nombre de médailles remportées, sur des espaces géographiques réduits (en l'occurrence, les frontières des pays). Cet effet de surcharge est d'autant plus fort à cause de la diversité des visualisations (étiquettes chiffrée, couleurs, bulles).
+
+Cet état de fait peut demander un certain effort à l'utilisateur pour correctement identifier les données et leur mode de représentation. Pour réduire ce biais au maximum, nous avons proposé une légende détaillée de notre visualisation avec une mise à disposition de différents filtres pour que l'affichage des données puisse être manipulé et adapté.
+
+Le quatrième et dernier biais concerne la lisibilité des évolutions d'une édition des Jeux Olympiques à l'autre car nous ne proposons pas un affichage simultané de plusieurs années. Il est donc plus corsé, en première lecture, de visuellement constater si l'évolution des investissements d'un pays suit l'évolution du nombre de médailles gagnées ou non.
+
+Nous maintenons notre choix de visualisation et de choix libre de l'année représentée -- avant tout pour des questions de commodité de lecture en cherchant à surcharger au minium la carte.
+
+
+
+
+
+%
+
+
+
+
+
+\subsection{Médailles remportées par les pays : histogramme}
+
+Notre deuxième visualisation est un diagramme en barres empilées :
+
+\subsubsection{Ambition de la visualisation}
+
+Cette deuxième visualisation vise en premier lieu à présenter l'évolution du nombre de médailles remportées par tous les pays participants aux Jeux entre 1996 et 2016. Si elle ne comporte ni donnée économique ni donnée géographique, elle est à considérer comme un complément de notre première visualisation (\textit{cf}. \textit{supra} p. \pageref{map}) dans la mesure où elle détaille le rang des médailles remportées par les pays : bronze, argent ou or.
+
+Pour ce faire, la visualisation présente en abscisse le nom des pays et en ordonnée, le nombre de médailles. Le survol des barres avec le curseur détaille les informations -- que nous avons voulu synthétiser visuellement grâce à un choix adéquat de couleurs : doré pour les médailles d'or, gris pour les médailles d'argent et brun pour les médailles de bronze.
+
+Nous avons voulu cette visualisation simple et facilement compréhensible pour les utilisateurs désireux de la consulter en parallèle de la carte et de mieux saisir la répartition des médailles selon l'édition sélectionnée. C'est pourquoi nous avons soumis les deux visualisation au même paramètre de choix pour que l'ensemble des données s'actualise en même temps.
+
+\subsubsection{Difficultés rencontrées}
+
+La grande difficulté concernait derechef le format de nos données. Nous pensions qu'avec des colonnes \textit{Bronze}, \textit{Silver} et \textit{Gold} distinctes, nous aurions pu les exploiter pour générer un diagramme en barres empilées. De nouveau, consulter la documentation nous a fait réaliser que pour ce mode de visualisation, nous devions avoir -- en lieu et place des nombres de médailles gagnées dans chaque colonne -- des colonnes avec autant d'occurrences de \enquote{bronze}, \enquote{silver} et \enquote{gold} que de pays ayant gagné les médailles.
+
+\subsubsection{Regard critique et biais}
+
+Cette visualisation est surtout traversée par un biais de manque de place. 
+
+Ici, le biais est plûtot dans la façon dont cette visualisation est présentée dans notre tableau de bord : comme la carte exigeait beaucoup de place, nous avons dû mettre le diagramme en bas de page et réduire l’espace à sa disposition ; ce faisant, cela écrase les barres et donc fait croire visuellement à l’utilisateur que les pays avec un nombre assez faible de médailles (entre 10 20) n’en ont pas du tout du fait de l’applatissement généraldu diagramme. Qui plus est, cela rend difficile le passage de la souris pour voir une valeur de façon plus précise.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 \subsection{Infrastructures de natation : France}
 

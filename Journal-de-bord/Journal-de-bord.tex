@@ -113,12 +113,16 @@
 	framexbottommargin=.5em,
 	framexrightmargin=.5em,
 	%
-	morekeywords=[1]{YEAR},
-	keywordstyle=[1]\color{DarkOrchid},
+	morekeywords=[3]{YEAR},
+	keywordstyle=[3]\color{DarkOrchid},
 	%
-	morekeywords=[2]{Medals,1996,2000,2004,2008,2012,2016},
+	morekeywords=[2]{Medals,1996,2000,2004,2008,2012,2016,-},
 	keywordstyle=[2]\color{Bittersweet},
-	otherkeywords={1996,2000,2004,2008,2012,2016},
+	%
+	morekeywords=[1]{[,]},
+	keywordstyle=[1]\color{OliveGreen},
+	%
+	otherkeywords={1996,2000,2004,2008,2012,2016,-,[,]},
 }
 
 \bibliography{Journal-de-bord-bibliographie}
@@ -140,6 +144,9 @@
 
 
 
+
+
+\tableofcontents
 
 \chapter{Introduction}
 
@@ -885,6 +892,7 @@ Le jeu créé, nommé \textit{Tab-Out-1} a subi une recette de préparation afin
 
 \begin{center}
 	\begin{figure}[H]
+		\centering
 		\setlength{\belowcaptionskip}{-35pt}
 		\includegraphics[scale=0.5]{images/tab-out.png}
 		\caption{Extrait du jeu \textit{Tab-Out-1}}
@@ -901,6 +909,7 @@ Est créé notre jeu final : \textit{Medals-Pop-GDP}, au terme du flux ci-dessou
 
 \begin{center}
 	\begin{figure}[H]
+		\centering
 		\setlength{\belowcaptionskip}{-35pt}
 		\includegraphics[scale=0.35]{images/flow-medals-full.png}
 		\caption{Flux de traitement sur les médailles et les investissements}
@@ -941,8 +950,9 @@ Les jeux \textit{Swimming-Pools} et \textit{Geographic} ont tous deux été pré
 
 \begin{center}
 	\begin{figure}[H]
+		\centering
 		\setlength{\belowcaptionskip}{-35pt}
-		\includegraphics[scale=0.55]{images/flow-swim-eng-sport.png}
+		\includegraphics[scale=0.5]{images/flow-swim-eng-sport.png}
 		\caption{Chaîne de traitement des jeux \textit{Swimming-Pools} et \textit{Geographic}}
 	\end{figure}
 \end{center}
@@ -967,8 +977,9 @@ La requête SPARQL, ici nommée \textit{Sparql-England-Region}, correspond à ce
 
 \begin{center}
 	\begin{figure}[H]
+		\centering
 		\setlength{\belowcaptionskip}{-35pt}
-		\includegraphics[scale=0.55]{images/flow-swim-eng-sparql.png}
+		\includegraphics[scale=0.5]{images/flow-swim-eng-sparql.png}
 		\caption{Chaîne de traitement du jeu \textit{Sparql-England-Region}}
 	\end{figure}
 \end{center}
@@ -1009,8 +1020,9 @@ Le jeu du ministère (\textit{France-Infra}), à l'instar du jeu de Wikidata sur
 
 \begin{center}
 	\begin{figure}[H]
+		\centering
 		\setlength{\belowcaptionskip}{-35pt}
-		\includegraphics[scale=0.55]{images/flow-swim-fra-ministere.png}
+		\includegraphics[scale=0.5]{images/flow-swim-fra-ministere.png}
 		\caption{Chaîne de traitement du jeu \textit{France-Infra}}
 	\end{figure}
 \end{center}
@@ -1033,8 +1045,9 @@ Le jeu de Wikidata sur les régions de France, nommé \textit{Sparql-Region-Fran
 
 \begin{center}
 	\begin{figure}[H]
+		\centering
 		\setlength{\belowcaptionskip}{-35pt}
-		\includegraphics[scale=0.55]{images/flow-swim-fra-sparql.png}
+		\includegraphics[scale=0.5]{images/flow-swim-fra-sparql.png}
 		\caption{Chaîne de traitement du jeu \textit{Sparql-Region-France}}
 	\end{figure}
 \end{center}
@@ -1073,8 +1086,9 @@ Enfin, le jeu \textit{Kaggle} issu de notre premier flux (précisément du jeu n
 
 \begin{center}
 	\begin{figure}[H]
+		\centering
 		\setlength{\belowcaptionskip}{-35pt}
-		\includegraphics[scale=0.55]{images/flow-swim-kaggle.png}
+		\includegraphics[scale=0.5]{images/flow-swim-kaggle.png}
 		\caption{Chaîne de traitement du jeu \textit{Kaggle}}
 	\end{figure}
 \end{center}
@@ -1091,8 +1105,9 @@ Notre deuxième grand flux a donc abouti à la création de quatre jeux de donn�
 
 \begin{center}
 	\begin{figure}[H]
+		\centering
 		\setlength{\belowcaptionskip}{-35pt}
-		\includegraphics[scale=0.55]{images/flow-swim-full.png}
+		\includegraphics[scale=0.5]{images/flow-swim-full.png}
 		\caption{Flux de traitement sur les médailles de natation}
 	\end{figure}
 \end{center}
@@ -1117,6 +1132,7 @@ Notre deuxième grand flux a donc abouti à la création de quatre jeux de donn�
 
 \begin{center}
 	\begin{figure}[H]
+		\centering
 		\setlength{\abovecaptionskip}{-15pt}
 		\setlength{\belowcaptionskip}{-35pt}
 		\includegraphics[scale=0.25]{images/datavis-medals-world-map.jpeg}
@@ -1140,8 +1156,9 @@ Enfin, la population prend la forme de \enquote{bulles} couvrant tout ou partie 
 
 \begin{center}
 	\begin{figure}[H]
+		\centering
 		\setlength{\belowcaptionskip}{-35pt}
-		\includegraphics[scale=0.3]{images/datavis-medals-world-param.jpeg}
+		\includegraphics[scale=0.5]{images/datavis-medals-world-center.png}
 		\caption{Aperçu d'un paramètre de visualisation sur le logiciel Tableau Public}
 		\label{param}
 	\end{figure}
@@ -1199,6 +1216,14 @@ Nous maintenons notre choix de visualisation et de choix libre de l'année repr�
 
 Notre deuxième visualisation est un diagramme en barres empilées :
 
+\begin{center}
+	\begin{figure}[H]
+		\setlength{\belowcaptionskip}{-35pt}
+		\includegraphics[scale=0.3]{images/datavis-medals-world-histo.jpeg}
+		\caption{Aperçu de la visualisation \textit{Comparison of the medals won according to their type (bronze, silver, gold) per country and per edition}}
+	\end{figure}
+\end{center}
+
 \subsubsection{Ambition de la visualisation}
 
 Cette deuxième visualisation vise en premier lieu à présenter l'évolution du nombre de médailles remportées par tous les pays participants aux Jeux entre 1996 et 2016. Si elle ne comporte ni donnée économique ni donnée géographique, elle est à considérer comme un complément de notre première visualisation (\textit{cf}. \textit{supra} p. \pageref{map}) dans la mesure où elle détaille le rang des médailles remportées par les pays : bronze, argent ou or.
@@ -1213,22 +1238,18 @@ La grande difficulté concernait derechef le format de nos données. Nous pensio
 
 \subsubsection{Regard critique et biais}
 
-Cette visualisation est surtout traversée par un biais de manque de place. 
+Cette visualisation est surtout traversée par un biais de manque de place. Le mode de composition du tableau de bord reste limité sur notre version du logiciel et la carte étant très gourmande en la matière, nous avons dû réduire la taille de l'histogramme pour le disposer au mieux. Ce faisant, les barres sont compressées et éclipsent visuellement un certain nombre de pays -- exemplairement les pays ayant remporté entre 10 et 20 médailles. 
 
-Ici, le biais est plûtot dans la façon dont cette visualisation est présentée dans notre tableau de bord : comme la carte exigeait beaucoup de place, nous avons dû mettre le diagramme en bas de page et réduire l’espace à sa disposition ; ce faisant, cela écrase les barres et donc fait croire visuellement à l’utilisateur que les pays avec un nombre assez faible de médailles (entre 10 20) n’en ont pas du tout du fait de l’applatissement généraldu diagramme. Qui plus est, cela rend difficile le passage de la souris pour voir une valeur de façon plus précise.
+De surcroît, le survol avec le curseur est complexifié et demande une précision manuelle décuplée.
+\newline
 
-
-
-
-
+Voici en somme notre premier tableau de bord, composé de trois datavisualisations :
 
 
 
 
 
-
-
-
+%
 
 
 
@@ -1293,7 +1314,7 @@ Les jeux générés sont d'une qualité exemplaire et sont d'un grand intérêt 
 \printbibliography[heading=none]
 \newpage
 
-\tableofcontents
+
 
 %(\textit{cf}. \textit{supra} p. \pageref{nongrata})
 

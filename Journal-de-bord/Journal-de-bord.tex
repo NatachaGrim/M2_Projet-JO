@@ -8,7 +8,7 @@
 
 \usepackage{titlesec}
 \titleformat{\chapter}{}{}{0em}{\bf\LARGE}
-
+\usepackage{caption}
 \usepackage{hyperref}
 \usepackage{enumitem}
 \usepackage{setspace}
@@ -198,7 +198,7 @@ Ne disposant d'aucun budget pour bénéficier d'une version payante, nous avons 
 
 
 
-\subsection{Jeu de Kaggle}
+\subsection{Jeu de Kaggle}\label{kaggle}
 
 Le jeu est composé de 15 colonnes et 271.117 lignes. 7 colonnes fournissent des informations sur les athlètes (\textit{ID}, \textit{Name}, \textit{Sex}, \textit{Age}, \textit{Height}, \textit{Weight}, \textit{Medal}) ; 2 colonnes sur leurs pays (\textit{Team}, \textit{NOC}) et 6 sur les éditions des Jeux Olympiques (\textit{Games} ; \textit{Year} ; \textit{Season} ; \textit{City} ; \textit{Sport} ; \textit{Event}).
 
@@ -1126,14 +1126,11 @@ Notre deuxième grand flux a donc abouti à la création de quatre jeux de donn�
 
 À l'aune de nos différents jeux de sortie et de notre approche en deux temps, nous avons produit un ensemble de cinq datavisualisations. Trois concernent le premier flux de données, soit le nombre de médailles remportées par les pays sur six éditions des Jeux Olympiques au regard de leur PIB, de leur niveau d'investissement dans le domaine sportif et de leur nombre d'habitants. Ces visualisations-ci ont donné lieu à la composition d'une \enquote{histoire}.
 
-Les deux autres visualisations exploitent les données de notre deuxième grand flux, lui-même composé -- rappelons-le -- de trois petits flux. Elles mettent en relief le nombre de médailles remportées par la France et l'Angleterre pour les épreuves de natation au regard du nombre d'infrastructures sportives relatives par région et pour 100.000 habitants. Ces visualisations ont donné lieu à la création d'un tableau de bord. 
-
+Les deux autres visualisations exploitent les données de notre deuxième grand flux, lui-même composé -- rappelons-le -- de trois petits flux. Elles mettent en relief le nombre de médailles remportées par la France et l'Angleterre pour les épreuves de natation au regard du nombre d'infrastructures sportives relatives par région et pour 100.000 habitants. Ces visualisations ont donné lieu à la création d'un tableau de bord.
 
 \section{Visualisations du premier flux}
 
 \subsection{Médailles remportées par les pays : carte du monde}
-
-\subsubsection{Visée de la visualisation}
 
 \label{map}Notre première visualisation adopte le format d'une carte du monde :
 
@@ -1142,7 +1139,8 @@ Les deux autres visualisations exploitent les données de notre deuxième grand 
 		\centering
 		\setlength{\belowcaptionskip}{-35pt}
 		\includegraphics[scale=0.25]{images/datavis-medals-world-map.jpeg}
-		\caption{Aperçu de la visualisation \textit{title} (année 2008) sur le logiciel Tableau Public}
+		\captionsetup{justification=centering}
+		\caption{Aperçu de la visualisation \textit{Map of the world showing the medals won depending on the GDP and Population} (année 2008)}
 	\end{figure}
 \end{center}
 
@@ -1163,7 +1161,7 @@ Enfin, la population prend la forme de \enquote{bulles} couvrant tout ou partie 
 		\centering
 		\setlength{\belowcaptionskip}{-35pt}
 		\includegraphics[scale=0.5]{images/datavis-medals-world-center.png}
-		\caption{Aperçu d'un paramètre de visualisation sur le logiciel Tableau Public}
+		\caption{Aperçu d'un paramètre de visualisation sur Tableau Public}
 		\label{param}
 	\end{figure}
 \end{center}
@@ -1224,6 +1222,7 @@ Notre deuxième visualisation est un diagramme en barres empilées :
 	\begin{figure}[H]
 		\setlength{\belowcaptionskip}{-35pt}
 		\includegraphics[scale=0.3]{images/datavis-medals-world-histo.jpeg}
+		\captionsetup{justification=centering}
 		\caption{Aperçu de la visualisation \textit{Comparison of the medals won according to their type (bronze, silver, gold) per country and per edition}}
 	\end{figure}
 \end{center}
@@ -1263,10 +1262,10 @@ Notre troisième et dernière visualisation prend la forme d'une carte à cases,
 \begin{center}
 	\begin{figure}[H]
 		\centering
-		\setlength{\abovecaptionskip}{-15pt}
 		\setlength{\belowcaptionskip}{-35pt}
-		\includegraphics[scale=0.3]{images/datavis-medals-world-treemap.jpeg}
-		\caption{Aperçu de la visualisation \textit{Comparison between total GDP and invested GDP in sports}}
+		\includegraphics[scale=0.25]{images/datavis-medals-world-treemap.jpeg}
+		\captionsetup{justification=centering}
+		\caption{Aperçu de la visualisation \textit{Comparison between total GDP and invested GDP in sports} (année 2000)}
 	\end{figure}
 \end{center}
 
@@ -1276,79 +1275,168 @@ Son but est de venir à la rescousse de notre visualisation en carte du monde, l
 
 Ainsi, cette carte à case indique le PIB total des pays selon une échelle de taille et son pourcentage investi dans le sport selon une échelle de couleur (identique à celle utilisée pour la carte du monde, \textit{cf}. \textit{supra} p. \pageref{color}), plus le pourcentage d'investissement est fort, plus le pays apparaîtra en rouge. Également, l'utilisateur peut -- selon le même paramètre établi pour les deux autres visualisations -- changer l'année à sa guise et choisir parmi les six éditions des Jeux Olympiques. Il est également possible de sélectionner les pays que l'on souhaite afficher par l'intermédiaire d'une liste à cocher.
 
-\subsubsection{Difficultés rencontrée}
+\subsubsection{Difficultés rencontrées}
 
 L'aisance acquise lors de la conception des premières visualisations nous a fait faire l'économie de difficultés à propos de celle-ci.
 
 \subsubsection{Regard critique et biais}
 
-Nous pouvons soulever le manque d'une troisième donnée -- en l'occurrence, la population -- laquelle aurait pu consolider la visualisation. L'utilisateur aurait ainsi eu un regard sur les investissements dans le sport selon le pourcentage du PIB et la population. Néanmoins, nous n'avons pu trouver une manière saillante et consistante de représenter autant de données dans un modèle de la sorte.
+Nous pouvons soulever le manque d'une troisième donnée -- en l'occurrence, la population -- laquelle aurait pu consolider la visualisation. L'utilisateur aurait ainsi eu un regard sur les investissements dans le sport selon le pourcentage du PIB et la population. Néanmoins, dans le temps qui nous était imparti, nous n'avons pu trouver une manière saillante et consistante de représenter autant de données dans un modèle de la sorte.
+
+Notons également le manque de données à l'origine de nombreux déséquilibres visuels dans la visualisation. Comme indiqué en légende, les pays dont nous ne connaissons pas le montant du PIB sont relégués aux plus petites tailles et les pays dont nous ne connaissons pas le pourcentage investi dans le domaine sportif apparaissent en gris foncé. C'est pourquoi nous avons mis à disposition des options de tri afin d'adapter au mieux l'affichage des données.
+\newline
+
+Précisons enfin que cette visualisation a été très tardivement réalisée. Nous voulions exploiter les données relatives au montant du PIB sans perturber notre tableau de bord, or aucun essai n'a porté ses fruits. En voici un aperçu avant l'intégration de cette troisième visualisation :
+
+\begin{center}
+	\begin{figure}[H]
+		\centering
+		\setlength{\belowcaptionskip}{-35pt}
+		\includegraphics[scale=0.25]{images/datavis-medals-world-tab.jpeg}
+		\captionsetup{justification=centering}
+		\caption{Aperçu du tableau de bord comprenant les visualisations \textit{Map of the world showing the medals won depending on the GDP and Population} (à gauche) et \textit{Comparison of the medals won according to their type (bronze, silver, gold) per country and per edition} (à droite)}
+	\end{figure}
+\end{center}
+
+En somme, notre premier ensemble de visualisation prend la forme d'une \enquote{histoire}, permettant une mise en parallèle des différentes représentations :
+
+\begin{center}
+	\begin{figure}[H]
+		\centering
+		\setlength{\belowcaptionskip}{-35pt}
+		\includegraphics[scale=0.3]{images/datavis-medals-world-map-story.jpeg}
+		\captionsetup{justification=centering}
+		\caption{Aperçu de la visualisation \textit{Map of the world showing the medals won depending on the GDP and Population} dans le mode \enquote{histoire}}
+	\end{figure}
+\end{center}
+
+\begin{center}
+	\begin{figure}[H]
+		\centering
+		\setlength{\belowcaptionskip}{-35pt}
+		\includegraphics[scale=0.3]{images/datavis-medals-world-treemap-story.jpeg}
+		\captionsetup{justification=centering}
+		\caption{Aperçu de la visualisation \textit{Comparison between total GDP and invested GDP in sports} dans le mode \enquote{histoire}}
+	\end{figure}
+\end{center}
+
+\begin{center}
+	\begin{figure}[H]
+		\centering
+		\setlength{\belowcaptionskip}{-35pt}
+		\includegraphics[scale=0.3]{images/datavis-medals-world-histo-story.jpeg}
+		\captionsetup{justification=centering}
+		\caption{Aperçu de la visualisation \textit{Comparison of the medals won according to their type (bronze, silver, gold) per country and per edition} dans le mode \enquote{histoire}}
+	\end{figure}
+\end{center}
 
 
 
-Notons également que le manque de données minimise les pays ayant un PIB impora
 
-Ajoutons à cela le manque de données qui fait que des pays ayant un PIB important (apparaissant donc en tête du diagramme) n’ont pas forcément de données concernant leurs dépenses sportives, alors que des pays de plus petites tailles dont les données sont présentes et qui investissent beaucoup dans le sport sont invisibles. 
 
-Pour palier à cela nous avons mis à disposition de l’utilisateur un tri.
+%
 
 
 
 
 
+\section{Visualisations du deuxième flux}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-\subsection{Infrastructures de natation : France}
-
-
+\subsection{Répartition des infrastructures de natation}
 
 \subsubsection{Ambition de la visualisation}
 
+Cette visualisation en miroir comprend deux cartes, une de la France métropolitaine, une de l'Angleterre :
 
-\subsubsection{Difficultés rencontrée}
+\begin{center}
+	\begin{figure}[H]
+		\centering
+		\setlength{\belowcaptionskip}{-35pt}
+		\includegraphics[scale=0.6]{images/datavis-swim-fr-eng.png}
+		\captionsetup{justification=centering}
+		\caption{Aperçu des visualisations \textit{Swimming infrastructures in England} et \textit{Swimming infrastructures in France}}
+	\end{figure}
+\end{center}
+
+Elle représente le nombre d'infrastructures de natation par région pour 100.000 habitants. L'investissement se traduit ici par l'accessibilité aux équipements : plus il est d'un niveau élevé, plus la concentration d'équipements (exemplairement des piscines) augmente.
+
+Ce regard présuppose qu'un accès facilité à une infrastructure se traduit par une augmentation du nombre de médailles -- ne prenant donc pas en compte d'autres facteurs potentiellement déterminants (\textit{cf}. \textit{infra} p. \pageref{biais}).
+
+La visualisation est divisée en deux encarts. La première et la deuxième représentent la concentration de piscines sur le territoire français et anglais, rapporté à un coefficient de 100.000 habitants. Les deux cartes partagent une même légende (c'est pourquoi nous prenons la liberté de les présenter simultanément) et partagent une palette de quatre nuances de bleu, permettant une interprétation rapide des ensembles -- en plus des étiquettes affichées.
+
+\subsubsection{Difficultés rencontrées}
+
+Pour un plus grand confort d'interprétation, nous avons choisi de représenter les données aux échelles régionales, non en nous limitant à de simples symboles répartis sur une carte. Pour ce faire, certaines manipulations ont été nécessaires sur les jeux des infrastructures de la France et de l’Angleterre -- directement depuis le logiciel Tableau Public.
+
+Pour la France, la visualisation nécessite la création d'un champ calculé \textit{Pays} ayant pour valeur \enquote{France}, géoréférencé en \enquote{États/régions}. Ce champ a dû ensuite être défini comme \enquote{parent} des données sur les régions. Ces dernières sont alors géoréférencées \enquote{région/province} pour que la visualisation souhaitée puisse être réalisée. Nous pouvons enfin exploiter les données \textit{Swimming pools per 100k inhabitants} en tant que repères de couleur.
+
+La visualisation pour l'Angleterre nécessite une démarche similaire, moyennant une étape supplémentaire. Une fois le champ calculé \textit{Pays} avec pour valeur \enquote{Angleterre} correctement géoréférencé et défini comme \enquote{parent}, les données des régions ne nous permettent pas de créer une visualisation similaire à celle -- pourtant bien fonctionnelle -- de la France.
+
+Il s'agit d'un problème classique de Tableau Public : utiliser les coordonnées ne nous permet d'afficher que des points, or nous cherchions à discerner les régions grâce à leur contour. Nous pensions donc que le nom des régions nous le permettrait mais leur utilisation provoque un conflit avec les régions d'Irlande. La communauté Tableau résout ce type de difficulté en éditant prioritairement les lieux grâce aux options de la carte -- une manipulation vraisemblablement possible seulement sur Desktop Tableau, non pas sur notre version gratuite de Tableau Public.
+
+Une autre solution, plus rudimentaire, présentée par des membres de la communauté Tableau consiste à substituer les noms des entités géographiques, en leur préférant des codes à des noms en langage naturel. Nous avons donc suivi ce procédé en renommant manuellement les régions selon le mode de correspondance suivant :
+
+\begin{center}
+	\begin{figure}[H]
+		\centering
+		\setlength{\belowcaptionskip}{-35pt}
+		\includegraphics[scale=0.5]{images/datavis-swim-fr-eng-codes.png}
+		\captionsetup{justification=centering}
+		\caption{Aperçu d'un paramètre de nommage de Tableau Public}
+	\end{figure}
+\end{center}
+
+Ces conversions faites, nous avons pu géoréférencer la colonne en \enquote{Nuts - Europe} -- seule manière de les faire correctement interpréter par Tableau Public. Nous avons enfin utilisé derechef les données \textit{Swimming pools per 100k inhabitants} comme repères de couleur pour créer une visualisation en miroir avec celle sur les régions de France.
+
+
+
+
+
+%
+
+
+
 
 
 \subsubsection{Regard critique et biais}
 
+\label{biais}Les visualisations accordent une place prépondérante au déterminisme : une simple accumulation d'infrastructures permet-elle de triompher aux compétitions internationales à l'instar des Jeux ? De surcroît, elle rejoue la tension des analyses quantitatives et qualitatives. Qu'en est-il de l'encadrement des athlètes ? De leur temps alloué à la pratique du sport ? Ces équipements sont-ils tous aux normes du Comité International Olympique ?
 
-\subsection{Infrastructures de natation : Royaume-Uni}
+Sans avoir l'ambition d'être définitive, notre analyse a néanmoins le mérite de poser la question de la simple réduction d'une performance à celle de l'accessibilité -- et de fournir des éléments de réponse.
 
-Il nous a été impossible de créer cette visualisation directement à partir de nos jeux finaux générés sur Dataiku. Utiliser les coordonnées ne nous permet d'afficher que des points, or nous chercherons à discerner les régions grâce à leur contour. Nous pensions donc que le nom des régions nous le permettrait mais leur utilisation provoque un conflit dans Tableau Public.
+Le principal biais réside dans les jeux de données à notre disposition. Celui de Kaggle (\textit{cf}. \textit{supra} p. \pageref{kaggle}) porte le Royaume-Uni, les infrastructures concernent la seule Angleterre. Ce biais, invalidant \textit{a priori} toute analyse, est néanmoins atténué par notre choix d'identifier des tendances et non des faits arrêtés et binaires -- certainement plus réducteurs dans notre cas. 
 
-En revanche, cela fonctionne avec l'équivalent des codes NOC des régions. Nous avons alors songé à adapter notre requête SPARQL relative (\textit{cf}. \textit{supra} p. \pageref{queryeng}) pour récupérer ces données. Cependant, une telle propriété n'existe pas dans le service de requête de Wikidata. Nous avons donc dû l'ajouter manuellement directement au sein de Tableau Public.
+Notre choix de rapporter les infrastructures à une concentration pour 100.000 habitants limite les biais d'interprétation et de compréhension -- bien que la visualisation ne renseigne pas sur le temps moyen requis pour accéder à l'équipement sportif le plus proche, d'éventuelles disparités au sein même des régions et bien d'autres facteurs encore.
+
+\subsection{Comparaison des médailles remportées en natation}
+
+Notre troisième visualisation exploitant les données du deuxième flux a la forme d'un diagramme en barres :
+
+\begin{center}
+	\begin{figure}[H]
+		\centering
+		\setlength{\belowcaptionskip}{-35pt}
+		\includegraphics[scale=0.4]{images/datavis-swim-fr-eng-medals.png}
+		\captionsetup{justification=centering}
+		\caption{Aperçu de la visualisation \textit{Olympic medals comparison between France and England in swimming (1996-2016)}}
+	\end{figure}
+\end{center}
+
+Sont ici représentées les performances olympiques des deux pays aux épreuves de natation des Jeux entre 1996 et 2016. La visualisation repose sur le nombre total de médailles remportées et exclut donc une spécification de la place occupée sur les podiums. L'Angleterre apparaît en rouge, la France en bleu. Elle regroupe les années, puis les deux pays pour ensuite afficher les médailles. Traduit en application Tableau Public, en colonnes sont les valeurs des mesures et en ligne, les noms des mesures ainsi que les NOC.
+
+Ainsi, pour chaque édition, la réussite sportive peut être efficacement comparée par une simple interprétation visuelle. Par voie de conséquence, cette visualisation rend possible la confrontation avec notre hypothèse de l'existence d'un lien entre les investissements et les résultats aux Jeux.
+
+\subsubsection{Difficultés rencontrées}
+
+D’un point de vue technique, la réalisation de cette visualisation n’a pas souffert de difficultés.
+
+\subsubsection{Regard critique et biais}
+
+Le mode de représentation de cette visualisation fait l'objet d'une insatisfaction, contraint par la taille de la fenêtre : il faut faire défiler les années pour prendre connaissance de l'ensemble des résultats, limitant ainsi une interprétation globale au premier abord.
+
+Cette datavisualisation offre des éclairages pertinents. Il est évident qu'une disjonction se produit à l'égard de notre hypothèse initiale, mise en valeur par les autres visualisations -- spécifiquement celle axée sur les infrastructures sportives de natation en France et en Angleterre.
+
+Aucune interprétation linéaire des résultats obtenus n'est apparente. Ces derniers réaffirment, au-delà d'un seuil de performance minimale et optimale depuis 2008, la part irréductible de l'impondérable dans la performance sportive, faite de hasards, de déconvenues et d'exploits.
 
 
 
@@ -1372,7 +1460,10 @@ La semaine du 22 janvier a été le lieu d'une mauvaise surprise. Alors que nous
 
 \begin{center}
 	\begin{figure}[H]
+		\centering
+		\setlength{\belowcaptionskip}{-35pt}
 		\includegraphics[scale=0.49]{images/bogue.png}
+		\caption{Bogue rencontré sur le logiciel Dataiku}
 	\end{figure}
 \end{center}
 
@@ -1397,11 +1488,23 @@ Les jeux générés sont d'une qualité exemplaire et sont d'un grand intérêt 
 
 
 
+\chapter{Un mot de conclusion}
+
+Zou
+
+
+
+
+
+%
+
+
+
+
+
 \chapter{Sitographie}
 \printbibliography[heading=none]
 \newpage
-
-
 
 %(\textit{cf}. \textit{supra} p. \pageref{nongrata})
 

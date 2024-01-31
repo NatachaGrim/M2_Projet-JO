@@ -1124,6 +1124,13 @@ Notre deuxième grand flux a donc abouti à la création de quatre jeux de donn�
 
 \chapter{Visualisation des données}
 
+À l'aune de nos différents jeux de sortie et de notre approche en deux temps, nous avons produit un ensemble de cinq datavisualisations. Trois concernent le premier flux de données, soit le nombre de médailles remportées par les pays sur six éditions des Jeux Olympiques au regard de leur PIB, de leur niveau d'investissement dans le domaine sportif et de leur nombre d'habitants. Ces visualisations-ci ont donné lieu à la composition d'une \enquote{histoire}.
+
+Les deux autres visualisations exploitent les données de notre deuxième grand flux, lui-même composé -- rappelons-le -- de trois petits flux. Elles mettent en relief le nombre de médailles remportées par la France et l'Angleterre pour les épreuves de natation au regard du nombre d'infrastructures sportives relatives par région et pour 100.000 habitants. Ces visualisations ont donné lieu à la création d'un tableau de bord. 
+
+
+\section{Visualisations du premier flux}
+
 \subsection{Médailles remportées par les pays : carte du monde}
 
 \subsubsection{Visée de la visualisation}
@@ -1133,22 +1140,19 @@ Notre deuxième grand flux a donc abouti à la création de quatre jeux de donn�
 \begin{center}
 	\begin{figure}[H]
 		\centering
-		\setlength{\abovecaptionskip}{-15pt}
 		\setlength{\belowcaptionskip}{-35pt}
 		\includegraphics[scale=0.25]{images/datavis-medals-world-map.jpeg}
 		\caption{Aperçu de la visualisation \textit{title} (année 2008) sur le logiciel Tableau Public}
 	\end{figure}
 \end{center}
 
-
-
 \subsubsection{Ambition de la visualisation}
 
 Son but est de montrer le lien entre population, richesse -- matérialisée par le Produit Intérieur Brut -- et le nombre de médailles remportées à six éditions des Jeux. L'utilisateur peut naviguer entre les différentes années (1996, 2000, 2004, 2008, 2012 et 2016) en manipulant une liste déroulante et sélectionner l'année de son choix. Afin d'afficher au mieux ces trois paramètres (médailles, population, investissements), il nous a semblé pertinent de combiner différentes sortes d'indices visuels.
 
-Le nombre de médailles est présenté sous forme d'étiquette (voyez sur l'image ci-dessus, \enquote{58} pour la France ou \enquote{1} pour le Portugal).
+Le nombre de médailles est présenté sous forme d'étiquette (voyez sur l'image ci-dessus, \enquote{47} pour la France ou \enquote{3} pour le Portugal).
 
-Le pourcentage des dépenses dans le sport par rapport au PIB (noté \enquote{GDP}) apparaît selon une échelle de couleurs. Nous avons pris soin de modifier la valeur \textit{center} (\textit{cf}. figure \ref{param} \textit{infra} p. \pageref{param}) pour que les valeurs égales à zéro (incluant les valeurs nulles interprétées par Tableau Public comme tel) apparaissent en gris foncé. \textit{A contrario}, l'échelle de couleur pour les valeurs non nulles et non égales à zéro va du blanc au rouge. 
+\label{color}Le pourcentage des dépenses dans le sport par rapport au PIB (noté \enquote{GDP}) apparaît selon une échelle de couleurs. Nous avons pris soin de modifier la valeur \textit{center} (\textit{cf}. figure \ref{param} \textit{infra} p. \pageref{param}) pour que les valeurs égales à zéro (incluant les valeurs nulles interprétées par Tableau Public comme tel) apparaissent en gris foncé. \textit{A contrario}, l'échelle de couleur pour les valeurs non nulles et non égales à zéro va du blanc au rouge. 
 
 Nous avons également défini la valeur maximale du PIB investi à 0.09 \%. Aucun pays n'investit plus que 0.1 \% de son PIB dans le domaine sportif, les données contraires présentes dans le jeu du FMI relèvent d'erreurs de saisies que notre formule Python n'a pas été en mesure de corriger (\textit{cf}. \textit{supra} p. \pageref{python}). 
 
@@ -1241,9 +1245,6 @@ La grande difficulté concernait derechef le format de nos données. Nous pensio
 Cette visualisation est surtout traversée par un biais de manque de place. Le mode de composition du tableau de bord reste limité sur notre version du logiciel et la carte étant très gourmande en la matière, nous avons dû réduire la taille de l'histogramme pour le disposer au mieux. Ce faisant, les barres sont compressées et éclipsent visuellement un certain nombre de pays -- exemplairement les pays ayant remporté entre 10 et 20 médailles. 
 
 De surcroît, le survol avec le curseur est complexifié et demande une précision manuelle décuplée.
-\newline
-
-Voici en somme notre premier tableau de bord, composé de trois datavisualisations :
 
 
 
@@ -1255,7 +1256,93 @@ Voici en somme notre premier tableau de bord, composé de trois datavisualisatio
 
 
 
+\subsection{PIB et investissements : carte à cases}
+
+Notre troisième et dernière visualisation prend la forme d'une carte à cases, également nommée \textit{treemap} :
+
+\begin{center}
+	\begin{figure}[H]
+		\centering
+		\setlength{\abovecaptionskip}{-15pt}
+		\setlength{\belowcaptionskip}{-35pt}
+		\includegraphics[scale=0.3]{images/datavis-medals-world-treemap.jpeg}
+		\caption{Aperçu de la visualisation \textit{Comparison between total GDP and invested GDP in sports}}
+	\end{figure}
+\end{center}
+
+\subsubsection{Ambition de la visualisation}
+
+Son but est de venir à la rescousse de notre visualisation en carte du monde, laquelle montre le pourcentage du Produit Intérieur Brut investi par les pays sans pour autant fournir les chiffres du PIB. Or si la Russie et les États-Unis investissent tous deux 0.05\% de leur PIB dans le domaine sportif, il ne faut certainement pas songer à un niveau d'investissement et de répartition des infrastructures comparables.
+
+Ainsi, cette carte à case indique le PIB total des pays selon une échelle de taille et son pourcentage investi dans le sport selon une échelle de couleur (identique à celle utilisée pour la carte du monde, \textit{cf}. \textit{supra} p. \pageref{color}), plus le pourcentage d'investissement est fort, plus le pays apparaîtra en rouge. Également, l'utilisateur peut -- selon le même paramètre établi pour les deux autres visualisations -- changer l'année à sa guise et choisir parmi les six éditions des Jeux Olympiques. Il est également possible de sélectionner les pays que l'on souhaite afficher par l'intermédiaire d'une liste à cocher.
+
+\subsubsection{Difficultés rencontrée}
+
+L'aisance acquise lors de la conception des premières visualisations nous a fait faire l'économie de difficultés à propos de celle-ci.
+
+\subsubsection{Regard critique et biais}
+
+Nous pouvons soulever le manque d'une troisième donnée -- en l'occurrence, la population -- laquelle aurait pu consolider la visualisation. L'utilisateur aurait ainsi eu un regard sur les investissements dans le sport selon le pourcentage du PIB et la population. Néanmoins, nous n'avons pu trouver une manière saillante et consistante de représenter autant de données dans un modèle de la sorte.
+
+
+
+Notons également que le manque de données minimise les pays ayant un PIB impora
+
+Ajoutons à cela le manque de données qui fait que des pays ayant un PIB important (apparaissant donc en tête du diagramme) n’ont pas forcément de données concernant leurs dépenses sportives, alors que des pays de plus petites tailles dont les données sont présentes et qui investissent beaucoup dans le sport sont invisibles. 
+
+Pour palier à cela nous avons mis à disposition de l’utilisateur un tri.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 \subsection{Infrastructures de natation : France}
+
+
+
+\subsubsection{Ambition de la visualisation}
+
+
+\subsubsection{Difficultés rencontrée}
+
+
+\subsubsection{Regard critique et biais}
+
 
 \subsection{Infrastructures de natation : Royaume-Uni}
 

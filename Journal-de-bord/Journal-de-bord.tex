@@ -1249,9 +1249,7 @@ La grande difficulté concernait derechef le format de nos données. Nous pensio
 
 \subsubsection{Regard critique et biais}
 
-Cette visualisation est surtout traversée par un biais de manque de place. Le mode de composition du tableau de bord reste limité sur notre version du logiciel et la carte étant très gourmande en la matière, nous avons dû réduire la taille de l'histogramme pour le disposer au mieux. Ce faisant, les barres sont compressées et éclipsent visuellement un certain nombre de pays -- exemplairement les pays ayant remporté entre 10 et 20 médailles. 
-
-De surcroît, le survol avec le curseur est complexifié et demande une précision manuelle décuplée.
+Mis à part une consultation des données plus difficile au survol de la souris pour les pays ayant gagné le moins de médailles -- en raison de la petitesse de leur barre -- nous ne constatons pas de biais à l'égard de cette visualisation. 
 
 
 
@@ -1458,6 +1456,61 @@ Voici en somme notre deuxième ensemble de visualisation, prenant la forme d'un 
 
 
 
+\section{Une synthèse analytique}
+
+Les visualisations que nous avons réalisées nous permettent de matérialiser plusieurs jeux de données représentant les relations entre investissements et résultats aux Jeux Olympiques. Mais nous permettent-elles d’esquisser une vérité satisfaisante ?
+
+\subsection{Visualisations du premier flux}
+
+\label{nuance}Si nous faisons une rapide synthèse de ce premier ensemble de visualisations, Nous observons la logique suivante sur le plan macroscopique : plus un pays investit dans le sport, plus il remporte de médailles aux Jeux Olympiques. Cette assertion contient néanmoins quelques nuances sur un aspect plutôt microscopique -- notamment au niveau des pays les données en lien avec l’investissement manquent.
+
+\subsubsection{Le cas de la Chine}
+
+Attardons-nous un instant sur un fait important : la Chine, faisant partie des BRICS, possède un nombre de médailles extrêmement élevé par rapport aux pays développés. Elle est de fait la principale concurrente des États-Unis à partir des années 2000. Cela peut être dû à l'importante population de la Chine, mise en exergue par la visualisation du monde (\textit{cf}. \textit{supra} p. \pageref{map}).
+
+Cependant, un contre-exemple de taille vient infirmer cette hypothèse. L'Inde a beau posséder la deuxième plus grande population mondiale, elle n'est pas aussi performante aux Jeux. La Chine constitue donc la première nuance visible de notre hypothèse de départ : il reste difficile d’expliquer son succès si l’on se fonde sur nos seules données économiques et démographiques.
+
+\subsubsection{Le cas des anciens pays de l’URSS, de la Yougoslavie et du Kenya}
+
+Une grande partie de pays concourant aux Jeux depuis 1996 possède des résultats étonnamment élevés si nous les comparons à ceux des pays développés. Sont concernés les pays de l'ex-Yougoslavie et de l'URSS -- citons en guise d'exemple la Russie, la Hongrie, l'Ukraine ou l'Azerbaïdjan -- et plus au sud, le Kenya. Depuis les années 2000, ces pays s'approchent, voire dépassent, la dizaine de médailles remportée par édition. 
+
+Si nous cherchons des éléments démographiques explicatifs, la Russie possède une population de 150 millions d'habitants -- or le Kenya et l'Ukraine n'en comptent pas plus d'une soixantaine, tandis que la Hongrie et l'Azerbaïdjan n'en comptent pas plus d'une dizaine. Par ailleurs, le seul cas de l'Inde nous a montré qu'un indice de population élevé ne saurait être seul un argument démonstratif convaincant.
+
+Ce peut être dû aux spécificités de la culture sportive des pays : le Kenya remporte l'essentiel de ses médailles en athlétisme et l'Azerbaïdjan en haltérophilie. Enfin, l'URSS était un adversaire majeur des États-Unis lors des Jeux avant l'entrée en concurrence sérieuse de la Chine. Nous pouvons supposer que les pays membres de l'URSS ont conservé les vestiges de cette culture de la performance.
+\newline
+
+En somme, si les pays qui investissent le plus dans le sport -- exemplairement les pays développés -- ont de plus grandes chances de réussite aux Jeux. Nonobstant, des exceptions à l'instar de la Chine ou des pays d'Europe de l'Est forcent à nuancer cette assertion.
+
+
+
+
+
+%
+
+
+
+
+
+\subsection{Visualisations du second flux}
+
+Ce deuxième ensemble de visualisations ambitionnait d'éprouver notre hypothèse à propos d'épreuves sportives précises et sur des territoires plus réduits -- en l'occurrence la France métropolitaine et l'Angleterre.
+
+Si l'assertion selon laquelle plus un pays investit dans le sport, plus il remporte de médailles peut trouver des éléments de confirmation à l'échelle macroscopique -- en prenant en compte les nuances mentionnées \textit{supra} (\textit{cf}. p \pageref{nuance}), sa pertinence est moins évidente au regard de notre étude comparative.
+
+Les visualisations nous permettent de constater que l'accessibilité aux équipements sportifs relatifs à la natation est plus saillante en Angleterre qu'en France métropolitaine. Néanmoins, le nombre de médailles remportées par les deux pays est très proche sur le temps long (soit l'ensemble des éditions retenues sur lesquelles portent notre travail).
+
+Le fait de plus précisément s'intéresser à une discipline sportive et aux investissements liés tend donc à infirmer notre hypothèse -- bien entendu selon les données à notre disposition.
+
+
+
+
+
+%
+
+
+
+
+
 \chapter{Remarques et péripéties}
 
 \section{Typage de données}
@@ -1486,7 +1539,6 @@ Nous avons été forcés de nous appuyer sur d'autres ordinateurs pour consulter
 Au cours du traitement Wikidata s'est révélé être un outil formidable pour l'enrichissement et le traitement des données. Le système de construction des requêtes SPARQL nécessite une certaine prise en main mais nous permet de très larges interrogations de la base de données.
 
 Les jeux générés sont très bien formés et présentent un intérêt certain pour correctement réaliser des jointures à l'aide des nombreux codes, labels et identifiants récupérables.
-\newpage
 
 
 

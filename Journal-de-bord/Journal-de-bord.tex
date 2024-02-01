@@ -1128,9 +1128,11 @@ Notre deuxième grand flux a donc abouti à la création de quatre jeux de donn�
 
 \chapter{Visualisation des données}
 
-À l'aune de nos différents jeux de sortie et de notre approche en deux temps, nous avons produit un ensemble de cinq datavisualisations. Trois concernent le premier flux de données, soit le nombre de médailles remportées par les pays sur six éditions des Jeux Olympiques au regard de leur PIB, de leur niveau d'investissement dans le domaine sportif et de leur nombre d'habitants. Ces visualisations-ci ont donné lieu à la composition d'une \enquote{histoire}.
+À l'aune de nos différents jeux de sortie et de notre approche en deux temps, nous avons produit un ensemble de six datavisualisations.
 
-Les deux autres visualisations exploitent les données de notre deuxième grand flux, lui-même composé -- rappelons-le -- de trois petits flux. Elles mettent en relief le nombre de médailles remportées par la France et l'Angleterre pour les épreuves de natation au regard du nombre d'infrastructures sportives relatives par région et pour 100.000 habitants. Ces visualisations ont donné lieu à la création d'un tableau de bord.
+Trois ont été créées à partir du premier flux de données, soit le nombre de médailles remportées par les pays sur six éditions des Jeux Olympiques au regard de leur PIB, de leur niveau d'investissement dans le domaine sportif et de leur nombre d'habitants. Ces visualisations-ci ont donné lieu à la composition d'une \enquote{histoire}\autocite{vismap}.
+
+Trois autres visualisations exploitent les données de notre deuxième grand flux, lui-même composé -- rappelons-le -- de trois petits flux. Elles mettent en relief le nombre de médailles remportées par la France et l'Angleterre pour les épreuves de natation au regard du nombre d'infrastructures sportives relatives par région et pour 100.000 habitants. Ces visualisations ont donné lieu à la création d'un tableau de bord\autocite{visswim}.
 
 \section{Visualisations du premier flux}
 
@@ -1152,7 +1154,7 @@ Les deux autres visualisations exploitent les données de notre deuxième grand 
 
 Son but est de montrer le lien entre population, richesse -- matérialisée par le Produit Intérieur Brut -- et le nombre de médailles remportées à six éditions des Jeux. L'utilisateur peut naviguer entre les différentes années (1996, 2000, 2004, 2008, 2012 et 2016) en manipulant une liste déroulante et sélectionner l'année de son choix. Afin d'afficher au mieux ces trois paramètres (médailles, population, investissements), il nous a semblé pertinent de combiner différentes sortes d'indices visuels.
 
-Le nombre de médailles est présenté sous forme d'étiquette (voyez sur l'image ci-dessus, \enquote{47} pour la France ou \enquote{3} pour le Portugal).
+Le nombre de médailles est présenté sous forme d'étiquette (voyez sur l'image ci-dessus, \enquote{58} pour la France ou \enquote{1} pour le Portugal).
 
 \label{color}Le pourcentage des dépenses dans le sport par rapport au PIB (noté \enquote{GDP}) apparaît selon une échelle de couleurs. Nous avons pris soin de modifier la valeur \textit{center} (\textit{cf}. figure \ref{param} \textit{infra} p. \pageref{param}) pour que les valeurs égales à zéro (incluant les valeurs nulles interprétées par Tableau Public comme tel) apparaissent en gris foncé. \textit{A contrario}, l'échelle de couleur pour les valeurs non nulles et non égales à zéro va du blanc au rouge. 
 
@@ -1239,7 +1241,7 @@ Cette deuxième visualisation vise en premier lieu à présenter l'évolution du
 
 Pour ce faire, la visualisation présente en abscisse le nom des pays et en ordonnée, le nombre de médailles. Le survol des barres avec le curseur détaille les informations -- que nous avons voulu synthétiser visuellement grâce à un choix adéquat de couleurs : doré pour les médailles d'or, gris pour les médailles d'argent et brun pour les médailles de bronze.
 
-Nous avons voulu cette visualisation simple et facilement compréhensible pour les utilisateurs désireux de la consulter en parallèle de la carte et de mieux saisir la répartition des médailles selon l'édition sélectionnée. C'est pourquoi nous avons soumis les deux visualisation au même paramètre de choix pour que l'ensemble des données s'actualise en même temps.
+Nous avons voulu cette visualisation simple et facilement compréhensible pour les utilisateurs désireux de la consulter en parallèle de la carte et de mieux saisir la répartition des médailles selon l'édition sélectionnée. C'est pourquoi nous avons soumis les deux visualisations au même paramètre de choix pour que l'ensemble des données s'actualise en même temps.
 
 \subsubsection{Difficultés rencontrées}
 
@@ -1378,7 +1380,7 @@ Pour la France, la visualisation nécessite la création d'un champ calculé \te
 
 La visualisation pour l'Angleterre nécessite une démarche similaire, moyennant une étape supplémentaire. Une fois le champ calculé \textit{Pays} avec pour valeur \enquote{Angleterre} correctement géoréférencé et défini comme \enquote{parent}, les données des régions ne nous permettent pas de créer une visualisation similaire à celle -- pourtant bien fonctionnelle -- de la France.
 
-Il s'agit d'un problème classique de Tableau Public : l'utilisation des coordonnées nous permettait de n'envisager qu'une représentation par points, poins visuelle que par le contour des régions. Nous pensions donc que le nom des régions nous le permettrait mais leur utilisation provoque un conflit avec les régions d'Irlande. La communauté Tableau résout ce type de difficulté en éditant prioritairement les lieux grâce aux options de la carte -- une manipulation vraisemblablement possible seulement sur Desktop Tableau, non pas sur notre version gratuite de Tableau Public.
+Il s'agit d'un problème classique de Tableau Public : l'utilisation des coordonnées nous permettait de n'envisager qu'une représentation par points, non pas selon le contour des régions. Nous pensions donc que le nom des régions nous le permettrait mais leur utilisation provoque un conflit avec les régions d'Irlande. La communauté Tableau résout ce type de difficulté en éditant prioritairement les lieux grâce aux options de la carte -- une manipulation vraisemblablement possible seulement sur Desktop Tableau, non pas sur notre version gratuite de Tableau Public.
 
 Une autre solution, plus rudimentaire, présentée par des membres de la communauté Tableau consiste à substituer les noms des entités géographiques, en leur préférant des codes à des noms en langage naturel. Nous avons donc suivi ce procédé en renommant manuellement les régions selon le mode de correspondance suivant :
 
@@ -1394,23 +1396,13 @@ Une autre solution, plus rudimentaire, présentée par des membres de la communa
 
 Ces conversions faites, nous avons pu géoréférencer la colonne en \enquote{Nuts - Europe} -- seule manière de les faire correctement interpréter par Tableau Public. Nous avons enfin utilisé derechef les données \textit{Swimming pools per 100k inhabitants} comme repères de couleur pour créer une visualisation en miroir avec celle sur les régions de France.
 
-
-
-
-
-%
-
-
-
-
-
 \subsubsection{Regard critique et biais}
 
 \label{biais}Les visualisations accordent une place prépondérante au déterminisme : une simple accumulation d'infrastructures permet-elle de triompher aux compétitions internationales à l'instar des Jeux ? De surcroît, elle rejoue la tension des analyses quantitatives et qualitatives. Qu'en est-il de l'encadrement des athlètes ? De leur temps alloué à la pratique du sport ? Ces équipements sont-ils tous aux normes du Comité International Olympique ?
 
 Sans avoir l'ambition d'être définitive, notre analyse a néanmoins le mérite de poser la question de la simple réduction d'une performance à celle de l'accessibilité -- et de fournir des éléments de réponse.
 
-Le principal biais réside dans les jeux de données à notre disposition. Celui de Kaggle (\textit{cf}. \textit{supra} p. \pageref{kaggle}) porte le Royaume-Uni, les infrastructures concernent la seule Angleterre. Ce biais, invalidant \textit{a priori} toute analyse, est néanmoins atténué par notre choix d'identifier des tendances et non des faits arrêtés et binaires -- certainement plus réducteurs dans notre cas. 
+Le principal biais réside dans les jeux de données à notre disposition. Celui de Kaggle (\textit{cf}. \textit{supra} p. \pageref{kaggle}) porte sur le Royaume-Uni, les infrastructures concernent la seule Angleterre. Ce biais, invalidant \textit{a priori} toute analyse, est néanmoins atténué par notre choix d'identifier des tendances et non des faits arrêtés et binaires -- certainement plus réducteurs dans notre cas.
 
 Notre choix de rapporter les infrastructures à une concentration pour 100.000 habitants limite les biais d'interprétation et de compréhension -- bien que la visualisation ne renseigne pas sur le temps moyen requis pour accéder à l'équipement sportif le plus proche, d'éventuelles disparités au sein même des régions et bien d'autres facteurs encore.
 
@@ -1428,7 +1420,7 @@ Notre troisième visualisation exploitant les données du deuxième flux a la fo
 	\end{figure}
 \end{center}
 
-Sont ici représentées les performances olympiques des deux pays aux épreuves de natation des Jeux entre 1996 et 2016. La visualisation repose sur le nombre total de médailles remportées et exclut donc une spécification de la place occupée sur les podiums. L'Angleterre apparaît en rouge, la France en bleu. Elle regroupe les années, puis les deux pays pour ensuite afficher les médailles. Traduit en application Tableau Public, en colonnes sont les valeurs des mesures et en ligne, les noms des mesures ainsi que les NOC.
+Sont ici représentées les performances olympiques des deux pays aux épreuves de natation des Jeux entre 1996 et 2016. Pour défiler entre les années, l'utilisateur doit utiliser la molette de sa souris. La visualisation repose sur le nombre total de médailles remportées et exclut donc une spécification de la place occupée sur les podiums. L'Angleterre apparaît en rouge, la France en bleu. Elle regroupe les années, puis les deux pays pour ensuite afficher les médailles. Traduit en application Tableau Public, en colonnes sont les valeurs des mesures et en ligne, les noms des mesures ainsi que les NOC.
 
 Ainsi, pour chaque édition, la réussite sportive peut être efficacement comparée par une simple interprétation visuelle. Par voie de conséquence, cette visualisation rend possible la confrontation avec notre hypothèse de l'existence d'un lien entre les investissements et les résultats aux Jeux.
 
@@ -1440,9 +1432,21 @@ D’un point de vue technique, la réalisation de cette visualisation n’a pas 
 
 Le mode de représentation de cette visualisation fait l'objet d'une insatisfaction, contraint par la taille de la fenêtre : il faut faire défiler les années pour prendre connaissance de l'ensemble des résultats, limitant ainsi une interprétation globale au premier abord.
 
-Cette datavisualisation offre des éclairages pertinents. Il est évident qu'une disjonction se produit à l'égard de notre hypothèse initiale, mise en valeur par les autres visualisations -- spécifiquement celle axée sur les infrastructures sportives de natation en France et en Angleterre.
+Cette datavisualisation offre des éclairages pertinents. Il est évident qu'une disjonction se produit entre notre hypothèse initiale, mise en valeur par les autres visualisations, et celle spécifiquement axée sur les infrastructures de piscine en France et en Angleterre.
 
 Aucune interprétation linéaire des résultats obtenus n'est apparente. Ces derniers réaffirment, au-delà d'un seuil de performance minimale et optimale depuis 2008, la part irréductible de l'impondérable dans la performance sportive, faite de hasards, de déconvenues et d'exploits.
+
+Voici en somme notre deuxième ensemble de visualisation, prenant la forme d'un tableau de bord :
+
+\begin{center}
+	\begin{figure}[H]
+		\centering
+		\setlength{\belowcaptionskip}{-35pt}
+		\includegraphics[scale=0.35]{images/datavis-swim-tab.jpeg}
+		\captionsetup{justification=centering}
+		\caption{Aperçu du tableau de bord \textit{Sports infrastructures and medals won at the Olympic Games: a case study of swimming between France and England}}
+	\end{figure}
+\end{center}
 
 
 

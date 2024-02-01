@@ -150,13 +150,13 @@
 
 \chapter{Introduction}
 
-Nous sommes une équipe de datajournalistes chargée, à l'approche des Jeux Olympiques de Paris, d'étudier l'existence ou non de liens entre le succès d'un pays aux Jeux et sa richesse. Notre hypothèse de départ est la suivante : les pays développés gagnent significativement plus de médailles en raison de leur niveau d'investissement dans le domaine sportif. 
+Nous sommes une équipe de datajournalistes chargée, à l'approche des Jeux Olympiques de Paris, d'étudier l'existence ou non de liens entre le succès d'un pays aux Jeux et sa richesse. Notre hypothèse de départ est la suivante : les pays développés gagnent significativement plus de médailles en raison de leur niveau d'investissement dans le domaine sportif.
 
-À l'aune de l'examen et du traitement des données que nous avons à notre disposition, nous avons pour ambition de déterminer si la politique d'investissement dans les infrastructures sportives des pays a une quelconque influence sur leurs résultats aux épreuves des Jeux.
+À l'aune de l'examen et du traitement des données que nous avons à notre disposition, nous avons pour ambition d'apprécier l'influence de la politique d'investissement dans les infrastructures sportives des pays sur leurs résultats aux épreuves des Jeux Olympiques.
 
-Notre travail sera divisé en deux temps. Nous mettrons en relief le nombre de médailles remportées par les pays lors de six éditions des Jeux Olympiques (1996, 2000, 2004, 2008, 2012, 2016) par rapport à leur population, à leur Produit Intérieur Brut et au pourcentage de ce dernier investi dans le domaine sportif. Un second temps sera consacré à l'examen de la réussite de la France et du Royaume-Uni aux épreuves de natation sur la base du nombre d'infrastructures relatives pour 100.000 habitants sur leur territoire.
+Notre travail sera divisé en deux temps. Nous mettrons en relief le nombre de médailles remportées par les pays lors de six éditions des Jeux (1996, 2000, 2004, 2008, 2012, 2016) par rapport à leur population, à leur Produit Intérieur Brut et au pourcentage de ce dernier investi dans le domaine sportif. Un second temps sera consacré à l'examen de la réussite de la France et du Royaume-Uni aux épreuves de natation sur la base du nombre d'infrastructures relatives pour 100.000 habitants sur leur territoire. Cette petite nuance au sein de notre jeu nous permettra d'éprouver notre hypothèse volontairement générale, mais pour autant pertinente.
 
-Le choix de ces pays repose sur divers points de convergence : leur nombre d'habitants, leur économie et leur qualité de pays organisateur des Jeux. 
+Le choix de ces pays repose sur divers points de convergence : leur nombre d'habitants, leur économie et leur qualité de pays organisateur des Jeux. L'échelle localisée de l'étude trouve ici sa pertinence.
 
 Travailler sur une période de vingt ans nous semble suffisant pour cerner ou non le début d'une tendance économique vis-à-vis de la réussite des pays aux Jeux Olympiques. Le temps et les ressources dont nous disposons tendent à confirmer le choix de cette période -- suffisamment éloquente en données pour nous permettre de travailler avec un matériau d'une qualité et d'une quantité honorables sans qu'il ne faille faire entorse à nos capacités financières -- strictement égales à zéro -- et humaines -- strictement égales à quatre.
 
@@ -178,7 +178,7 @@ Le résultat du traitement des données, réalisé sur le logiciel Dataiku, cons
 
 \section{Jeux du premier flux}
 
-Notre premier flux concerne les médailles remportées par les pays lors des six éditions des Jeux Olympiques sur lesquelles nous avons décidé de travailler. En amont du traitement, nos jeux étaient au nombre de deux. Le premier présente le nombre de médailles remportées par sportif aux Jeux sur une période de 120 ans\autocite{kaggle}. Le deuxième, le Produit Intérieur Brut des pays et son pourcentage investi dans le domaine sportif\autocite{fmi}.
+Notre premier flux concerne les médailles remportées par les pays lors des six éditions des Jeux Olympiques que nous avons retenues. En amont du traitement, nos jeux étaient au nombre de deux. Le premier présente le nombre de médailles remportées par sportif aux Jeux sur une période de 120 ans\autocite{kaggle}. Le deuxième, le Produit Intérieur Brut des pays et son pourcentage investi dans le domaine sportif\autocite{fmi}.
 
 Nous avons enrichi ces jeux grâce au résultat d'une requête SPARQL, saisie sur le service de Wikidata. Le jeu ainsi produit présente le nombre d'habitants de l'ensemble des pays répertoriés dans la base de données de Wikidata, sur une période de trente ans (1993 - 2023)\autocite{wikiquerypop}.
 
@@ -186,7 +186,7 @@ Trois autres jeux ont dû faire leur entrée au cours du traitement pour pallier
 
 Les deux autres jeux concernent un problème de coordonnées. Lorsque Dataiku identifie des données de type \textit{country}, nous pensions pouvoir en récupérer les coordonnées -- notamment afin de les exploiter pour les datavisualisations. L'extension \textit{reverse geocoding plugin} aurait pu nous le permettre, sans succès. Nos suppositions portent sur notre version gratuite de Dataiku et de son nombre réduit de fonctionnalités.
 
-Ne disposant d'aucun budget pour bénéficier d'une version payante, nous avons recherché un jeu contenant les coordonnées des pays et l'avons trouvé sur la plateforme GitHub\autocite{github}. Nonobstant, les longitudes et latitudes des pays ainsi récupérées se sont avérées être fautives le moment des datavisualisations venu. C'est pourquoi nous avons mis au point une deuxième SPARQL, capable de renvoyer les bonnes coordonnées de tous les pays présents dans la base de Wikidata\autocite{wikiquerycoor}. Le jeu ainsi récupéré correspond au dernier renfort dont nous avons eu besoin pour être en mesure de réaliser des datavisualisations.
+Ne disposant d'aucun budget pour bénéficier d'une version payante, nous avons recherché un jeu contenant les coordonnées des pays et l'avons trouvé sur la plateforme GitHub\autocite{github}. Nonobstant, les longitudes et latitudes des pays ainsi récupérées se sont avérées être fautives le moment des datavisualisations venu. C'est pourquoi nous avons mis au point une deuxième requête SPARQL, capable de renvoyer les bonnes coordonnées de tous les pays présents dans la base de Wikidata\autocite{wikiquerycoor}. Le jeu ainsi récupéré correspond au dernier renfort dont nous avons eu besoin pour réaliser les datavisualisations.
 
 
 
@@ -202,7 +202,7 @@ Ne disposant d'aucun budget pour bénéficier d'une version payante, nous avons 
 
 Le jeu est composé de 15 colonnes et 271.117 lignes. 7 colonnes fournissent des informations sur les athlètes (\textit{ID}, \textit{Name}, \textit{Sex}, \textit{Age}, \textit{Height}, \textit{Weight}, \textit{Medal}) ; 2 colonnes sur leurs pays (\textit{Team}, \textit{NOC}) et 6 sur les éditions des Jeux Olympiques (\textit{Games} ; \textit{Year} ; \textit{Season} ; \textit{City} ; \textit{Sport} ; \textit{Event}).
 
-Les données sont exprimées en langue anglaise. La casse des chaînes de caractères suit le schéma d'une majuscule à chaque nouveau mot -- exception faite des unités de mesure dans la colonne \textit{Event} (comprendre \textit{Épreuve}) : le terme \enquote{metres} est toujours noté en bas-de-casse. 2 colonnes, \textit{Games} et \textit{Year} contiennent des données de date, exprimées en année. La colonne \textit{Games} a ceci de particulier qu'elle agrège une donnée de date et une donnée textuelle. Les Jeux Olympiques d'été de 1992 sont ainsi notés \enquote{1992 Summer}.
+Les données sont exprimées en langue anglaise. La casse des chaînes de caractères suit le schéma d'une majuscule à chaque nouveau mot -- exception faite des unités de mesure dans la colonne \textit{Event} (comprendre \textit{Épreuve}) : le terme \enquote{metres} est toujours noté en bas-de-casse. 2 colonnes, \textit{Games} et \textit{Year} contiennent des données de date, exprimées en année. La colonne \textit{Games} a pour particularité d'agréger une donnée de date et une donnée textuelle. Les Jeux Olympiques d'été de 1992 sont ainsi notés \enquote{1992 Summer}.
 
 Le jeu ne présente pas de défauts majeurs sur les colonnes que nous comptons conserver lors du traitement. Un problème plus préoccupant concerne la dénomination des pays, parfois obsolète (\enquote{Soviet Union}, \enquote{West Germany}) ou impropres (\enquote{Japan-1}, \enquote{Switzerland-2}). Nous effectuerons les jointures sur le code NOC des pays (un code unique attribué par le Comité National Olympique) pour plus de fiabilité.
 
@@ -218,7 +218,7 @@ Le jeu ne présente pas de défauts majeurs sur les colonnes que nous comptons c
 
 \subsection{Jeu du FMI}
 
-Le jeu est composé de 42 colonnes pour 7.715 lignes. La colonne \textit{Country Name} permet d'identifier les pays. Celle nommée \textit{COFOG Function Name} correspond au secteur des investissements et a pour unique valeur \textit{Expenditure on recreational \& sporting services}. La colonne \textit{Unit Name} précise l'échelle de calcul des investissements (soit en pourcentage du PIB, \textit{Percent of GDP}, soit en monnaie courante \textit{Domestic currency}). Le montant des investissements est renseigné sur 30 colonnes, une par année de 1993 à 2022.
+Le jeu est composé de 42 colonnes pour 7.715 lignes. La colonne \textit{Country Name} permet d'identifier les pays. Celle nommée \textit{COFOG Function Name} correspond au secteur des investissements et a pour unique valeur \textit{Expenditure on recreational \& sporting services} -- car nous avions sollicité l'API du FMI en demandant l'unique fonction COFOG numérote 8.1, laquelle correspond aux investissements dans le domaine sportif. La colonne \textit{Unit Name} précise l'échelle de calcul des investissements (soit en pourcentage du PIB, \textit{Percent of GDP}, soit en monnaie courante \textit{Domestic currency}). Le montant des investissements est renseigné sur 30 colonnes, de 1993 à 2022.
 
 Les 9 autres colonnes correspondent à des codes et des dénominations propres au FMI (\textit{Country Code}, \textit{COFOG Function Code}, \textit{Sector Name}, \textit{Sector Code}, \textit{Unit Code}, \textit{Attribute}, \textit{Indicator Code}, \textit{Global DSD Time Series Code}, \textit{col\_41}). Le potentiel de croisement avec d'autres jeux étant par la force des choses très limité, nous n'utiliserons pas ces données.
 
@@ -228,10 +228,10 @@ Exception faite des \textit{Country Code} et du code correspondant à la valeur 
 
 Les noms de pays souffrent d'un problème d'harmonisation et d'actualité (\enquote{Russian Federation}, \enquote{China, P.R.: Mainland}, etc.).
 
-Ce jeu est de loin le moins bien structuré et le plus fautif de notre \textit{set} basal. Bien que nous ne comptions pas les conserver au cours du traitement, les trois dernières colonnes (\textit{Indicator Code}, \textit{Global DSD Time Series Code}, \textit{col\_41}) sont d'une opacité confondante et témoignent du problème majeur du jeu : énormément de données sont vides, nulles ou incompréhensibles (\enquote{GERS\_G14\_GDP\_PT} pour la colonne \textit{Indicator Code}, \enquote{A|GB|S1311|W0|S1|G2M|\_Z|\_Z|GF0801|
+Ce jeu est de loin le moins bien structuré et le plus fautif de notre \textit{set} basal. Bien que nous ne comptions pas les conserver au cours du traitement, les trois dernières colonnes (\textit{Indicator Code}, \textit{Global DSD Time Series Code}, \textit{col\_41}) sont d'une opacité confondante et témoignent du problème majeur du jeu : beaucoup de données sont inexistantes, nulles ou incompréhensibles (\enquote{GERS\_G14\_GDP\_PT} pour la colonne \textit{Indicator Code}, \enquote{A|GB|S1311|W0|S1|G2M|\_Z|\_Z|GF0801|
 	XDC|\_T|\_X} pour la colonne \textit{Global DSD Time Series Code}).
 
-Également, au sein des colonnes correspondant au montant des investissements par année se côtoient des lignes vides et des sigles (\enquote{NA}, \enquote{NP}, \enquote{AC}), sans justification ni harmonisation aucune. En somme, ce jeu représente un véritable enjeu de nettoyage et de croisement des données.
+Également, au sein des colonnes qui correspondent au montant des investissements par année se côtoient des lignes vides et des sigles (\enquote{NA}, \enquote{NP}, \enquote{AC}), sans justification ni harmonisation aucune. En somme, ce jeu représente un véritable enjeu de nettoyage et de croisement des données.
 
 
 
@@ -315,7 +315,7 @@ Le jeu ainsi généré est composé de 13 colonnes et 3.737 lignes. Les lignes d
 
 \label{nongrata}Bien que notre requête ne précise vouloir recueillir ni le \textit{type} ni le \textit{datatype} des données, ces colonnes sont malgré tout présentes dans le jeu de sortie. Les données textuelles sont exprimées en anglais (mis à part les noms de pays) et sont en bas-de-casse -- exception faite des sigles et des noms de pays. Les dates sont exprimées selon le schéma YYYY-MM-DDThh\!\!:mm\!\!:ssZ. L'intégralité des \textit{types} correspondent à \enquote{literal}. Les colonnes \textit{datatype} ont pour valeur des liens renvoyant à des schémas XML du W3C.
 
-Le jeu est d'une propreté exemplaire, les données sont harmonisées et correctement typées, ce qui nous sera d'une grande aide lors des jointures.
+Le jeu est d'une propreté exemplaire, les données sont harmonisées et correctement typées, ce qui nous sera d'une grande aide lors des jointures. Cependant, la correcte forme des données est minée par de sérieux manques, notamment pour l'année 2016.
 
 
 
@@ -349,7 +349,7 @@ Notons que certaines entrées de la colonne \textit{Country Name} témoignent d'
 
 Le jeu se compose de 6 colonnes et 263 lignes. 2 de ces colonnes correspondent à la latitude et longitude (\textit{Latitude (average)}, \textit{Longitude (average)}) des pays dont le nom nous est donné dans la colonne \textit{Country}. Les trois autres colonnes (\textit{Alpha-2 code}, \textit{Alpha-3 code}, \textit{Numeric code}) correspondent à des codes de pays prévus par la norme ISO 3166-1.
 
-Les données textuelles sont exprimées en langue anglaise. Nonobstant, nous comptons nous appuyer sur les codes des pays pour réaliser les jonctions. Le jeu ne présente aucune donnée manquante. 
+Les données textuelles sont exprimées en langue anglaise. Nonobstant, nous comptons nous appuyer sur les codes des pays pour réaliser les jonctions. Le jeu ne présente aucune donnée manquante.
 
 
 
@@ -418,7 +418,7 @@ Cette requête ayant été saisie dans l'urgence de devoir déboguer la réalisa
 
 \section{Jeux du second flux}
 
-Notre deuxième flux repose sur une comparaison entre la France et le Royaume-Uni à l'endroit de la natation. En amont du traitement, nos jeux étaient au nombre de cinq : trois pour le Royaume-Uni, deux pour la France.
+Notre deuxième flux repose sur une comparaison entre la France et le Royaume-Uni à propos de la natation. En amont du traitement, nos jeux étaient au nombre de cinq : trois pour le Royaume-Uni, deux pour la France.
 
 Sur le Royaume-Uni, un premier jeu résulte d'une requête SPARQL, laquelle génère un jeu listant le nom des régions du pays, leur nombre d'habitants et leurs coordonnées\autocite{wikiqueryeng}. Les deux autres jeux proviennent du même site\autocite{ru}, l'un situe les infrastructures sportives par rapport à leur région, l'autre les décrit d'un point de vue davantage technique.
 
@@ -498,6 +498,8 @@ De surcroît, nombre d'entrées font l'objet de multi-nommage par l'intermédiai
 
 Les noms de régions sont saisies en bas-de-casse avec conservation des majuscules initiales. Enfin, la longitude et la latitude se basent sur le système \textit{WGS 84} -- \textit{World Geodetic System 1984}, un système géodésique mondial comprenant, entre autres, un modèle pour l'expression de coordonnées.
 
+\label{rfr}Précisons que les régions ici renseignées ne comptent que celles de la France métropolitaine. Les régions d'outre-mer seront inévitablement éclipsées dans nos données final et \textit{ipso facto}, au sein de nos datavisualisations.
+
 
 
 
@@ -529,7 +531,7 @@ Le premier triplet fait correspondre la variable \code{?Region} à l'objet \enqu
 	?Region wdt:P31 wd:Q48091.
 \end{lstlisting}
 
-Le deuxième triplet assigne à la variable \code{?population} la population (\code{wdt:P1082}) de notre sujet, c'est-à-dire les régions (\code{?Region}). Cependant, la seule propriété existante à cet égard concerne les régions d'Angleterre, non pas du Royaume-Uni. Cela aura des conséquences sur nos datavisualisations car nos autres données concernent bel et bien le Royaume-Uni.
+\label{reng}Le deuxième triplet assigne à la variable \code{?population} la population (\code{wdt:P1082}) de notre sujet, c'est-à-dire les régions (\code{?Region}). Cependant, la seule propriété existante à cet égard concerne les régions d'Angleterre, non pas du Royaume-Uni. Cela aura des conséquences sur nos datavisualisations car nos autres données concernent bel et bien le Royaume-Uni.
 
 \begin{lstlisting}[language=SPARQL]
 	?Region wdt:P1082 ?population.
@@ -555,7 +557,7 @@ Il en ressort un jeu composé de 9 colonnes et 36 lignes. Le principe d'atomisat
 
 \subsection{Jeux de \textit{Sport England}}
 
-Le premier jeu provenant de \textit{Sport England}, nommé \textit{Geographics} est composé de 25 colonnes et 118.655 lignes. Comme son nom le suggère, les données présentées sont relatives aux infrastructures sportives du Royaume-Uni. Chacune possède un identifiant unique, répertorié dans la colonne \textit{FACILITYID} et est rattachée à une région, grâce à la colonne \textit{Region Name}. Leur nom est en anglais et en bas-de-casse, avec conservation des majuscules initiales. Les 2 autres colonnes qui survivront au traitement sont \textit{Latitude} et \textit{Longitude}.
+Le premier jeu provenant de \textit{Sport England}, nommé \textit{Geographic} est composé de 25 colonnes et 118.655 lignes. Comme son nom le suggère, les données présentées sont relatives aux infrastructures sportives du Royaume-Uni. Chacune possède un identifiant unique, répertorié dans la colonne \textit{FACILITYID} et est rattachée à une région, grâce à la colonne \textit{Region Name}. Leur nom est en anglais et en bas-de-casse, avec conservation des majuscules initiales. Les 2 autres colonnes qui survivront au traitement sont \textit{Latitude} et \textit{Longitude}.
 
 Les 21 colonnes restantes fournissent une plus grande quantité de données sur la situation géographique et administrative des infrastructures -- selon un schéma soit d'identifiants (\textit{SiteID}), soit de code (\textit{Output Area Code}), soit de colonnes en duo avec d'une part les noms (\textit{Ward Name}, \textit{Local Authority Name}, etc.), d'autre part les codes (\textit{Ward Code}, \textit{Local Authority Code}, etc.).
 
@@ -654,7 +656,7 @@ Le jeu de Kaggle, nommé \textit{Kaggle} dans Dataiku, correspond à cette parti
 	\end{figure}
 \end{center}
 
-En amont des jointures, ce jeu a fait l'objet de trois recettes. La première, une préparation, nous a permis d'uniquement conserver 3 colonnes sur 15 : \textit{NOC}, \textit{Medal}, \textit{Year}. La colonne \textit{Year} a été épurée pour que seules les années des six éditions deux Jeux y apparaissent. Également, les entrées de la colonne \textit{Medal} correspondant à des valeurs nulles (noté \enquote{N/A}) ont été supprimées.
+En amont des jointures, ce jeu a fait l'objet de trois recettes. La première, une préparation, nous a permis d'uniquement conserver 3 colonnes sur 15 : \textit{NOC}, \textit{Medal}, \textit{Year}. La colonne \textit{Year} a été épurée pour que seules les années des six éditions deux Jeux y apparaissent. Également, les valeurs nulles de la colonne \textit{Medal} (notées \enquote{N/A}) ont été supprimées.
 
 L'étape suivante consiste en la réalisation d'un pivot. Les années présentes dans les lignes de la colonne \textit{Year} sont devenues des colonnes dont les lignes ont pris pour valeur les entrées de la colonne \textit{Medal}. 6 nouvelles colonnes ont donc été créés, une par édition des Jeux entre 1996 et 2016.
 
@@ -688,7 +690,7 @@ Le jeu généré grâce à la requête SPARQL sur la population, nommé \textit{
 	\end{figure}
 \end{center}
 
-Ce jeu a été soumis à deux recette. Une préparation où nous avons supprimé les 8 colonnes dont le suffixe était autre que \enquote{.value} -- lesquelles n'étaient pas sollicitées par notre requête SPARQL (\textit{cf}. \textit{supra} p. \pageref{nongrata}). Trois colonnes ont été renommées : \textit{cio.value} est devenu \textit{NOC} ; \textit{isoCode.value} est devenu \textit{Pays} et \textit{paysLabel.value} est devenu \textit{Nom - Pays}.
+Ce jeu a été soumis à deux recettes. Une préparation où nous avons supprimé les 8 colonnes dont le suffixe était autre que \enquote{.value} -- lesquelles n'étaient pas sollicitées par notre requête SPARQL (\textit{cf}. \textit{supra} p. \pageref{nongrata}). Trois colonnes ont été renommées : \textit{cio.value} est devenu \textit{NOC} ; \textit{isoCode.value} est devenu \textit{Pays} et \textit{paysLabel.value} est devenu \textit{Nom - Pays}.
 
 Nous avons modifié le format des dates : sur l'année, le jour, le mois et l'horaire, nous n'avons conservé que l'année dans une colonne de sortie avant de supprimer la colonne initiale. Les années des six éditions mises à part, toutes les autres ont été supprimées et un nouveau pivot a été réalisé : les années en ligne sont passées en colonne et ont pris pour valeur le nombre d'habitants par pays. Ce pivot a permis la suppression des colonnes \emph{Année} et \emph{population.value}. Enfin, les colonnes des années ont été renommées selon un motif commun : \emph{1996} est devenu \emph{1996 - Pop}.
 
@@ -786,7 +788,7 @@ for colonne in colonnes_a_traiter:
 				FMI_prepared2_df.loc[condition, colonne] /= 10
 \end{lstlisting}
 
-La bonne valeur des données est ainsi rétablie.
+Les valeurs deviennent alors cohérentes. Il n'est cependant pas impossible que d'autres problèmes mathématiques émaillent le jeu du FMI mais nous n'avons pu que cerner et traiter celui-ci. 
 
 
 
@@ -814,7 +816,9 @@ Une seule recette de préparation a derechef été nécessaire en amont des join
 
 Les deux autres étapes de la recette nous permettent de correctement typer et extraire les coordonnées de la colonne \textit{geopoint.value} afin de correctement les exploiter pour réaliser nos datavisualisations. \label{casse}Les données sont écrites comme suit : \enquote{point(11.0 65.0)}.
 
-Cependant, les données ainsi typées sont effectivement reconnues par le logiciel de datavisualisation Tableau Public comme étant des coordonnées mais équivalent toutes à \enquote{Null} une fois importées. Nous avons essayé de résoudre le problème directement depuis Tableau Public, sans succès car le logiciel considérait les coordonnées comme des chaînes de caractères et ne pouvait bien entendu pas calculer une longitude et une latitude.
+Cependant, les données ainsi typées sont effectivement reconnues par le logiciel de datavisualisation Tableau Public comme étant des coordonnées mais équivalent toutes à \enquote{Null} une fois importées.
+
+Nous avons essayé de résoudre le problème directement depuis Tableau Public, sans succès car le logiciel considérait les coordonnées comme des chaînes de caractères et ne pouvait bien entendu pas calculer une longitude et une latitude à partir de ce type de données.
 
 Nous avons finalement compris que le problème était la casse : pour que les données soient correctement typées, il fallait que tous les caractères soient en haut-de-casse : non pas \enquote{point(11.0 65.0)} mais \enquote{POINT(11.0 65.0)}. Nous avons donc ajouté cette étape dans la recette avant d'extraire les longitudes et latitudes dans 2 colonnes distinctes.
 
@@ -928,9 +932,9 @@ Est créé notre jeu final : \textit{Medals-Pop-GDP}, au terme du flux ci-dessou
 
 \section{Chaîne de traitement du second flux}
 
-Notons que ce deuxième flux est composé de trois petits flux qu'il ne fait pas sens de joindre en bout de chaîne sur Dataiku. La mise en relation des quatre jeux de données finaux sera l'objet des datavisualisation.
+Notons que ce deuxième flux est composé de trois petits flux qu'il ne fait pas sens de joindre en bout de chaîne sur Dataiku. La mise en relation des quatre jeux de données finaux sera l'objet des datavisualisations.
 
-Le premier mini-flux a pour sujet les infrastructures relatives à la natation du Royaume-Uni, le deuxième mini-flux \textit{idem} à l'égard de la France et le troisième concerne les médailles remportées par les deux pays.
+Le premier mini-flux a pour sujet les infrastructures relatives à la natation du Royaume-Uni, \textit{idem} pour le deuxième mini-flux à l'égard de la France et le troisième concerne les médailles remportées par les deux pays.
 
 Par souci de concision et de clarté à l'égard des intitulés des différentes étapes, nous avons fait le choix de trois entêtes distincts : \enquote{GBR} pour le mini-flux sur le Royaume-Uni, \enquote{FRA} pour le mini-flux sur la France et \enquote{MED} pour le mini-flux sur les médailles remportées par les deux pays aux épreuves de natation des Jeux.
 
@@ -1170,13 +1174,15 @@ Enfin, la population prend la forme de \enquote{bulles} couvrant tout ou partie 
 
 Si l'on met de côté l'évident problème de manque de données pour certains pays en dépit de notre traitement, nous avons été confrontés à deux obstacles majeurs au cours de la réalisation de cette visualisation.
 
-Le premier concerne l'utilisation de valeurs géographiques dans Tableau Public. Nos donnés de coordonnées étaient exprimées, dans nos différents jeux, comme ceci \enquote{POINT(56,00 -75,24)}. Dataiku les reconnaissait bien leur caractère géographique -- à l'inverse de Tableau Public. Il nous générait effectivement des latitudes et les longitudes mais considérait les données comme des chaînes de caractères et tentait donc de leur appliquer des calculs pour en extraire des coordonnées -- ce qui n'avait aucune chance d'aboutir.
+Le premier concerne l'utilisation de valeurs géographiques dans Tableau Public. Nos données de coordonnées étaient exprimées, dans nos différents jeux, comme ceci \enquote{POINT(56,00 -75,24)}. Dataiku reconnaissait bien leur caractère géographique -- à l'inverse de Tableau Public. Il nous générait effectivement des latitudes et les longitudes mais considérait les données comme des chaînes de caractères et tentait donc de leur appliquer des calculs pour en extraire des coordonnées -- ce qui n'avait aucune chance d'aboutir.
 
 Nous avons donc dû contourner le problème en extrayant nous-mêmes les longitudes et latitudes dans des colonnes dédiées au sein de Dataiku afin de pouvoir les exploiter dans Tableau Public (\textit{cf}. \textit{supra} p. \pageref{casse}).
 
-La deuxième difficulté a été plus complexe a appréhender. Nous souhaitions absolument rendre possible la navigation entre les différentes années. Cependant, notre format de données ne le permettait pas, car il aurait fallu une colonne \textit{Année} sur laquelle nous aurions pu appliquer un filtre.
+La deuxième difficulté a été plus complexe à appréhender. Nous souhaitions absolument rendre possible la navigation entre les différentes années. Cependant, notre format de données ne le permettait pas, car il aurait fallu une colonne \textit{Année} sur laquelle nous aurions pu appliquer un filtre.
 
-Pour ce faire, nous aurions pu réaliser un pivot (Tableau Public propose cette fonctionnalité) mais cela aurait gravement miné la forme d'autres données que nous ne pouvions pas soumettre à un pivot (latitude, longitude, codes des pays). Nous avons alors consulté la documentation et élaboré beaucoup de tests infructueux pour finalement comprendre que nous devions procéder en deux temps. Il nous fallait d'abord créer un paramètre nommé \code{YEAR} avec pour valeur les années que nous souhaitons afficher puis créer des champs calculés (à insérer en lieu et place des années) comme ceci :
+Pour ce faire, nous aurions pu réaliser un pivot (Tableau Public propose cette fonctionnalité) mais cela aurait gravement perturbé la forme d'autres données que nous ne pouvions pas soumettre à une telle manipulation (latitude, longitude, codes des pays). Nous avons alors consulté la documentation et élaboré beaucoup de tests infructueux pour finalement comprendre que nous devions procéder en deux temps.
+
+Il nous fallait d'abord créer un paramètre nommé \code{YEAR} avec pour valeur les années que nous souhaitons afficher puis créer des champs calculés (à insérer en lieu et place des années) comme ceci :
 
 \begin{lstlisting}[language=tableau]
 	IF [YEAR] == 1996 THEN [1996 - Medals]
@@ -1202,7 +1208,7 @@ Cet état de fait peut demander un certain effort à l'utilisateur pour correcte
 
 Le quatrième et dernier biais concerne la lisibilité des évolutions d'une édition des Jeux Olympiques à l'autre car nous ne proposons pas un affichage simultané de plusieurs années. Il est donc plus corsé, en première lecture, de visuellement constater si l'évolution des investissements d'un pays suit l'évolution du nombre de médailles gagnées ou non.
 
-Nous maintenons notre choix de visualisation et de choix libre de l'année représentée -- avant tout pour des questions de commodité de lecture en cherchant à surcharger au minium la carte.
+Nous maintenons notre choix de visualisation et de sélection libre de l'année représentée -- avant tout pour des questions de commodité de lecture en cherchant à surcharger au minium la carte.
 
 
 
@@ -1372,7 +1378,7 @@ Pour la France, la visualisation nécessite la création d'un champ calculé \te
 
 La visualisation pour l'Angleterre nécessite une démarche similaire, moyennant une étape supplémentaire. Une fois le champ calculé \textit{Pays} avec pour valeur \enquote{Angleterre} correctement géoréférencé et défini comme \enquote{parent}, les données des régions ne nous permettent pas de créer une visualisation similaire à celle -- pourtant bien fonctionnelle -- de la France.
 
-Il s'agit d'un problème classique de Tableau Public : utiliser les coordonnées ne nous permet d'afficher que des points, or nous cherchions à discerner les régions grâce à leur contour. Nous pensions donc que le nom des régions nous le permettrait mais leur utilisation provoque un conflit avec les régions d'Irlande. La communauté Tableau résout ce type de difficulté en éditant prioritairement les lieux grâce aux options de la carte -- une manipulation vraisemblablement possible seulement sur Desktop Tableau, non pas sur notre version gratuite de Tableau Public.
+Il s'agit d'un problème classique de Tableau Public : l'utilisation des coordonnées nous permettait de n'envisager qu'une représentation par points, poins visuelle que par le contour des régions. Nous pensions donc que le nom des régions nous le permettrait mais leur utilisation provoque un conflit avec les régions d'Irlande. La communauté Tableau résout ce type de difficulté en éditant prioritairement les lieux grâce aux options de la carte -- une manipulation vraisemblablement possible seulement sur Desktop Tableau, non pas sur notre version gratuite de Tableau Public.
 
 Une autre solution, plus rudimentaire, présentée par des membres de la communauté Tableau consiste à substituer les noms des entités géographiques, en leur préférant des codes à des noms en langage naturel. Nous avons donc suivi ce procédé en renommant manuellement les régions selon le mode de correspondance suivant :
 
@@ -1475,7 +1481,7 @@ Nous avons été forcés de nous appuyer sur d'autres ordinateurs pour consulter
 
 Au cours du traitement Wikidata s'est révélé être un outil formidable pour l'enrichissement et le traitement des données. Le système de construction des requêtes SPARQL nécessite une certaine prise en main mais nous permet de très larges interrogations de la base de données.
 
-Les jeux générés sont d'une qualité exemplaire et sont d'un grand intérêt pour correctement réaliser des jointures à l'aide des nombreux codes, labels et identifiants récupérables.
+Les jeux générés sont très bien formés et présentent un intérêt certain pour correctement réaliser des jointures à l'aide des nombreux codes, labels et identifiants récupérables.
 \newpage
 
 
@@ -1490,7 +1496,9 @@ Les jeux générés sont d'une qualité exemplaire et sont d'un grand intérêt 
 
 \chapter{Un mot de conclusion}
 
-Zou
+Ce projet a été le lieu de nombreuses complications et péripéties mais nous ne saurions faire l'impasse sur les opportunités et perspectives de travail dont il témoigne. Nous avons la certitude qu'avec un -- même maigre -- renfort d'effectifs, de ressources financières et de temps, nous aurions pu trouver des jeux de données mieux formés, plus complets et ainsi produire des visualisations plus parlantes et pertinentes.
+
+Nous avons conscience des nombreux biais et manquements qui émaillent nos productions finales (manque de données, chaînes de caractères à la fois en français et en anglais, glissement des régions de France et du Royaume-Uni vers les régions de France métropolitaine et d'Angleterre) mais nous pensons avoir démontré qu'un travail de qualité à propos des Jeux Olympiques est possible et éclairant sur les donnes économiques et sportives des pays.
 
 
 

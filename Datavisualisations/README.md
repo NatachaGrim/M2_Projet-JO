@@ -1,10 +1,10 @@
 # À propos
 
-Ce dossier contient l'ensemble de nos datavisualisations, réalisées à partir de nos [fichiers csv](../Flux-et-datasets) produits au terme de nos [flux de traitement des données](../Flux-et-datasets). Nous avons réalisé un total de six visualisations, également réparties au sein d'une [histoire](https://rb.gy/konlqh) et d'un [tableau de bord](https://public.tableau.com/app/profile/ilyes.mechentel/viz/Natation_Comparaison_UK_France/Tableaudebord1).
+Ce dossier contient l'ensemble de nos datavisualisations, réalisées à partir de nos [fichiers csv](../Flux-et-datasets) produits au terme de nos [flux de traitement des données](../Flux-et-datasets). Nous avons réalisé un total de six visualisations, également réparties au sein d'une [histoire]([https://rb.gy/konlqh](https://public.tableau.com/app/profile/maxime.griveau/viz/Comparisonofthemedalswonbycountryofthe6editionsoftheOlympicGamesaccordingtotheirpopulationandGDPspercentageinvestedinsports/TheOlympicsfortherich) et d'un [tableau de bord](https://public.tableau.com/app/profile/ilyes.mechentel/viz/Natation_Comparaison_UK_France/Tableaudebord1).
 
 ## Histoire
 
-Pour consulter l'histoire et les visualisations qui la composent : [Tableau Public](https://rb.gy/konlqh)
+Pour consulter l'histoire et les visualisations qui la composent : [Tableau Public]([https://rb.gy/konlqh](https://public.tableau.com/app/profile/maxime.griveau/viz/Comparisonofthemedalswonbycountryofthe6editionsoftheOlympicGamesaccordingtotheirpopulationandGDPspercentageinvestedinsports/TheOlympicsfortherich)
 
 ![Comparison of the medals won by country of the 6 editions of the Olympic Games according to their population and GDP's percentage invested in sports - map](../Journal-de-bord/images/datavis-medals-world-map-story.jpeg)
 

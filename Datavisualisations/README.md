@@ -1,6 +1,6 @@
 # À propos
 
-Ce dossier contient l'ensemble de nos datavisualisations, réalisées à partir de nos [fichiers csv](../Flux-et-datasets) produits au terme de nos [flux de traitement des données](../Flux-et-datasets). Nous avons réalisé un total de six visualisations, également réparties au sein d'une [histoire](https://public.tableau.com/app/profile/maxime.griveau/viz/Comparisonofthemedalswonbycountryofthe6editionsoftheOlympicGamesaccordingtotheirpopulationandGDPspercentageinvestedinsports/TheOlympicsfortherich) et d'un [tableau de bord](https://public.tableau.com/app/profile/ilyes.mechentel/viz/Natation_Comparaison_UK_France/Tableaudebord1).
+Ce fichier contient l'ensemble de nos datavisualisations, élaborées à partir de nos [fichiers csv](../Flux-et-datasets) produits au terme de nos [flux de traitement des données](../Flux-et-datasets). Nous avons réalisé un total de six visualisations, également réparties au sein d'une [histoire](https://public.tableau.com/app/profile/maxime.griveau/viz/Comparisonofthemedalswonbycountryofthe6editionsoftheOlympicGamesaccordingtotheirpopulationandGDPspercentageinvestedinsports/TheOlympicsfortherich) et d'un [tableau de bord](https://public.tableau.com/app/profile/ilyes.mechentel/viz/Natation_Comparaison_UK_France/Tableaudebord1).
 
 ## Histoire
 

@@ -17,46 +17,103 @@ Les variables sont indispensables au bon fonctionnement de l'application. Vous d
 ## Instructions : un premier lancement
 
 ### Étape 1 : installer Python
-- Ouvrez votre terminal et saisissez : ```sudo apt install python3```.
+- Ouvrez votre terminal, collez-y la ligne suivante avec ```ctrl+maj+v``` et appuyez sur la touche ```Entrée``` :
+
+```bash
+sudo apt install python3
+```
 
 ### Étape 2 : cloner l'application
-- En haut [de cette page](https://github.com/NatachaGrim/M2_Projet-JO), cliquez sur le bouton vert "Code" ;
-- Copiez le lien HTTPS ;
-- Dans le terminal, saisissez ```git clone``` et collez le lien (ctrl+maj+v).
+- Dans le terminal, collez la ligne suivante avec ```ctrl+maj+v``` et appuyez sur la touche ```Entrée``` :
+
+```bash
+git clone https://github.com/NatachaGrim/M2_Projet-JO.git
+```
 
 ### Étape 3 : installer un environnement virtuel
-- Positionnez-vous dans le dossier de l'application grâce à la commande ```cd Application``` ;
-- Installez un environnement virutel avec la commande ```virtualenv env -p python3```.
+- Dans le terminal, collez la ligne suivante avec ```ctrl+maj+v``` et appuyez sur la touche ```Entrée``` :
+
+```bash
+cd Application
+```
+- Puis collez-y la ligne suivante avec ```ctrl+maj+v``` et appuyez sur la touche ```Entrée``` :
+
+```bash
+virtualenv env -p python3
+```
 
 ### Étape 4 : télécharger la base de données
 - Téléchargez la base de données et déplacez-la dans le dossier "Application".
 
 ### Étape 5 : saisir les variables
-- Dans le terminal, saisissez ```touch .env``` ;
-- Ouvrez le fichier ```.env``` et copiez-collez les variables indiquées [ci-dessus](https://github.com/NatachaGrim/M2_Projet-JO/tree/main/Application-flask#variables).
+- Dans le terminal, collez la ligne suivante avec ```ctrl+maj+v``` et appuyez sur la touche ```Entrée``` :
+
+```bash
+touch .env
+```
+
+- Ouvrez le fichier ```.env``` et copiez-collez-y ce bloc de code avec ```ctrl+v``` :
+
+```
+```
+
+- Enregistrez avec ```ctrl+s``` et fermez le fichier.
 
 ## Étape 6 : installer les dépendances
-- Dans le terminal, saisissez ```source env/bin/activate``` ;
-- Saisissez ensuite ```pip install -r requirements.txt```.
+- Dans le terminal, collez la ligne suivante avec ```ctrl+maj+v``` et appuyez sur la touche ```Entrée``` :
+
+```bash
+source env/bin/activate
+```
+
+- Collez ensuite la ligne suivante avec ```ctrl+maj+v``` et appuyez sur la touche ```Entrée``` :
+
+```bash
+pip install -r requirements.txt
+```
 
 ## Étape 7 : lancer l'application
-- Saisissez ```python run.py```, l'application devrait démarrer ;
-- Ouvrez votre navigateur web ;
-- Saisissez une route dans la barre d'URL : ```localhost:5000/nomDeRoute```.
+
+- Dans le terminal, collez la ligne suivante avec ```ctrl+maj+v``` et appuyez sur la touche ```Entrée``` :
+
+```bash
+python run.py
+```
+
+L'application devrait démarrer. Ouvrez ensuite votre navigateur web et saisissez le nom d'une route. Par exemple :
+
+```
+localhost:5000/nomDeRoute
+```
 
 Nos différentes routes sont consultables dans [ce dossier]().
 
 ## Étape 8 : quitter l'application
-- Maintenez la touche ```ctrl``` enfoncée dans votre terminal et appuyez sur la touche ```c``` ;
-- Saisissez ```deactivate```.
+- Dans le terminal, maintenez la touche ```ctrl``` enfoncée et appuyez sur la touche ```c``` ;
+- Collez-y ensuite la ligne suivante avec ```ctrl+maj+v``` et appuyez sur la touche ```Entrée``` :
+
+```bash
+deactivate
+```
 
 ## Instructions : mémo
 
 Pour lancer l'application :
-- ```cd cheminJusqu'auDossierApplication``` ;
-- ```source env/bin/activate``` ;
-- ```python run.py```.
+```bash
+cd cheminJusqu'auDossierApplication
+```
+
+```bash
+source env/bin/activate
+```
+
+```bash
+python run.py
+```
 
 Pour quitter l'application :
-- ```ctrl+c``` ;
-- ```deactivate```.
+- Maintenir ```ctrl``` et appuyer sur ```c``` ;
+
+```bash
+deactivate
+```

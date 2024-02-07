@@ -19,26 +19,27 @@ Les variables sont indispensables au bon fonctionnement de l'application. Vous d
 ### Étape 1 : installer Python
 - Ouvrez votre terminal, collez-y la ligne suivante avec ```ctrl+maj+v``` et appuyez sur la touche ```Entrée``` :
 
-```bash
+```shell
 sudo apt install python3
 ```
 
 ### Étape 2 : cloner l'application
 - Dans le terminal, collez la ligne suivante avec ```ctrl+maj+v``` et appuyez sur la touche ```Entrée``` :
 
-```bash
+```shell
 git clone https://github.com/NatachaGrim/M2_Projet-JO.git
 ```
 
 ### Étape 3 : installer un environnement virtuel
 - Dans le terminal, collez la ligne suivante avec ```ctrl+maj+v``` et appuyez sur la touche ```Entrée``` :
 
-```bash
+```shell
 cd Application
 ```
+
 - Puis collez-y la ligne suivante avec ```ctrl+maj+v``` et appuyez sur la touche ```Entrée``` :
 
-```bash
+```shell
 virtualenv env -p python3
 ```
 
@@ -48,7 +49,7 @@ virtualenv env -p python3
 ### Étape 5 : saisir les variables
 - Dans le terminal, collez la ligne suivante avec ```ctrl+maj+v``` et appuyez sur la touche ```Entrée``` :
 
-```bash
+```shell
 touch .env
 ```
 
@@ -62,13 +63,13 @@ touch .env
 ## Étape 6 : installer les dépendances
 - Dans le terminal, collez la ligne suivante avec ```ctrl+maj+v``` et appuyez sur la touche ```Entrée``` :
 
-```bash
+```shell
 source env/bin/activate
 ```
 
 - Collez ensuite la ligne suivante avec ```ctrl+maj+v``` et appuyez sur la touche ```Entrée``` :
 
-```bash
+```shell
 pip install -r requirements.txt
 ```
 
@@ -76,13 +77,13 @@ pip install -r requirements.txt
 
 - Dans le terminal, collez la ligne suivante avec ```ctrl+maj+v``` et appuyez sur la touche ```Entrée``` :
 
-```bash
+```shell
 python run.py
 ```
 
 L'application devrait démarrer. Ouvrez ensuite votre navigateur web et saisissez le nom d'une route. Par exemple :
 
-```
+```shell
 localhost:5000/nomDeRoute
 ```
 
@@ -92,28 +93,28 @@ Nos différentes routes sont consultables dans [ce dossier]().
 - Dans le terminal, maintenez la touche ```ctrl``` enfoncée et appuyez sur la touche ```c``` ;
 - Collez-y ensuite la ligne suivante avec ```ctrl+maj+v``` et appuyez sur la touche ```Entrée``` :
 
-```bash
+```shell
 deactivate
 ```
 
 ## Instructions : mémo
 
 Pour lancer l'application :
-```bash
+```shell
 cd cheminJusqu'auDossierApplication
 ```
 
-```bash
+```shell
 source env/bin/activate
 ```
 
-```bash
+```shell
 python run.py
 ```
 
 Pour quitter l'application :
 - Maintenir ```ctrl``` et appuyer sur ```c``` ;
 
-```bash
+```shell
 deactivate
 ```

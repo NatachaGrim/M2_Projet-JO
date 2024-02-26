@@ -14,6 +14,15 @@ Notre application dispose des fonctionnalités suivantes :
 ## Variables
 Les variables sont indispensables au bon fonctionnement de l'application. Vous devrez les ajouter manuellement dans un fichier. Copiez-collez simplement ce bloc de texte :
 
+```text
+DEBUG=False
+SQLALCHEMY_DATABASE_URI= [URI DE LA BASE SQLITE]
+PER_PAGE = 10 
+SQLALCHEMY_ECHO=False
+WTF_CSRF_ENABLE=True
+SECRET_KEY=[LA CLÉ SERA ENVOYÉE PAR MAIL]
+```
+
 ## Instructions : un premier lancement
 
 ### Étape 1 : installer Python

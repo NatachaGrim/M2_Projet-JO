@@ -1,7 +1,7 @@
 from ..app import app, db
 from flask import render_template, request, flash, redirect, url_for
 from sqlalchemy import or_
-from ..models.factbook import Country, Resources, Map, Elevation
+from ..models.Jeux_Olympiques import Country, Resources, Map, Elevation
 from ..models.formulaires import Recherche
 from ..utils.transformations import nettoyage_string_to_int, clean_arg
 from flask_login import login_required

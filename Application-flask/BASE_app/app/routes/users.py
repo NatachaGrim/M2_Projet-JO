@@ -1,6 +1,6 @@
 from ..app import app, db, login
 from flask import render_template, request, flash, abort, redirect, url_for, abort 
-from ..models.factbook import Country, Resources, Map
+from ..models.Jeux_Olympiques import Country, Resources, Map
 from ..models.formulaires import InsertionPays, InsertionUsers, Connexion
 from ..utils.transformations import clean_arg
 from ..models.users import Users

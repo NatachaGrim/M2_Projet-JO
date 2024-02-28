@@ -26,9 +26,6 @@ class Formulaire(db.Model):
     noc = db.Column(db.String(3))
     year = db.Column(db.DateTime)
     
-   
-    
-
     def __repr__(self):
         return '<Formulaire %r>' % (self.noc) 
 
@@ -41,9 +38,9 @@ class Medailles(db.Model):
     bronze= db.Column(db.Integer)
     total = db.Column(db.Integer)
 
-    
     def __repr__(self):
         return '<Boundaries %r>' % (self.total) 
+
 
 class Pays(db.Model):
     __tablename__ = "pays"
@@ -54,8 +51,6 @@ class Pays(db.Model):
     longitude =db.Column(db.Float)
 
     # propriétés de relation (à ajouter)
-
-
-   
+ 
     def __repr__(self):
         return '<Pays %r>' % (self.nom)

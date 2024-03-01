@@ -30,7 +30,7 @@ class Donnees(db.Model):
     __tablename__ = "donnees"
 
     id_team = db.Column(db.String(45), db.ForeignKey('formulaire.id_team'), nullable=False)
-    population = db.Column(db.Integer)
+    population = db.Column(db.Integer, primary_key=True)
     richesse = db.Column(db.Float)
     investissement = db.Column(db.Float)
 
@@ -44,10 +44,7 @@ class Medailles(db.Model):
     gold = db.Column(db.Integer)
     silver = db.Column(db.Integer)
     bronze= db.Column(db.Integer)
-    total = db.Column(db.Integer)
+    total = db.Column(db.Integer, primary_key=True)
 
     def __repr__(self):
         return '<Medailles %r>' % (self.id_team) 
-
-
-

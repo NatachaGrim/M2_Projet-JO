@@ -1,5 +1,7 @@
-# from flask_wtf import FlaskForm
-# from wtforms import StringField, SelectField, SelectMultipleField, TextAreaField, validators
+from flask_wtf import FlaskForm
+from wtforms import StringField, SelectField, SelectMultipleField, TextAreaField, validators
+
+
 # class Recherche(FlaskForm):
 #     nom_pays = StringField("nom_pays", validators=[]) 
 #     ressources = SelectField('ressources', choices=[('', ''),('PET', 'pétrole'), ('GOL', 'or')])
@@ -14,14 +16,14 @@
 #     continent = SelectField('ressources', choices=[('', ''),('Europe', 'Europe'), ('Asia', 'Asie'), ('Africa', 'Afrique'), ('Oceania', 'Océanie'), ('North America', 'Amérique du Nord')])
 
 
-# class InsertionUsers(FlaskForm):
-#     mail = StringField("mail", validators=[
-#         validators.DataRequired(),
-#         validators.Email(message="Format d'email invalide")
-#     ])
-#     prenom = StringField("prenom", validators=[validators.Length(min = 3, message="Le prénom doit être constitué d'au moins trois caractères")])
-#     mot_de_passe = StringField("mot_de_passe", validators=[validators.Length(min = 6, message="Le mot de passe doit être constitué d'au moins six caractères")])
+class InsertionUsers(FlaskForm):
+    mail = StringField("mail", validators=[
+        validators.DataRequired(),
+        validators.Email(message="Format d'email invalide")
+    ])
+    pseudo = StringField("pseudo", validators=[validators.Length(min = 3, message="Le prénom doit être constitué d'au moins trois caractères")])
+    mot_de_passe = StringField("mot_de_passe", validators=[validators.Length(min = 6, message="Le mot de passe doit être constitué d'au moins six caractères")])
 
-# class Connexion(FlaskForm):
-#        mail = StringField("mail", validators=[validators.DataRequired(),validators.Email(message="Format d'email invalide")]) 
-#        mot_de_passe = StringField("mot_de_passe", validators=[validators.Length(min = 6, message="Le mot de passe est constitué d'au moins six caractères")])
+class Connexion(FlaskForm):
+       mail = StringField("mail", validators=[validators.DataRequired(),validators.Email(message="Format d'email invalide")]) 
+       mot_de_passe = StringField("mot_de_passe", validators=[validators.Length(min = 6, message="Le mot de passe doit être constitué d'au moins six caractères")])

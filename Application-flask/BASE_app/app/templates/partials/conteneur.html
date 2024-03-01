@@ -32,7 +32,16 @@
             aria-haspopup="true" aria-expanded="false">
             Insertions
           </a>
-      
+
+
+          {% if current_user.is_authenticated %}
+          <li class="nav-item active  ">
+            <a class="nav-link" href="{{ url_for('deconnexion') }}">Se déconnecter ({{utilisateur.mail}})</a>
+          {% else %}
+          <a class="nav-link" href="{{ url_for('connexion') }}">Se connecter</a>
+          <a class = "nav-link" href="{{ url_for ('insertion_utilisateur')}}">Créer un compte</a>
+          {% endif %}
+          
            
           </div>
         </li>

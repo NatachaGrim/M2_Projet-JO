@@ -20,10 +20,11 @@ def connexion(page=1):
         if form.validate_on_submit():
             
             
+            
             mot_de_passe = clean_arg(request.form.get("mot_de_passe", None))
             
             mail = clean_arg(request.form.get("mail", None))
-            print(mail)
+            
             if current_user.is_authenticated is False:
                 if mail and mot_de_passe: 
                         
@@ -36,8 +37,8 @@ def connexion(page=1):
                 else:
                         flash(f"Impossible de vous connecter, merci de merci vos informations de connexion.", 'error')
             else:
-                flash("Merci d'indiquer votre identifiant (prénom) et mot de passe.", 'info')
-     
+                flash(f"Merci d'indiquer votre identifiant (mail) et mot de passe.", 'info')
+
     
     except Exception as e:
             print("Une erreur est surveneue : " + str(e))#Ça c'est l'erreur qui s'affichera dans les logs (back office)

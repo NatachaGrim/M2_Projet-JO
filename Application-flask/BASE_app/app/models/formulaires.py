@@ -21,7 +21,7 @@ class InsertionUsers(FlaskForm):
         validators.DataRequired(),
         validators.Email(message="Format d'email invalide")
     ])
-    pseudo = StringField("pseudo", validators=[validators.Length(min = 3, message="Le prénom doit être constitué d'au moins trois caractères")])
+    pseudo = StringField("pseudo", validators=[validators.Length(min = 3, message="Le pseudo doit être constitué d'au moins trois caractères")])
     mot_de_passe = StringField("mot_de_passe", validators=[validators.Length(min = 6, message="Le mot de passe doit être constitué d'au moins six caractères")])
 
 class Connexion(FlaskForm):

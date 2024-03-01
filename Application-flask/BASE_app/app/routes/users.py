@@ -4,19 +4,29 @@ from ..models.Jeux_Olympiques import Donnees, Formulaire, Medailles, Pays
 from ..models.formulaires import InsertionUsers, Connexion
 from ..utils.transformations import clean_arg
 from ..models.users import Users
-
-from flask_login import  current_user, logout_user, login_user
+from flask_login import current_user, logout_user, login_user
 
 @app.route("/connexion", methods=['GET', 'POST'])
 @app.route("/connexion/<int:page>", methods=['GET', 'POST'])
 def connexion(page=1):
-    
+    """
+    Route pour gérer la connexion des utilisateurs. 
+
+    Parameters
+    ----------
+    page : int, optional
+        Numéro de la page actuelle, par défaut à 1.
+
+    Returns
+    -------
+    template
+        Retourne le template de la page de connexion avec les données nécessaires.
+    """
     form = Connexion()
     utilisateur = ""
     try:
-       
         donnees = [] # Initialiser données comme une liste vide
-
+        administrateur = None #Administrateur comme None
         if form.validate_on_submit():
             
             
@@ -29,31 +39,41 @@ def connexion(page=1):
                 if mail and mot_de_passe: 
                         
                         utilisateur = Users().Identification(mail=mail, password=mot_de_passe)
-                        if utilisateur:
+                        #L'utilisateur sera connecté dans tous les cas, mais si elle adminstrateur (le booléen "administrateur de la base aura été mis à 1") il sera connecté en tant qu'administrateur
+                        if utilisateur.administrateur == 0  : 
                             login_user(utilisateur)
+                            administrateur = "journaliste"
 
                             flash(f"{utilisateur.mail} est désormais connecté.", 'success')
-                        
+                        elif utilisateur.administrateur == 1:
+                             login_user(utilisateur)
+                             flash(f"{utilisateur.mail} est désormais connecté en tant qu'administrateur.", 'success')
+                             administrateur = "administrateur"
                 else:
                         flash(f"Impossible de vous connecter, merci de merci vos informations de connexion.", 'error')
             else:
                 flash(f"Merci d'indiquer votre identifiant (mail) et mot de passe.", 'info')
 
-    
     except Exception as e:
-            print("Une erreur est surveneue : " + str(e))#Ça c'est l'erreur qui s'affichera dans les logs (back office)
-            flash("Une erreur s'est produite lors de l'ajout de l'utilisateur, avez-vous respecté les contraintes de saisie ?" + str(e), 'info') #ça c'est pour notre utilisateur ('error' ne produit pas de résultats semble-il)
-            db.session.rollback() #on fait un rollback pour éviter de lock la base
-            
-          
+        print("Une erreur est survenue : " + str(e))
+        flash("Une erreur s'est produite lors de l'ajout de l'utilisateur, avez-vous respecté les contraintes de saisie ?" + str(e), 'info')
+        db.session.rollback()
 
-    return render_template("pages/connexion.html", sous_titre="Recherche", donnees=donnees, form=form, utilisateur=utilisateur)
+    return render_template("pages/connexion.html", sous_titre="Recherche", donnees=donnees, form=form, utilisateur=utilisateur, administrateur=administrateur)
 
-@app.route("/utilisateurs/deconnexion", methods=["POST", "GET"]) #route pour la déconnexion
+@app.route("/utilisateurs/deconnexion", methods=["POST", "GET"])
 def deconnexion():
+    """
+    Route pour gérer la déconnexion des utilisateurs.
+
+    Ne retourne rien 
+    -------
+    redirect
+        Redirige vers la page d'accueil après la déconnexion.
+    """
     if current_user.is_authenticated is True:
         logout_user()
     flash("Vous êtes déconnecté", "info")
     return redirect(url_for("accueil"))
 
-login.login_view = "connexion" #permet de rediriger l'utilisateur vers la page de connexion quand il essaie d'accéder à une page de connexion et qu'il n'est pas connecté 
+login.login_view = "connexion"

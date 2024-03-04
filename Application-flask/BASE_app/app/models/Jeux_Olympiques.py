@@ -93,8 +93,8 @@ class Donnees(db.Model):
 
     __tablename__ = "donnees"
 
-    id_team = db.Column(db.String(45), db.ForeignKey('formulaire.id_team'), nullable=False)
-    population = db.Column(db.Integer, primary_key=True)
+    id_team = db.Column(db.String(45), db.ForeignKey('formulaire.id_team'),  primary_key=True, nullable=False)
+    population = db.Column(db.Integer)
     richesse = db.Column(db.Float)
     investissement = db.Column(db.Float)
 
@@ -124,13 +124,14 @@ class Medailles(db.Model):
         Représente l'instance de Medailles par son identifiant d'équipe.
     """
 
+    
     __tablename__ = "medailles"
 
-    id_team = db.Column(db.String(45), db.ForeignKey('formulaire.id_team'), nullable=False)
-    gold = db.Column(db.Integer)
-    silver = db.Column(db.Integer)
-    bronze = db.Column(db.Integer)
-    total = db.Column(db.Integer, primary_key=True)
+    id_team = db.Column(db.String(45), db.ForeignKey('formulaire.id_team'), primary_key=True, nullable=False)
+    gold_count = db.Column(db.Integer)
+    silver_count = db.Column(db.Integer)
+    bronze_count = db.Column(db.Integer)
+    total = db.Column(db.Integer)
 
     def __repr__(self):
         return '<Medailles %r>' % (self.id_team)

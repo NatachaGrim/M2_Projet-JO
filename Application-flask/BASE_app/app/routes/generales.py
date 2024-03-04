@@ -2,7 +2,7 @@ from ..app import app, db
 from flask import render_template, request, flash, redirect, url_for
 from sqlalchemy import or_
 from ..models.Jeux_Olympiques import Pays, Donnees, Formulaire, Medailles
-# from ..models.formulaires import Recherche
+
 # from ..utils.transformations import nettoyage_string_to_int, clean_arg
 
 
@@ -14,9 +14,23 @@ def accueil():
 
     return render_template("pages/temp.html", data=data)
 
+"""
+    Route pour récupérer les données des formulaires soumis pour une année donnée.
 
+    Méthodes acceptées
+    ------------------
+    GET, POST
 
-from flask import request
+    Parameters
+    ----------
+    annee : int, optional
+        L'année pour laquelle récupérer les données. Par défaut, définie sur 1996.
+
+    Returns
+    -------
+    template
+        Retourne le template de la page de données avec les données nécessaires pour l'année sélectionnée et une liste des années disponibles.
+"""
 
 @app.route('/donnees', methods=['GET', 'POST'])
 def donnees():
@@ -38,44 +52,92 @@ def donnees():
 
     return render_template("pages/donnees.html", donnees=data, annees=annees, annee_actuelle=choix_annee)
 
+"""
+    Route pour récupérer des données spécifiques sur un pays donné.
 
-# @app.route("/recherche_rapide")
-# @app.route("/recherche_rapide/<int:page>")
-# @login_required
-# def recherche_rapide(page=1):
+    Méthodes acceptées
+    ------------------
+    GET
+
+    Parameters
+    ----------
+    nom_pays : str
+        Le nom du pays pour lequel récupérer les données.
+
+    Returns
+    -------
+    template
+        Retourne le template de la page de données par pays avec les données nécessaires pour le pays spécifié.
+"""
+@app.route("/donnees_pays/<nom_pays>")
+def donnees_pays(nom_pays):
     
-#     chaine =  request.args.get("chaine", None)
+    donnees_du_pays = db.session.query(
+        Formulaire.year, 
+        Medailles.total,
+        Medailles.gold_count,
+        Medailles.silver_count,
+        Medailles.bronze_count, 
+        Donnees.population, 
+        Donnees.investissement, 
+        Donnees.richesse,
+        Pays.nom) \
+            .join(Donnees, Formulaire.id_team == Donnees.id_team) \
+            .join(Medailles, Medailles.id_team == Donnees.id_team) \
+            .join(Pays, Pays.noc == Formulaire.noc) \
+            .filter(Pays.nom.ilike(f"%{nom_pays}%")).all()
 
-#     if chaine:
-#         resources = db.session.execute("""select a.id from country a 
-#             inner join country_resources b on b.id = a.id 
-#             inner join resources c on c.name = b.resource and (c.name like '%"""+chaine+"""%' or  c.id like '%"""+chaine+"""%')
-#             """).fetchall()
-        
-#         maps = db.session.execute("""select a.id from country a 
-#             inner join country_map b on b.id = a.id 
-#             inner join map  c on c.name = b.map_ref and (c.name like '%"""+chaine+"""%' or  c.id like '%"""+chaine+"""%')
-#             """).fetchall()
 
-#         resultats = Country.query.\
-#             filter(
-#                 or_(
-#                     Country.name.ilike("%"+chaine+"%"),
-#                     Country.type.ilike("%"+chaine+"%"),
-#                     Country.Introduction.ilike("%"+chaine+"%"),
-#                     Country.id.in_([r.id for r in resources] + [m.id for m in maps])
-#                 )
-#             ).\
-#             distinct(Country.name).\
-#             order_by(Country.name).\
-#             paginate(page=page, per_page=app.config["PAYS_PER_PAGE"])
-#     else:
-#         resultats = None
+    return render_template("pages/donnees_pays.html", nom_pays=nom_pays, donnees=donnees_du_pays)
+"""
+    Route pour effectuer une recherche rapide sur le nom des pays et récupérer les résultats paginés.
+
+    Méthodes acceptées
+    ------------------
+    GET
+
+    Parameters
+    ----------
+    chaine : str, optional
+        La chaîne de recherche pour filtrer les résultats des pays.
+
+    Returns
+    -------
+    template
+        Retourne le template des résultats de recherche avec les données paginées correspondant à la chaîne de recherche fournie.
+"""
+
+
+@app.route("/recherche_rapide")
+@app.route("/recherche_rapide/<int:page>")
+def recherche_rapide(page=1):
+    chaine = request.args.get("chaine", None)
+    resultats = None
+    
+    if chaine:
+        # Utilisation de la fonction filter() pour filtrer les résultats en fonction de la chaîne de recherche
+        donnees = db.session.query(
+            Formulaire.year, 
+            Pays.nom
+        ).join(Pays, Pays.noc == Formulaire.noc) \
+         .filter(
+             #notre recherche_rapide ne portera que sur le nom du pays car il nous a semblé que c'est la seule chose qu'on pourrait vouloir chercher dans notre base
+             Pays.nom.ilike(f"%{chaine}%")
+         ).group_by(
+            Formulaire.year, Pays.nom
+         ).paginate(page=page, per_page=10)  # Pagination: 10 résultats par page
+    else:
+        # Si aucune chaîne de recherche n'est fournie, retournez None
+        donnees = None
         
-#     return render_template("pages/resultats_recherche_pays.html", 
-#             sous_titre= "Recherche | " + chaine, 
-#             donnees=resultats,
-#             requete=chaine)
+    return render_template(
+        "pages/resultats_recherche.html", 
+        sous_titre="Recherche | " + chaine if chaine else "Recherche rapide",
+        donnees=donnees,
+        requete=chaine
+    )
+
+
 
 # @app.route("/recherche", methods=['GET', 'POST'])
 # @app.route("/recherche/<int:page>", methods=['GET', 'POST'])

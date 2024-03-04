@@ -2,10 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SelectField, SelectMultipleField, TextAreaField, validators
 
 
-# class Recherche(FlaskForm):
-#     nom_pays = StringField("nom_pays", validators=[]) 
-#     ressources = SelectField('ressources', choices=[('', ''),('PET', 'pétrole'), ('GOL', 'or')])
-#     continents = SelectField('ressources', choices=[('', ''),('Europe', 'Europe'), ('Asia', 'Asie'), ('Africa', 'Afrique'), ('Oceania', 'Océanie'), ('North America', 'Amérique du Nord')])
+
 
 # class InsertionPays(FlaskForm):
 #     code_pays =  StringField("code_pays", validators=[]) 

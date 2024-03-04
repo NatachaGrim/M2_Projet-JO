@@ -22,7 +22,7 @@
                 {% for pays in donnees.items %}
                    <ul>
                     <li> <a target="_blank" href="{{ url_for('donnees_pays', nom_pays=pays.nom) }}">
-                        {{pays.nom.replace(requete, '<span style="background-color: yellow;">{}</span>'.format(requete)) | safe}}
+                        {{pays.nom.replace(requete, '<span style="background-color: yellow;">{}</span>'.format(requete)) | safe}}, édition de {{pays.year}}
                     </a>
                 </li>
                 </ul>

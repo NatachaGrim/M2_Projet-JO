@@ -17,7 +17,8 @@ Les variables sont indispensables au bon fonctionnement de l'application. Vous d
 ```text
 DEBUG=False
 SQLALCHEMY_DATABASE_URI= [URI DE LA BASE SQLITE]
-PER_PAGE = 10 
+PAYS_PER_PAGE = 10 
+RESOURCES_PER_PAGE = 20
 SQLALCHEMY_ECHO=False
 WTF_CSRF_ENABLE=True
 SECRET_KEY=[LA CLÉ SERA ENVOYÉE PAR MAIL]

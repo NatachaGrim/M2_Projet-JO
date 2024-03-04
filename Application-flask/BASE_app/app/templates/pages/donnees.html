@@ -1,0 +1,42 @@
+{% extends "partials/conteneur.html" %}
+
+{% block body %}
+
+
+
+<h1> Tableau pour l'année {{donnees[0][0]}}</h1>
+
+<form action="{{ url_for('donnees') }}" method="post">
+    <select name="annee">
+        {% for annee in annees %}
+        <option value="{{ annee[0] }}" {% if annee[0] == annee_actuelle %}selected{% endif %}>{{ annee[0] }}</option>
+        {% endfor %}
+    </select>
+    <input type="submit" value="Mettre à jour">
+</form>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Pays</th>
+                <th scope="col">Population</th>
+                <th scope="col">Richesse</th>
+                <th scope="col">Investissements</th>
+                <th scope="col">Médailles</th>
+            </tr>
+        </thead>
+        <tbody>
+            {%for donnee in donnees%}
+            <tr>
+                <th scope="row">{{donnee[5]}}</th>
+                <td>{{donnee[2]}}</td>
+                <td>{{donnee[4]}}</td>
+                <td>{{donnee[3]}}</td>
+                <td>{{donnee[1]}}</td>
+            </tr>
+            {%endfor%}
+        </tbody>
+    </table>
+
+
+
+{% endblock %}

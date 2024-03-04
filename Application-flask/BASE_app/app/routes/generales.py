@@ -14,6 +14,31 @@ def accueil():
 
     return render_template("pages/temp.html", data=data)
 
+
+
+from flask import request
+
+@app.route('/donnees', methods=['GET', 'POST'])
+def donnees():
+    choix_annee = request.form.get('annee', default=1996, type=int)
+    data = db.session.query(
+        Formulaire.year, 
+        Medailles.total, 
+        Donnees.population, 
+        Donnees.investissement, 
+        Donnees.richesse,
+        Pays.nom) \
+            .join(Donnees, Formulaire.id_team == Donnees.id_team) \
+            .join(Medailles, Medailles.id_team == Donnees.id_team) \
+            .join(Pays, Pays.noc == Formulaire.noc) \
+            .filter(Formulaire.year == choix_annee) \
+            .group_by(Donnees.id_team, Formulaire.year, Medailles.total, Donnees.population, Donnees.investissement, Donnees.richesse).all()
+
+    annees = db.session.query(Formulaire.year.distinct()).order_by(Formulaire.year).all()
+
+    return render_template("pages/donnees.html", donnees=data, annees=annees, annee_actuelle=choix_annee)
+
+
 # @app.route("/recherche_rapide")
 # @app.route("/recherche_rapide/<int:page>")
 # @login_required

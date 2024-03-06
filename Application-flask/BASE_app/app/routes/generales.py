@@ -2,13 +2,15 @@ from ..app import app, db
 from flask import render_template, request, flash, redirect, url_for
 from sqlalchemy import or_
 from ..models.Jeux_Olympiques import Pays, Donnees, Formulaire, Medailles
-
+from flask_login import LoginManager, login_required
+# from .users import admin_required #import du décorateur admin requiered 
 # from ..utils.transformations import nettoyage_string_to_int, clean_arg
 
 
 
 
 @app.route("/")
+
 def accueil():
     data = Formulaire.query.all()
 
@@ -33,6 +35,7 @@ def accueil():
 """
 
 @app.route('/donnees', methods=['GET', 'POST'])
+
 def donnees():
     choix_annee = request.form.get('annee', default=1996, type=int)
     data = db.session.query(
@@ -69,6 +72,8 @@ def donnees():
     template
         Retourne le template de la page de données par pays avec les données nécessaires pour le pays spécifié.
 """
+
+
 @app.route("/donnees_pays/<nom_pays>")
 def donnees_pays(nom_pays):
     

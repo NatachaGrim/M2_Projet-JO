@@ -89,6 +89,7 @@ class Users(UserMixin, db.Model):
                 mail=mail,
                 pseudo=pseudo,
                 password=generate_password_hash(password)
+                
             )
             db.session.add(utilisateur)
             db.session.commit()
@@ -110,12 +111,18 @@ class Users(UserMixin, db.Model):
 
         Returns
         -------
-        app.models.users.Users
-            Instance de Users si l'identification est un succès, sinon None.
+        tuple or app.models.users.Users
+            Si l'identification est un succès :
+                - Si l'utilisateur est administrateur : (utilisateur, "administrateur")
+                - Sinon : utilisateur
+            Sinon : None
         """
-        utilisateur_mail = Users.query.filter(Users.mail == mail).first()
+        utilisateur = Users.query.filter(Users.mail == mail).first()
 
-        if utilisateur_mail and check_password_hash(utilisateur_mail.password, password):
-            return utilisateur_mail
+        if utilisateur and check_password_hash(utilisateur.password, password):
+            if utilisateur.administrateur: #on aurait pu écrire "if utilisateur.administrateur is True"
+                return utilisateur, "administrateur"
+            else:
+                return utilisateur
         else:
             return None

@@ -9,17 +9,6 @@ from functools import wraps
 from flask import abort
 
 
-
-
-
-
-
-
-
-
-
-
-
 @app.route("/connexion", methods=['GET', 'POST'])
 @app.route("/connexion/<int:page>", methods=['GET', 'POST'])
 def connexion(page=1):
@@ -42,48 +31,54 @@ def connexion(page=1):
         donnees = [] # Initialiser données comme une liste vide
         administrateur = None #Administrateur comme None
         if form.validate_on_submit():
-            
-            
-            
             mot_de_passe = clean_arg(request.form.get("mot_de_passe", None))
-            
             mail = clean_arg(request.form.get("mail", None))
-            
             if current_user.is_authenticated is False:
                 if mail and mot_de_passe: 
-                        
-                        utilisateur = Users().Identification(mail=mail, password=mot_de_passe, administrateur=administrateur)
-                        #L'utilisateur sera connecté dans tous les cas, mais si elle adminstrateur (le booléen "administrateur de la base aura été mis à 1") il sera connecté en tant qu'administrateur
-                        if utilisateur.administrateur == 0  : 
-                            login_user(utilisateur)
-                            
-                            administrateur = "journaliste"
+                    result = Users.Identification(password=mot_de_passe, mail=mail)
+                    if result:
+                        #is instance vérifie qu'un object est instance d'une classe
+                        if isinstance(result, tuple): # Vérifie si le résultat est un tuple (dans ma méthode() Identification, si l'utilisateur est administrateur je renvoie un tuple)
+                            utilisateur, administrateur = result # Déballe le tuple
 
-                            flash(f"{utilisateur.mail} est désormais connecté.", 'success')
-                        elif utilisateur.administrateur == 1:
-                             login_user(utilisateur)
-                             flash(f"{utilisateur.mail} est désormais connecté en tant qu'administrateur.", 'success')
-                             administrateur = "administrateur"
+                        else:
+                            utilisateur = result # L'utilisateur n'est pas administrateur
+                            administrateur = None
+                            print("utilisateur")
+                        if administrateur:
+                            login_user(utilisateur)
+                            flash(f"{utilisateur.mail} est désormais connecté en tant qu'administrateur.", 'success')
+                            
+
+                        else:
+                            login_user(utilisateur)
+                            flash(f"{utilisateur.mail} est désormais connecté en tant que journaliste.", 'success')
+                            
+
+                    else:
+                        flash("Adresse mail ou mot de passe incorrect.", 'error')
                 else:   
-                        flash(f"Impossible de vous connecter, merci de merci vos informations de connexion.", 'error')
+                    flash("Impossible de vous connecter, merci de fournir vos informations de connexion.", 'error')
             else:
-                flash(f"Merci d'indiquer votre identifiant (mail) et mot de passe.", 'info')
+                flash("Vous êtes déjà connecté.", 'info')
 
     except Exception as e:
         print("Une erreur est survenue : " + str(e))
-        flash("Une erreur s'est produite lors de l'ajout de l'utilisateur, avez-vous respecté les contraintes de saisie ?" + str(e), 'info')
+        flash("Une erreur s'est produite lors de la connexion, avez-vous respecté les contraintes de saisie ?" + str(e), 'info')
         db.session.rollback()
-
+    
     return render_template("pages/connexion.html", sous_titre="Recherche", donnees=donnees, form=form, utilisateur=utilisateur, administrateur=administrateur)
 
 
-# def admin_required(f): #défini un décorateur "admin_requiered" qui prend une fonction 'f' comme argiment
-#     @wraps(f) #permet de s'assurer que le décorateur "s'actualise" 
-#     def decorated_function(): #décorateur
-#         if not current_user.administrateur == 0: #Si l'utilisateur n'est pas administrateur 
-#             abort(403)  # Interdit (renvoie une erreur 403)
-#         return f() #sinon tout va bien 
-#     return decorated_function
+
+
+def admin_required(f): #défini un décorateur "admin_requiered" qui prend une fonction 'f' comme argiment
+    @wraps(f) #Ce décorateur permet de s'assurer que les métadonnées de la fonction originales soient inclues dans le décorateur
+    def decorated_function(): #décorateur
+        if not current_user.administrateur: #Si l'utilisateur n'est pas administrateur 
+            abort(403)  # Interdit (renvoie une erreur 403)
+        return f() #sinon tout va bien 
+    return decorated_function
 
 
 
@@ -100,6 +95,6 @@ def deconnexion():
     if current_user.is_authenticated is True:
         logout_user()
     flash("Vous êtes déconnecté", "info")
-    return redirect(url_for("accueil"))
+    return redirect(url_for("donnees"))
 
 login.login_view = "connexion"

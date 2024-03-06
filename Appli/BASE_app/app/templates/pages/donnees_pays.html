@@ -1,0 +1,36 @@
+{% extends "partials/conteneur.html" %}
+
+{% block body %}
+
+<h1>Données pour le pays {{ nom_pays }}</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Année</th>
+            <th scope="col">Population</th>
+            <th scope="col">Richesse</th>
+            <th scope="col">Investissements</th>
+            <th scope="col">Médailles d'or</th>
+            <th scope="col">Médailles d'argent</th>
+            <th scope="col">Médailles de bronze</th>
+            <th scope="col">Médailles (total)</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for donnee in donnees %}
+        <tr>
+            <td scope="row">{{donnee.year}}</td>
+            <td scope="row">{{donnee.population}}</td>
+            <td scope="row">{{donnee.richesse}}</td>
+            <td scope="row">{{donnee.investissement}}</td>
+            <td scope="row">{{donnee.gold_count}}</td>
+            <td scope="row">{{donnee.silver_count}}</td>
+            <td scope="row">{{donnee.bronze_count}}</td>
+            <td scope="row">{{donnee.total}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

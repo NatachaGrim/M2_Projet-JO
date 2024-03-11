@@ -1,0 +1,10 @@
+{% extends "partials/conteneur.html" %}
+
+{% block body %}
+    <h1>Vos équipes favorites</h1>
+    <ul>
+    {% for equipe in equipes_favorites %}
+        <li><a href="{{ url_for('donnees_pays', nom_pays=equipe) }}">{{ equipe }}</a></li>
+    {% endfor %}
+    </ul>
+{% endblock %}

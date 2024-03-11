@@ -4,6 +4,12 @@
 
 <h1>Données pour le pays {{ nom_pays }}</h1>
 
+<form class="form-inline" action="{{ url_for('ajouter_favoris', nom_pays=nom_pays) }}" method="post">
+    <button class="btn btn-outline-info" type="submit">Ajouter le pays aux favoris</button>
+</form>
+
+
+
 <table class="table">
     <thead>
         <tr>

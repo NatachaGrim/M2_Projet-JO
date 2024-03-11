@@ -35,16 +35,26 @@
           {% if current_user.is_authenticated %}
           {% if administrateur %}
               <li class="nav-item active">
-                  <a class="nav-link" href="{{ url_for('deconnexion') }}">Se déconnecter ({{ current_user.mail }})</a>
-                  <li>Vous êtes connecté en tant qu'administrateur (<b>{{ current_user.mail }}</b>)</li>
+                <a class="nav-link" href="{{ url_for('deconnexion') }}">Se déconnecter ({{ current_user.mail }})</a>
               </li>
+
+              <li class="nav-link">
+                Vous êtes connecté en tant qu'administrateur (<b>{{ current_user.mail }}</b>)
+              </li>
+              
                   
           {% else %} <!-- Si l'utilisateur n'est pas administrateur, il sera alors journaliste -->
               <li class="nav-item active">
                   <a class="nav-link" href="{{ url_for('deconnexion') }}">Se déconnecter ({{ current_user.mail }})</a>
-                  <li>Vous êtes connecté en tant que journaliste (<b>{{ current_user.mail }}</b>)</li>
+              </li>
+
+              <li class="nav-link">
+                Vous êtes connecté en tant que journaliste (<b>{{ current_user.mail }}</b>)
               </li>
           {% endif %}
+          <li class="nav-item active">
+            <a class="nav-link" href="{{ url_for('favoris') }}">Voir vos favoris </a>
+          </li>
       {% else %}
           <li class="nav-item">
               <a class="nav-link" href="{{ url_for('connexion') }}">Se connecter</a>

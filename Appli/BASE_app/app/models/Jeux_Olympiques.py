@@ -1,5 +1,5 @@
 from ..app import app, db
-
+from ..models import users 
 class Formulaire(db.Model):
     """
     Classe centrale, représentant tous les pays des jeux olympiques, identifiés par l'assemblage de leur NOC et l'année de leur participation.
@@ -62,7 +62,7 @@ class Pays(db.Model):
 
     noc = db.Column(db.String(3), primary_key=True, nullable=False, unique=True)
     nom = db.Column(db.String(100))
-    lattitude = db.Column(db.Float)
+    latitude = db.Column(db.Float)
     longitude = db.Column(db.Float)
 
     formulaires = db.relationship('Formulaire', backref='pays', lazy=True)
@@ -135,3 +135,35 @@ class Medailles(db.Model):
 
     def __repr__(self):
         return '<Medailles %r>' % (self.id_team)
+    
+
+
+class Favoris(db.Model):
+    """
+    Une classe représentant les pays mis en favoris par les utilisateurs.
+
+    Attributes
+    ----------
+    id : db.Column
+        Identifiant unique de l'objet mis en favoris, clé primaire de la table.
+    id_team : db.Column
+        Identifiant unique de l'équipe, clé étrangère reliant à la table 'formulaire'.
+    id_user : db.Column
+        Identifiant unique de l'utilisateur, clé étrangère reliant à la table "users" 
+
+    Methods
+    -------
+    __repr__(self)
+        Représente l'instance de Favoris par son identifiant d'équipe.
+    """
+
+    
+    __tablename__ = "favoris"
+
+    id = db.Column(db.Integer, primary_key=True)
+    id_team = db.Column(db.String(45), db.ForeignKey('formulaire.id_team'), nullable=False)
+    id_user = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    
+
+    def __repr__(self):
+        return '<Favoris %r>' % (self.id_team)

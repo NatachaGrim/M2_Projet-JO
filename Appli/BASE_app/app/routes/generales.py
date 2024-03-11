@@ -25,6 +25,7 @@ from .users import admin_required #import du décorateur admin requiered
         Retourne le template de la page de données avec les données nécessaires pour l'année sélectionnée et une liste des années disponibles.
 """
 @app.route("/")
+@app.route("/accueil")
 def accueil():
     return render_template("pages/accueil.html")
 

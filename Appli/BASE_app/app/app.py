@@ -13,4 +13,4 @@ db = SQLAlchemy(app)
 login = LoginManager(app)
 
 
-from .routes import generales, insertions, users, favoris
+from .routes import generales, insertions, users, favoris, graphiques

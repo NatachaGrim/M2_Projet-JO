@@ -32,9 +32,43 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="#connexion">Inscription / Connexion</a></li>
-                    
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('connexion') }}">Connexion</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('insertion_utilisateur') }}">Inscription</a></li>
                     <li class="nav-item"><a class="nav-link" href="#question">Recherche rapide</a></li>
+
+                     
+          {% if current_user.is_authenticated %}
+          {% if administrateur %}
+              <li class="nav-item active">
+                <a class="nav-link" href="{{ url_for('deconnexion') }}">Se déconnecter ({{ current_user.mail }})</a>
+              </li>
+
+              <li class="nav-link">
+                Vous êtes connecté en tant qu'administrateur (<b>{{ current_user.mail }}</b>)
+              </li>
+              
+                  
+          {% else %} <!-- Si l'utilisateur n'est pas administrateur, il sera alors journaliste -->
+              <li class="nav-item active">
+                  <a class="nav-link" href="{{ url_for('deconnexion') }}">Se déconnecter ({{ current_user.mail }})</a>
+              </li>
+
+              <li class="nav-link">
+                Vous êtes connecté en tant que journaliste (<b>{{ current_user.mail }}</b>)
+              </li>
+          {% endif %}
+          <li class="nav-item active">
+            <a class="nav-link" href="{{ url_for('favoris') }}">Voir vos favoris </a>
+          </li>
+      {% else %}
+          <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('connexion') }}">Se connecter</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('insertion_utilisateur') }}">Créer un compte</a>
+          </li>
+      {% endif %}
+      
                 </ul>
             </div>
         </div>
@@ -94,30 +128,9 @@
                     <div class="bg-black text-center h-100 project">
                         <div class="d-flex h-100">
                             <div class="project-text w-100 my-auto text-center text-lg-left">
-                                <h4 class="text-white">Se connecter ou s'inscire</h4>
+                                <h4 class="text-white"><a href="{{ url_for('connexion') }}" >Se connecter</a> / <a href="{{ url_for('insertion_utilisateur') }}"> S'inscire</a></h4>
 
-                                {% if current_user.is_authenticated %}
-                                {% if administrateur %}
-                                <li class="mb-0 text-white-50">Se déconnecter 
-                                    <a href="{{ url_for('deconnexion') }}">({{ current_user.mail }})</a>
-                                <li class="mb-0 text-white-50">Vous êtes connecté en tant qu'administrateur</li>
-                                </li>
-                                
-                                {% else %} <!-- Si l'utilisateur n'est pas administrateur, il sera alors journaliste -->
-                                <li class="mb-0 text-white-50">Se déconnecter 
-                                    <a href="{{ url_for('deconnexion') }}">({{ current_user.mail }})</a>
-                                <li class="mb-0 text-white-50">Vous êtes connecté en tant que journaliste</li>
-                                </li>
-                                {% endif %}
-
-                                {% else %}
-                                <li class="mb-0 text-white-50">
-                                    <a>Se connecter <a href="{{ url_for('connexion') }}">ici</a></a>
-                                </li>
-                                <li class="mb-0 text-white-50">
-                                    <a>Créer un compte <a href="{{ url_for('insertion_utilisateur') }}">ici</a></a>
-                                </li>
-                                {% endif %}
+                              
                             </div>
                         </div>
                     </div>

@@ -38,8 +38,8 @@ def graphiques():
         }
         data_json.append(feature)
         
-        with open('./app/templates/graphiques/data/donnees.js', 'w') as f:
+        with open('./app/statics/data/donnees.js', 'w') as f:
             f.write('var geojson_RAMA = ')
             json.dump({"features": data_json}, f)
 
-    return render_template("graphiques/graphiques.html")
+    return render_template("pages/graphiques.html")

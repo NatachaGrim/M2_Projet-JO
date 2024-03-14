@@ -12,11 +12,9 @@ class Config():
     SQLALCHEMY_ECHO = os.environ.get("SQLALCHEMY_ECHO", "False").lower() == "true"
     SECRET_KEY = os.environ.get("SECRET_KEY")
     WTF_CSRF_ENABLE = os.environ.get("WTF_CSRF_ENABLE", "True").lower() == "true"
-
     MAIL_SERVER = os.environ.get("MAIL_SERVER")
     MAIL_PORT = int(os.environ.get("MAIL_PORT"))  #il faut convertir en int cette valeur 
     MAIL_USERNAME = os.environ.get("MAIL_USERNAME")
-    MAIL_PASSWORD = os.environ.get("MAIL_PASSWORD")
+    SECRET_KEY = os.environ.get("MAIL_PASSWORD")
     MAIL_USE_TLS = os.environ.get("MAIL_USE_TLS")
-    MAIL_USE_SSL = os.environ.get("MAIL_USE_SSL")
     MAIL_DEFAULT_SENDER = os.environ.get("MAIL_DEFAULT_SENDER")

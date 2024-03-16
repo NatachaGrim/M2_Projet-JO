@@ -1,4 +1,3 @@
-// Création de la couche de tuiles
 var tiles = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}.png', {
     maxZoom: 8, // Niveau de zoom maximum réduit
     minZoom: 2, // Niveau de zoom minimum réduit
@@ -136,4 +135,3 @@ legend.onAdd = function(map) {
     return div;
 };
 legend.addTo(map);
-

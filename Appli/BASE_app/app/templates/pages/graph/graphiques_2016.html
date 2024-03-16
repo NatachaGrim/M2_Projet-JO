@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Graphique à Bulles des Données de 2016</title>
+    <!-- Chargement de la bibliothèque Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+    <!-- Chargement du plugin Chart.js pour les échelles logarithmiques -->
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-deferred@1.0.2/dist/chartjs-plugin-deferred.min.js"></script>
+    <!-- Chargement du plugin Chart.js pour les schémas de couleurs -->
+    <script type="text/javascript" src="https://github.com/nagix/chartjs-plugin-colorschemes/releases/download/v0.4.0/chartjs-plugin-colorschemes.js"></script>
+</head>
+<body>
+    <div style="text-align: center;">
+        <h1>Graphique pour l'année 2016</h1>
+        <h3><i>Le présent graphique ne fait pas apparaître les pays qui n'auraient pas de données pour la population ou la richesse pour l'année en question.</i></h3>
+    </div>
+
+    <!-- Création d'un élément canvas pour afficher le graphique -->
+    <canvas id="bubbleChart" width="800" height="600"></canvas>
+
+    <!-- Script JavaScript pour créer le graphique -->
+    <script>
+        // Récupération des données JSON depuis le fichier donnees_2016.json
+        fetch('/statics/data/donnees_2016.json')
+            .then(response => response.json())
+            .then(data => {
+                // Filtrage des valeurs nulles pour population et richesse
+                const filteredData = data.filter(item => item.population !== null && item.richesse !== null);
+                
+                // Détermination des valeurs minimales et maximales pour chaque axe
+                const richesseValues = filteredData.map(item => item.richesse);
+                const populationValues = filteredData.map(item => item.population);
+                const minRichesse = Math.min(...richesseValues);
+                const maxRichesse = Math.max(...richesseValues);
+                const minPopulation = Math.min(...populationValues);
+                const maxPopulation = Math.max(...populationValues);
+
+                // Création du graphique à bulles
+                const bubbleChartCanvas = document.getElementById('bubbleChart').getContext('2d');
+                const bubbleChart = new Chart(bubbleChartCanvas, {
+                    type: 'bubble', // Type de graphique
+                    data: {
+                        datasets: [{
+                            label: '', // Nous retirons l'étiquette ici car nous allons utiliser la légende personnalisée
+                            data: filteredData.map(item => ({
+                                x: item.richesse, // Coordonnée x (richesse)
+                                y: item.population, // Coordonnée y (population)
+                                r: getBubbleSize(item.medailles), // Taille du cercle en fonction du nombre de médailles
+                                country: item.pays, // Nom du pays
+                                medals: item.medailles // Nombre de médailles
+                            })),
+                            backgroundColor: function(context) {
+                                var value = context.dataset.data[context.dataIndex].medals;
+                                if (value === 0) {
+                                    return 'rgba(255, 99, 132, 0.6)'; // Couleur pour zéro médaille
+                                } else if (value < 10) {
+                                    return 'rgba(139, 69, 19, 0.6)'; // Couleur pour moins de 10 médailles (saddlebrown)
+                                } else if (value < 30) {
+                                    return 'rgba(192, 192, 192, 0.6)'; // Couleur pour moins de 30 médailles (silver)
+                                } else {
+                                    return 'rgba(255, 215, 0, 0.6)'; // Couleur pour plus de 30 médailles (gold)
+                                }
+                            },
+                            borderWidth: 1 // Largeur de la bordure des bulles
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            // Configuration de l'axe des abscisses (richesse)
+                            xAxes: [{
+                                type: 'logarithmic', // Échelle logarithmique
+                                position: 'bottom', // Position de l'axe
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: 'Richesse' // Étiquette de l'axe
+                                },
+                                ticks: {
+                                    min: minRichesse, // Valeur minimale
+                                    max: maxRichesse, // Valeur maximale
+                                    callback: function(value, index, values) {
+                                        return value.toLocaleString(); // Formatage des valeurs
+                                    }
+                                }
+                            }],
+                            // Configuration de l'axe des ordonnées (population)
+                            yAxes: [{
+                                type: 'logarithmic', // Échelle logarithmique
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: 'Population' // Étiquette de l'axe
+                                },
+                                ticks: {
+                                    min: minPopulation, // Valeur minimale
+                                    max: maxPopulation, // Valeur maximale
+                                    callback: function(value, index, values) {
+                                        return value.toLocaleString(); // Formatage des valeurs
+                                    }
+                                }
+                            }]
+                        },
+                        tooltips: {
+                            callbacks: {
+                                // Fonction pour afficher le nom du pays et le nombre de médailles dans les tooltips
+                                label: function(tooltipItem, data) {
+                                    const datasetLabel = data.datasets[tooltipItem.datasetIndex].label || '';
+                                    const dataPoint = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+                                    return dataPoint.country + ': ' + dataPoint.medals + ' médailles en 2016';
+                                }
+                            }
+                        },
+                        legend: {
+                            display: true, // Afficher la légende
+                            position: 'bottom', // Position de la légende
+                            labels: {
+                                // Fonction pour créer une légende personnalisée
+                                generateLabels: function(chart) {
+                                    return [
+                                        {
+                                            text: '0 médaille',
+                                            fillStyle: 'rgba(255, 99, 132, 0.6)' // Couleur pour zéro médaille
+                                        },
+                                        {
+                                            text: 'Moins de 10 médailles',
+                                            fillStyle: 'rgba(139, 69, 19, 0.6)' // Couleur pour moins de 10 médailles (saddlebrown)
+                                        },
+                                        {
+                                            text: 'Moins de 30 médailles',
+                                            fillStyle: 'rgba(192, 192, 192, 0.6)' // Couleur pour moins de 30 médailles (silver)
+                                        },
+                                        {
+                                            text: 'Plus de 30 médailles',
+                                            fillStyle: 'rgba(255, 215, 0, 0.6)' // Couleur pour plus de 30 médailles (gold)
+                                        }
+                                    ];
+                                }
+                            }
+                        }
+                    }
+                });
+
+                // Fonction pour ajuster la taille des bulles en fonction du nombre de médailles
+                function getBubbleSize(medals) {
+                    if (medals === 0) {
+                        return 5; // Taille pour zéro médaille
+                    } else if (medals < 10) {
+                        return 10; // Taille pour moins de 10 médailles
+                    } else if (medals < 30) {
+                        return 20; // Taille pour moins de 30 médailles
+                    } else {
+                        return 30; // Taille pour plus de 30 médailles
+                    }
+                }
+            })
+            .catch(error => console.error('Erreur lors de la récupération des données JSON:', error));
+    </script>
+</body>
+</html>

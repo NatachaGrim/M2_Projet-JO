@@ -1,0 +1,96 @@
+{% extends "partials/conteneur.html" %}
+
+{% block body %}
+
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Les visualisations</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item active">Cette page propose quelques visualisations issues des jeux de
+            données</li>
+    </ol>
+    <div class="row">
+        <div class="col-xl-2 col-md-4">
+            <div class="card bg-primary text-white mb-4">
+                <img src="/statics/assets/img/atlanta.png" class="img-fluid">
+                <div class="card-body">Atlanta 1996</div>
+                <div class="card-footer d-flex align-items-center justify-content-between">
+                    <a class="small text-white stretched-link" href="{{ url_for('graphiques_1996') }}">La
+                        visualisation</a>
+                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-2 col-md-4">
+            <div class="card bg-warning text-white mb-4">
+                <img src="/statics/assets/img/sydney.png" class="img-fluid">
+                <div class="card-body">Sydney 2000</div>
+                <div class="card-footer d-flex align-items-center justify-content-between">
+                    <a class="small text-white stretched-link" href="{{ url_for('graphiques_2000') }}">La
+                        visualisation</a>
+                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-2 col-md-4">
+            <div class="card bg-success text-white mb-4" class="img-fluid">
+                <img src="/statics/assets/img/athens.png">
+                <div class="card-body">Athènes 2004</div>
+                <div class="card-footer d-flex align-items-center justify-content-between">
+                    <a class="small text-white stretched-link" href="{{ url_for('graphiques_2004') }}">La
+                        visualisation</a>
+                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-2 col-md-4">
+            <div class="card bg-danger text-white mb-4" class="img-fluid">
+                <img src="/statics/assets/img/pekin.png">
+                <div class="card-body">Pékin 2008</div>
+                <div class="card-footer d-flex align-items-center justify-content-between">
+                    <a class="small text-white stretched-link" href="{{ url_for('graphiques_2008') }}">La
+                        visualisation</a>
+                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-2 col-md-4">
+            <div class="card bg-primary text-white mb-4">
+                <img src="/statics/assets/img/londres.png" class="img-fluid">
+                <div class="card-body">Londres 2012</div>
+                <div class="card-footer d-flex align-items-center justify-content-between">
+                    <a class="small text-white stretched-link" href="{{ url_for('graphiques_2012') }}">La
+                        visualisation</a>
+                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-2 col-md-4">
+            <div class="card bg-warning text-white mb-4" class="img-fluid">
+                <img src="/statics/assets/img/rio.png">
+                <div class="card-body">Rio 2016</div>
+                <div class="card-footer d-flex align-items-center justify-content-between">
+                    <a class="small text-white stretched-link" href="{{ url_for('graphiques_2016') }}">La
+                        visualisation</a>
+                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <i class="fas fa-map me-1"></i>
+        La carte interactive
+    </div>
+    <div class="card-body">
+        <img src="/statics/assets/img/carte.png" class="img-fluid" alt="Description de l'image">
+        <canvas id="myBarChart" width="100%" height="40"></canvas>
+    </div>
+    <div class="card-footer d-flex align-items-center justify-content-between">
+        <a class="small text-dark stretched-link" href="{{ url_for('carte') }}">Explorer</a>
+        <div class="small text-dark"><i class="fas fa-angle-right"></i></div>
+    </div>
+</div>
+
+{% endblock %}

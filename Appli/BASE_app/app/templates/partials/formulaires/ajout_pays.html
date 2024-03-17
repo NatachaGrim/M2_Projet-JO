@@ -1,0 +1,29 @@
+<form action="{{url_for('insertion_pays')}}" method="post" name="ajout_pays">
+    {{ form.hidden_tag() }}
+
+    <div class="form-group">
+        <label for="code_pays">NOC</label>
+        {{ form.code_pays(class_="form-control", placeholder_="saisir le code NOC (3 lettres en majuscules)") }}
+        <small id="code_pays" class="form-text text-muted">Entrer le code NOC du pays</small>
+    </div>
+
+    <div class="form-group">
+        <label for="nom_pays">Nom</label>
+        {{ form.nom_pays(class_="form-control", placeholder_="saisir le nom du pays (ne pas oublier les majuscules)") }}
+        <small id="nom_pays" class="form-text text-muted">Entrer le nom du pays</small>
+    </div>
+
+    <div class="form-group">
+        <label for="latitude_pays">Latitude</label>
+        {{ form.latitude_pays(class_="form-control", placeholder_="sasir la latitude (comprise entre -90° et 90°)") }}
+        <small id="latitude_pays" class="form-text text-muted">Entrer la latitude du pays</small>
+    </div>
+
+    <div class="form-group">
+        <label for="longitude_pays">Longitude</label>
+        {{ form.longitude_pays(class_="form-control", placeholder_="saisir la longitude (comprise entre -180° et 180°)") }}
+        <small id="longitude_pays" class="form-text text-muted">Entrer la longitude du pays</small>
+    </div>
+
+    <p><input type="submit" value="Insérer"></p>
+</form>

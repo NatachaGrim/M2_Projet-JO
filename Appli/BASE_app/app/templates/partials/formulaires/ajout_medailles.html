@@ -1,0 +1,35 @@
+<form action="{{url_for('insertion_medailles')}}" method="post" name="ajout_medailles">
+    {{ form.hidden_tag() }}
+
+    <div class="form-group">
+        <label for="code_pays">NOC</label>
+        {{ form.code_pays(class_="form-control", placeholder_="saisir le code NOC (3 lettres en majuscules)") }}
+        <small id="code_pays" class="form-text text-muted">Entrer le code NOC du pays</small>
+    </div>
+
+    <div class="form-group">
+        <label for="annee_participation">Année</label>
+        {{ form.annee_participation(class_="form-control", placeholder_="saisir l'année au format YYYY") }}
+        <small id="annee_participation" class="form-text text-muted">Entrer l'année de participation</small>
+    </div>
+
+    <div class="form-group">
+        <label for="gold">Médailles d'or</label>
+        {{ form.gold(class_="form-control", placeholder_="saisir le nombre de médailles (0 si aucune remportée)") }}
+        <small id="gold" class="form-text text-muted">Entrer le nombre de médailles d'or remportées</small>
+    </div>
+
+    <div class="form-group">
+        <label for="silver">Médailles d'argent</label>
+        {{ form.silver(class_="form-control", placeholder_="saisir le nombre de médailles (0 si aucune remportée)") }}
+        <small id="silver" class="form-text text-muted">Entrer le nombre de médailles d'argent remportées</small>
+    </div>
+
+    <div class="form-group">
+        <label for="bronze">Médailles de bronze</label>
+        {{ form.bronze(class_="form-control", placeholder_="saisir le nombre de médailles (0 si aucune remportée)") }}
+        <small id="bronze" class="form-text text-muted">Entrer le nombre de médailles de bronze remportées</small>
+    </div>
+
+    <p><input type="submit" value="Insérer"></p>
+</form>

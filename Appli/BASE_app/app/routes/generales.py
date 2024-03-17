@@ -35,22 +35,30 @@ def accueil():
 
 def donnees():
     choix_annee = request.form.get('annee', default=1996, type=int)
-    data = db.session.query(
-        Formulaire.year, 
-        Medailles.total, 
-        Donnees.population, 
-        Donnees.investissement, 
-        Donnees.richesse,
-        Pays.nom) \
-            .join(Donnees, Formulaire.id_team == Donnees.id_team) \
-            .join(Medailles, Medailles.id_team == Donnees.id_team) \
-            .join(Pays, Pays.noc == Formulaire.noc) \
-            .filter(Formulaire.year == choix_annee) \
-            .group_by(Donnees.id_team, Formulaire.year, Medailles.total, Donnees.population, Donnees.investissement, Donnees.richesse).all()
+    try:
+        data = db.session.query(
+            Formulaire.year, 
+            Medailles.total, 
+            Donnees.population, 
+            Donnees.investissement, 
+            Donnees.richesse,
+            Pays.nom) \
+                .join(Donnees, Formulaire.id_team == Donnees.id_team) \
+                .join(Medailles, Medailles.id_team == Donnees.id_team) \
+                .join(Pays, Pays.noc == Formulaire.noc) \
+                .filter(Formulaire.year == choix_annee) \
+                .group_by(Donnees.id_team, Formulaire.year, Medailles.total, Donnees.population, Donnees.investissement, Donnees.richesse).all()
 
-    annees = db.session.query(Formulaire.year.distinct()).order_by(Formulaire.year).all()
-
-    return render_template("pages/donnees.html", donnees=data, annees=annees, annee_actuelle=choix_annee)
+    
+        annees = db.session.query(Formulaire.year.distinct()).order_by(Formulaire.year).all()
+        if data:
+            if annees:
+                return render_template("pages/donnees.html", donnees=data, annees=annees, annee_actuelle=choix_annee)
+        else:
+            abort(404)
+    except Exception as e:
+        print(e)
+        abort(500)
 
 """
     Route pour récupérer des données spécifiques sur un pays donné.
@@ -73,24 +81,29 @@ def donnees():
 
 @app.route("/donnees_pays/<nom_pays>")
 def donnees_pays(nom_pays):
+    try:
+        donnees_du_pays = db.session.query(
+            Formulaire.year, 
+            Medailles.total,
+            Medailles.gold_count,
+            Medailles.silver_count,
+            Medailles.bronze_count, 
+            Donnees.population, 
+            Donnees.investissement, 
+            Donnees.richesse,
+            Pays.nom) \
+                .join(Donnees, Formulaire.id_team == Donnees.id_team) \
+                .join(Medailles, Medailles.id_team == Donnees.id_team) \
+                .join(Pays, Pays.noc == Formulaire.noc) \
+                .filter(Pays.nom.ilike(f"%{nom_pays}%")).all()
+        if donnees_du_pays:
+            return render_template("pages/donnees_pays.html", nom_pays=nom_pays, donnees=donnees_du_pays)
+        else:
+            abort(404)
+    except Exception as e:
+        print(e)
+        abort(500)
     
-    donnees_du_pays = db.session.query(
-        Formulaire.year, 
-        Medailles.total,
-        Medailles.gold_count,
-        Medailles.silver_count,
-        Medailles.bronze_count, 
-        Donnees.population, 
-        Donnees.investissement, 
-        Donnees.richesse,
-        Pays.nom) \
-            .join(Donnees, Formulaire.id_team == Donnees.id_team) \
-            .join(Medailles, Medailles.id_team == Donnees.id_team) \
-            .join(Pays, Pays.noc == Formulaire.noc) \
-            .filter(Pays.nom.ilike(f"%{nom_pays}%")).all()
-
-
-    return render_template("pages/donnees_pays.html", nom_pays=nom_pays, donnees=donnees_du_pays)
 """
     Route pour effectuer une recherche rapide sur le nom des pays et récupérer les résultats paginés.
 
@@ -115,29 +128,29 @@ def donnees_pays(nom_pays):
 def recherche_rapide(page=1):
     chaine = request.args.get("chaine", None)
     resultats = None
-    
-    if chaine:
-        # Utilisation de la fonction filter() pour filtrer les résultats en fonction de la chaîne de recherche
-        donnees = db.session.query(
-            Formulaire.year, 
-            Pays.nom
-        ).join(Pays, Pays.noc == Formulaire.noc) \
-         .filter(
-             #notre recherche_rapide ne portera que sur le nom du pays car il nous a semblé que c'est la seule chose qu'on pourrait vouloir chercher dans notre base
-             Pays.nom.ilike(f"%{chaine}%")
-         ).group_by(
-            Formulaire.year, Pays.nom
-         ).paginate(page=page, per_page=10)  # Pagination: 10 résultats par page
-    else:
-        # Si aucune chaîne de recherche n'est fournie, retournez None
-        donnees = None
-        
-    return render_template(
-        "pages/resultats_recherche.html", 
-        sous_titre="Recherche | " + chaine if chaine else "Recherche rapide",
-        donnees=donnees,
-        requete=chaine
-    )
-
-
-
+    try:
+        if chaine:
+            # Utilisation de la fonction filter() pour filtrer les résultats en fonction de la chaîne de recherche
+            donnees = db.session.query(
+                Formulaire.year, 
+                Pays.nom
+            ).join(Pays, Pays.noc == Formulaire.noc) \
+            .filter(
+                #notre recherche_rapide ne portera que sur le nom du pays car il nous a semblé que c'est la seule chose qu'on pourrait vouloir chercher dans notre base
+                Pays.nom.ilike(f"%{chaine}%")
+            ).group_by(
+                Formulaire.year, Pays.nom
+            ).paginate(page=page, per_page=10)  # Pagination: 10 résultats par page
+        else:
+            # Si aucune chaîne de recherche n'est fournie, retournez None
+            donnees = None
+            
+        return render_template(
+            "pages/resultats_recherche.html", 
+            sous_titre="Recherche | " + chaine if chaine else "Recherche rapide",
+            donnees=donnees,
+            requete=chaine
+        )
+    except Exception as e:
+        print(e)
+        abort(500)

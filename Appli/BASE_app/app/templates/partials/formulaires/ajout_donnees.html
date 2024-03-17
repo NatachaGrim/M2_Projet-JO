@@ -1,0 +1,35 @@
+<form action="{{url_for('insertion_donnees')}}" method="post" name="ajout_donnees">
+    {{ form.hidden_tag() }}
+
+    <div class="form-group">
+        <label for="code_pays">NOC</label>
+        {{ form.code_pays(class_="form-control", placeholder_="saisir le code NOC (3 lettres en majuscules)") }}
+        <small id="code_pays" class="form-text text-muted">Entrer le code NOC du pays</small>
+    </div>
+
+    <div class="form-group">
+        <label for="annee_participation">Année</label>
+        {{ form.annee_participation(class_="form-control", placeholder_="saisir l'année au format YYYY") }}
+        <small id="annee_participation" class="form-text text-muted">Entrer l'année de participation</small>
+    </div>
+
+    <div class="form-group">
+        <label for="population_pays">Population</label>
+        {{ form.population_pays(class_="form-control", placeholder_="saisir la population du pays") }}
+        <small id="population_pays" class="form-text text-muted">Entrer la population du pays</small>
+    </div>
+
+    <div class="form-group">
+        <label for="richesse_pays">PIB</label>
+        {{ form.richesse_pays(class_="form-control", placeholder_="saisir le PIB du pays (valeur entière)") }}
+        <small id="richesse_pays" class="form-text text-muted">Entrer le PIB du pays</small>
+    </div>
+
+    <div class="form-group">
+        <label for="investissement_pays">Niveau d'investissement</label>
+        {{ form.investissement_pays(class_="form-control", placeholder_="saisir le montant investi (utiliser le point comme séparateur)") }}
+        <small id="investissement_pays" class="form-text text-muted">Entrer le montant de l'investissement dans le domaine sportif</small>
+    </div>
+
+    <p><input type="submit" value="Insérer"></p>
+</form>

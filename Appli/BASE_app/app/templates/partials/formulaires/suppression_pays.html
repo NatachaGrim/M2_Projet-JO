@@ -1,0 +1,11 @@
+<form action="{{url_for('suppression_pays')}}" method="post" name="suppression_pays">
+    {{ form.hidden_tag() }}
+
+    <div class="form-group">
+        <label for="code_pays">NOC</label>
+        {{ form.code_pays(class_="form-control", placeholder_="saisir le code NOC (3 lettres en majuscules)") }}
+        <small id="code_pays" class="form-text text-muted">Entrer le code NOC du pays</small>
+    </div>
+
+    <p><input type="submit" value="Insérer"></p>
+</form>

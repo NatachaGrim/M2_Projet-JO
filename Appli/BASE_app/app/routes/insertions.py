@@ -1,52 +1,11 @@
 from ..app import app, db
-from flask import render_template, request, flash, abort
+from flask import render_template, request, flash, abort, redirect, url_for
 from ..models.Jeux_Olympiques import Pays, Donnees, Medailles, Formulaire
-from ..models.formulaires import InsertionUsers
+from ..models.formulaires import InsertionUsers, AjoutAll
 from ..utils.transformations import clean_arg
+from flask_login import current_user, logout_user, login_user, login_required
 from ..models.users import Users
-
-# @app.route("/insertions/pays", methods=['GET', 'POST'])
-# def insertion_pays():
-#     form = InsertionPays() 
-
-#     try:
-#         if form.validate_on_submit():
-#             nom_pays =  clean_arg(request.form.get("nom_pays", None))
-#             code_pays =  clean_arg(request.form.get("code_pays", None))
-#             type =  clean_arg(request.form.get("type", None))
-#             introduction =  clean_arg(request.form.get("introduction", None))
-#             ressources =  clean_arg(request.form.getlist("ressources", None))
-#             continent =  clean_arg(request.form.get("continent", None))
-
-#             nouveau_pays = Country(id=code_pays, 
-#                 Introduction=introduction,
-#                 name=nom_pays,
-#                 type = type)
-
-#             for ressource in ressources:
-#                 ressource = Resources.\
-#                     query.\
-#                     filter(Resources.id == ressource).\
-#                     first()
-#                 nouveau_pays.resources.append(ressource)
-            
-#             nouveau_pays.maps.append(Map.query.filter(Map.name==continent).first())
-
-#             db.session.add(nouveau_pays)
-#             db.session.commit()
-
-#             flash("L'insertion du pays "+ nom_pays + " s'est correctement déroulée", 'info')
-    
-#     except Exception as e :
-#         flash("Une erreur s'est produite lors de l'insertion de " + nom_pays + " : " + str(e), "error")
-
-#         db.session.rollback()
-    
-#     return render_template("pages/insertion_pays.html", 
-#             sous_titre= "Insertion pays" , 
-#             form=form)
-
-
+from .users import admin_required
 
 @app.route("/insertion/utilisateur", methods=['GET', 'POST'])
 @app.route("/insertion_utilisateur/<int:page>", methods=['GET', 'POST'])
@@ -83,3 +42,92 @@ def insertion_utilisateur(page=1):
           
 
     return render_template("pages/ajout_utilisateur.html", sous_titre="Recherche", donnees=donnees, form=form, nouvel_utilisateur=nouvel_utilisateur)
+
+
+
+
+
+
+@app.route("/insertion/all", methods=['GET', 'POST'])
+@login_required
+def insertion_all():
+    form = AjoutAll()
+
+    try:
+        if form.validate_on_submit():
+            code_pays = clean_arg(request.form.get("code_pays", None))
+            nom_pays = clean_arg(request.form.get("nom_pays", None))
+            latitude_pays = clean_arg(request.form.get("latitude_pays", None))
+            longitude_pays = clean_arg(request.form.get("longitude_pays", None))
+            annee_participation = clean_arg(request.form.get("annee_participation", None))
+            population_pays = clean_arg(request.form.get("population_pays", None))
+            richesse_pays = clean_arg(request.form.get("richesse_pays", None))
+            investissement_pays = clean_arg(request.form.get("investissement_pays", None))
+            gold = clean_arg(request.form.get("gold", None))
+            silver = clean_arg(request.form.get("silver", None))
+            bronze = clean_arg(request.form.get("bronze", None))
+            
+            print("ok1")
+
+            nouveau_pays = Pays(
+                noc=code_pays,
+                nom=nom_pays,
+                latitude=latitude_pays,
+                longitude=longitude_pays)
+
+            print("ok2")
+
+            nouvelle_participation = Formulaire(
+                id_team=f"{code_pays} - {annee_participation}",
+                noc=code_pays,
+                year=annee_participation)
+            
+            print("ok3")
+
+            nouvelles_donnees = Donnees(
+                id_team=f"{code_pays} - {annee_participation}",
+                population=population_pays,
+                richesse=richesse_pays,
+                investissement=investissement_pays)
+            
+            print("ok4")
+
+            nouvelles_medailles = Medailles(
+                id_team=f"{code_pays} - {annee_participation}",
+                gold_count=gold,
+                silver_count=silver,
+                bronze_count=bronze,
+                total=gold+silver+bronze)
+            
+            print("ok5")
+
+            db.session.add(nouveau_pays)
+
+            print("ok6")
+            
+            db.session.add(nouvelle_participation)
+
+            print("ok7")
+
+            db.session.add(nouvelles_donnees)
+
+            print("ok8")
+
+            db.session.add(nouvelles_medailles)
+
+            print("ok9")
+         
+            db.session.commit()
+
+            print("ok10")
+
+            flash("L'insertion des données sur le pays " + nom_pays + " pour l'année " + annee_participation + " s'est correctement déroulée", 'success')
+        else:
+            flash("Veuillez renseigner l'ensemble des champs pour insérer la participation", 'error')
+    
+    except Exception as e :
+        print("Une erreur est survenue : " + str(e))
+        flash("Une erreur s'est produite lors de l'insertion des données sur le pays " + nom_pays + " pour l'année " + annee_participation + " : " + str(e), "error")
+        db.session.rollback()
+    
+    return render_template("pages/ajout_all.html", sous_titre="Insertion données", form=form)

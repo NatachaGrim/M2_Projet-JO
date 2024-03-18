@@ -18,8 +18,19 @@ def suppression_pays():
     def delete_pays(pays):
         pays = Pays.query.get(nom_pays)
         if pays:
-            db.session.delete(pays)
-            db.session.commit()
+
+            query = db.session.query(Pays, Donnees, Medailles, Formulaire).\
+                join(Pays.pays).\
+                join(Donnees.pays).\
+                join(Medailles.pays).\
+                join(Formulaire.pays).\
+                filter(Pays.nom == nom_pays)
+            result = query.all()
+            
+            if result:
+                for donnees in result:
+                    db.session.delete(donnees)
+                    db.session.commit()
 
     try:
         if form.validate_on_submit():

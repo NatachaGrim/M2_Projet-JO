@@ -13,7 +13,7 @@ from flask import abort
 @app.route("/connexion/<int:page>", methods=['GET', 'POST'])
 def connexion(page=1):
     """
-    Route pour gérer la connexion des utilisateurs. 
+    Route pour gérer la connexion des utilisateurs.
 
     Parameters
     ----------
@@ -26,38 +26,22 @@ def connexion(page=1):
         Retourne le template de la page de connexion avec les données nécessaires.
     """
     form = Connexion()
-    utilisateur = ""
     try:
-        donnees = [] # Initialiser données comme une liste vide
-        administrateur = None #Administrateur comme None
         if form.validate_on_submit():
             mot_de_passe = clean_arg(request.form.get("mot_de_passe", None))
             mail = clean_arg(request.form.get("mail", None))
-            if current_user.is_authenticated is False:
-                if mail and mot_de_passe: 
-                    result = Users.Identification(password=mot_de_passe, mail=mail)
-                    if result:
-                        #is instance vérifie qu'un object est instance d'une classe
-                        if isinstance(result, tuple): # Vérifie si le résultat est un tuple (dans ma méthode() Identification, si l'utilisateur est administrateur je renvoie un tuple)
-                            utilisateur, administrateur = result # Déballe le tuple
-
-                        else:
-                            utilisateur = result # L'utilisateur n'est pas administrateur
-                            administrateur = None
-                            print("utilisateur")
-                        if administrateur:
-                            login_user(utilisateur)
+            if not current_user.is_authenticated:
+                if mail and mot_de_passe:
+                    utilisateur = Users.Identification(password=mot_de_passe, mail=mail)
+                    if utilisateur:
+                        login_user(utilisateur)
+                        if utilisateur.administrateur:
                             flash(f"{utilisateur.mail} est désormais connecté en tant qu'administrateur.", 'success')
-                            
-
                         else:
-                            login_user(utilisateur)
                             flash(f"{utilisateur.mail} est désormais connecté en tant que journaliste.", 'success')
-                            
-
                     else:
                         flash("Adresse mail ou mot de passe incorrect.", 'error')
-                else:   
+                else:
                     flash("Impossible de vous connecter, merci de fournir vos informations de connexion.", 'error')
             else:
                 flash("Vous êtes déjà connecté.", 'info')
@@ -66,8 +50,8 @@ def connexion(page=1):
         print("Une erreur est survenue : " + str(e))
         flash("Une erreur s'est produite lors de la connexion, avez-vous respecté les contraintes de saisie ?" + str(e), 'info')
         db.session.rollback()
-    
-    return render_template("pages/connexion.html", sous_titre="Recherche", donnees=donnees, form=form, utilisateur=utilisateur, administrateur=administrateur)
+
+    return render_template("pages/connexion.html", sous_titre="Recherche", form=form)
 
 
 

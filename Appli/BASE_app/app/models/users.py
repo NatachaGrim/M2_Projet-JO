@@ -111,18 +111,13 @@ class Users(UserMixin, db.Model):
 
         Returns
         -------
-        tuple or app.models.users.Users
-            Si l'identification est un succès :
-                - Si l'utilisateur est administrateur : (utilisateur, "administrateur")
-                - Sinon : utilisateur
-            Sinon : None
+        app.models.users.Users or None
+            Si l'identification est un succès : retourne l'objet utilisateur.
+            Sinon : retourne None.
         """
         utilisateur = Users.query.filter(Users.mail == mail).first()
 
         if utilisateur and check_password_hash(utilisateur.password, password):
-            if utilisateur.administrateur: #on aurait pu écrire "if utilisateur.administrateur is True"
-                return utilisateur, "administrateur"
-            else:
-                return utilisateur
+            return utilisateur
         else:
             return None

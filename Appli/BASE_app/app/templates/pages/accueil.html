@@ -34,7 +34,7 @@
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link" href="#connexion">Inscription / Connexion</a></li>
                     {% if current_user.is_authenticated %}
-                        {% if administrateur %}
+                        {% if current_user.administrateur %}
                         <a class="nav-link" href="{{ url_for('deconnexion') }}">
                             <div class="sb-nav-link-icon"><i class="fas fa-sign-out-alt"></i></div>
                             Se déconnecter

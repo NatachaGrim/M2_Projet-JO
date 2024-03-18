@@ -33,6 +33,40 @@
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link" href="#connexion">Inscription / Connexion</a></li>
+                    {% if current_user.is_authenticated %}
+                        {% if administrateur %}
+                        <a class="nav-link" href="{{ url_for('deconnexion') }}">
+                            <div class="sb-nav-link-icon"><i class="fas fa-sign-out-alt"></i></div>
+                            Se déconnecter
+                        </a>
+                        <a class="nav-link">
+                            <div class="sb-nav-link-icon"><i class="fas fa-user-shield"></i></div>
+                            Vous êtes connecté en tant qu'administrateur
+                        </a>
+                        {% else %}
+                        <a class="nav-link" href="{{ url_for('deconnexion') }}">
+                            <div class="sb-nav-link-icon"><i class="fas fa-sign-out-alt"></i></div>
+                            Se déconnecter
+                        </a>
+                        <a class="nav-link">
+                            <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
+                            Vous êtes connecté en tant que journaliste
+                        </a>
+                        {% endif %}
+                        <a class="nav-link" href="{{ url_for('favoris') }}">
+                            <div class="sb-nav-link-icon"><i class="fas fa-star"></i></div>
+                            Voir vos favoris
+                        </a>
+                        {% else %}
+                        <a class="nav-link" href="{{ url_for('connexion') }}">
+                            <div class="sb-nav-link-icon"><i class="fas fa-sign-in-alt"></i></div>
+                            Se connecter
+                        </a>
+                        <a class="nav-link" href="{{ url_for('insertion_utilisateur') }}">
+                            <div class="sb-nav-link-icon"><i class="fas fa-user-plus"></i></div>
+                            Créer un compte
+                        </a>
+                        {% endif %}
                     
                     <li class="nav-item"><a class="nav-link" href="#question">Recherche rapide</a></li>
                 </ul>

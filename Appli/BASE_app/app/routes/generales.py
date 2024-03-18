@@ -4,7 +4,7 @@ from sqlalchemy import or_
 from ..models.Jeux_Olympiques import Pays, Donnees, Formulaire, Medailles
 from flask_login import LoginManager, login_required
 from .users import admin_required #import du décorateur admin requiered 
-# from ..utils.transformations import nettoyage_string_to_int, clean_arg
+
 
 
 """

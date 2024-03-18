@@ -2,6 +2,8 @@
 <html lang="en">
 
 <head>
+    {% include "partials/css.html" %}
+
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -114,32 +116,21 @@
                             Message
                         </a>
 
-                        <!-- Essai de Maxime sur la messagerie -->
-                        <!-- <a class="nav-link collapsed" data-bs-toggle="collapse" data-bs-target="#collapseMessages"
-                            aria-expanded="false" aria-controls="collapseMessages">
-                            <div class="sb-nav-link-icon"><i class="fas fa-envelope"></i></div>
-                            Messages
-                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                        </a>
-                        <div class="collapse" id="collapseMessages" aria-labelledby="headingMessages"
-                            data-bs-parent="#sidenavAccordion">
-                            <div class="sb-sidenav-menu-nested nav">
-                                <div class="container">
-                                    {% with messages = get_flashed_messages(with_categories=true) %}
-                                    {% if messages %}
-                                    <div class="row">
-                                        <div class="col">
-                                            {% for category, message in messages %}
-                                            <div class="alert alert-{{category}}" role="alert">{{ message }}</div>
-                                            {% endfor %}
-                                        </div>
-                                    </div>
-                                    {% endif %}
-                                    {% endwith %}
-                                </div>
+                        <!-- Affichage des messages flash -->
+                        <div class="container">
+                            {% with messages = get_flashed_messages(with_categories=true) %}
+                            {% if messages %}
+                            <div class="row">
+                              <div class="col">
+                                {% for category, message in messages %}
+                                <div class="alert alert-{{category}}" role="alert">{{ message }}</div>
+                                {% endfor %}
+                              </div>
                             </div>
-                        </div> -->
-
+                            {% endif %}
+                            {% endwith %}
+                            
+                          </div>
                     </div>
                 </div>
             </nav>

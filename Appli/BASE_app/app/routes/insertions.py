@@ -55,7 +55,7 @@ def insertion_utilisateur(page=1):
     form = InsertionUsers()
     nouvel_utilisateur = ""
     try:
-        donnees = [] # Initialisation de données comme une liste vide
+        donnees = [] # Initialiser données comme une liste vide
 
         if form.validate_on_submit():
             
@@ -65,7 +65,7 @@ def insertion_utilisateur(page=1):
 
             if mail and pseudo and mot_de_passe: 
                 
-                    
+                    # Assurez-vous que la méthode Ajout renvoie correctement l'utilisateur et les erreurs
                     nouvel_utilisateur, erreurs = Users().Ajout(pseudo=pseudo, password=mot_de_passe, mail=mail) #si on ne met pas ", erreurs" ici python considère que notre variable est égale à un tuple car notre méthode renvoie un tuple avec l'erreur et le contenu de la notre requête
                     print(nouvel_utilisateur)
                     if nouvel_utilisateur:

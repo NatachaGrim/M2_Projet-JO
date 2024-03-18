@@ -109,8 +109,13 @@
                         </a>
                         {% endif %}
 
+                        <a class="nav-link" href="{{url_for('envoyer_courriel')}}">
+                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            Message
+                        </a>
+
                         <!-- Essai de Maxime sur la messagerie -->
-                        <a class="nav-link collapsed" data-bs-toggle="collapse" data-bs-target="#collapseMessages"
+                        <!-- <a class="nav-link collapsed" data-bs-toggle="collapse" data-bs-target="#collapseMessages"
                             aria-expanded="false" aria-controls="collapseMessages">
                             <div class="sb-nav-link-icon"><i class="fas fa-envelope"></i></div>
                             Messages
@@ -133,7 +138,7 @@
                                     {% endwith %}
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
 
                     </div>
                 </div>

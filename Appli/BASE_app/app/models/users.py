@@ -19,6 +19,8 @@ class Users(UserMixin, db.Model):
         Adresse mail de l'utilisateur, doit être unique.
     administrateur : db.Column
         Booléen indiquant si l'utilisateur est un administrateur.
+    notifications- : db.Column
+        Booléen indiquant si l'utilisateur souhaite recevoir des notifications 
 
     Methods
     -------
@@ -39,6 +41,7 @@ class Users(UserMixin, db.Model):
     password = db.Column(db.String(100), nullable=False)
     mail = db.Column(db.String(100), nullable=False)
     administrateur = db.Column(db.Boolean, nullable=False, default=0)
+    notifications = db.Column(db.Boolean, nullable=False, default=0)
 
     def get_id(self):
         """Permet de récupérer l'identifiant de l'utilisateur."""

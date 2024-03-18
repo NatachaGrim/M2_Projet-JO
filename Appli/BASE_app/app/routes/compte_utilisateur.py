@@ -4,6 +4,7 @@ from sqlalchemy import or_
 from ..models.Jeux_Olympiques import Pays, Donnees, Formulaire, Medailles, Favoris
 from flask_login import current_user, logout_user, login_user, login_required
 from .generales import donnees_pays
+from ..models.users import Users
 
 
 """
@@ -27,7 +28,7 @@ redirect
     Redirige vers la page 'donnees_pays' avec le nom du pays ajouté ou vers la page d'accueil si une erreur survient.
 """
 
-@app.route('/ajouter_favoris/<nom_pays>', methods=['POST'])
+@app.route('/ajouter_favoris/<nom_pays>', methods=['GET', 'POST'])
 @login_required
 
 def ajouter_favoris(nom_pays):
@@ -97,8 +98,17 @@ def favoris():
             if pays:
                equipes_favorites.append(pays.nom)
 
-    return render_template("pages/favoris.html", equipes_favorites=equipes_favorites)
+    return render_template("pages/compte-utilisateur/favoris.html", equipes_favorites=equipes_favorites)
     
         
 
 
+@app.route('/notifications',methods=['GET', 'POST'])
+@login_required
+def notifications():
+    if request.method == 'POST':
+        choix_notifications = request.form.get('notifications') 
+        current_user.notifications = True if choix_notifications == 'on' else False
+        db.session.commit()
+        flash('Vos préférences ont été mises à jour.', 'success')
+    return render_template('pages/compte-utilisateur/notifications.html', user=current_user)

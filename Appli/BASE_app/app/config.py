@@ -13,9 +13,9 @@ class Config():
     WTF_CSRF_ENABLE = os.environ.get("WTF_CSRF_ENABLE")
 
     # Configuration Flask-Mail
-    MAIL_SERVER = os.environ.get("MAIL_SERVER", 'smtp.mail.yahoo.com')
-    MAIL_PORT = int(os.environ.get("MAIL_PORT", 587))
-    MAIL_USE_TLS = os.environ.get("MAIL_USE_TLS", True)
-    MAIL_USERNAME = os.environ.get("MAIL_USERNAME", 'estchlrcq@yahoo.com')
-    MAIL_PASSWORD = os.environ.get("MAIL_PASSWORD", 'estchlrcq')
-    MAIL_DEBUG = int(os.environ.get("MAIL_DEBUG", 0))  # Convertit la chaîne en entier
+    MAIL_SERVER = os.environ.get("MAIL_SERVER")
+    MAIL_PORT = int(os.environ.get("MAIL_PORT")) # Convertit la chaîne en entier
+    MAIL_USE_TLS = os.environ.get("MAIL_USE_TLS")
+    MAIL_USERNAME = os.environ.get("MAIL_USERNAME")
+    MAIL_PASSWORD = os.environ.get("MAIL_PASSWORD")
+    MAIL_DEBUG = int(os.environ.get("MAIL_DEBUG", False))  # Convertit la chaîne en entier

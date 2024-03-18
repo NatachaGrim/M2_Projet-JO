@@ -68,6 +68,33 @@
                                 <a class="nav-link" href="{{ url_for('carte')}}">Carte interactive</a>
                             </nav>
                         </div>
+
+
+                        <a class="nav-link collapsed" data-bs-toggle="collapse" data-bs-target="#users"
+                        aria-expanded="false" aria-controls="users">
+                         <div class="sb-nav-link-icon"><i class="fa-solid fa-house"></i></div>
+                         Gestion du compte 
+                         <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                     </a>
+                     <div class="collapse" id="users" aria-labelledby="headingOne"
+                          data-bs-parent="#sidenavAccordion">
+                         <nav class="sb-sidenav-menu-nested nav">
+                             <a class="nav-link" href="{{ url_for('favoris') }}">
+                                 <div class="sb-nav-link-icon"><i class="fas fa-star"></i></div>
+                                 Voir vos favoris
+                             </a>
+                             <a class="nav-link" href="{{ url_for('notifications') }}">
+                                 <div class="sb-nav-link-icon"><i class="fas fa-bell"></i></div>
+                                 Gérer vos notifications
+                             </a>
+                         </nav>
+                     </div>
+                     
+
+
+
+
+
                         <a class="nav-link">
                             <div class="sb-nav-link-icon"><i class="fas fa-edit"></i></div>
                             Modifications
@@ -78,13 +105,14 @@
 
                         {% if current_user.is_authenticated %}
                         {% if current_user.administrateur %}
+                        
                         <a class="nav-link" href="{{ url_for('deconnexion') }}">
                             <div class="sb-nav-link-icon"><i class="fas fa-sign-out-alt"></i></div>
                             Se déconnecter
                         </a>
                         <a class="nav-link">
                             <div class="sb-nav-link-icon"><i class="fas fa-user-shield"></i></div>
-                            Vous êtes connecté en tant qu'administrateur
+                            Vous êtes connecté en tant qu'administrateur   {% if current_user.notifications %} (notifications activées) {%else%} (notifications desactivées) {%endif%}
                         </a>
                         {% else %}
                         <a class="nav-link" href="{{ url_for('deconnexion') }}">
@@ -94,8 +122,15 @@
 
                         <a class="nav-link">
                             <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
-                            Vous êtes connecté en tant que journaliste
+                            Vous êtes connecté en tant que journaliste <i>{% if current_user.notifications %} (notifications activées) {%else%} (notifications desactivées)  {%endif%}
                         </a>
+                        
+
+                        <a class="nav-link"> 
+                            <div class="sb-nav-link-icon"><i class="fas fa-bell"></i></div>
+                          
+                             
+
                         {% endif %}
                         <a class="nav-link" href="{{ url_for('favoris') }}">
                             <div class="sb-nav-link-icon"><i class="fas fa-star"></i></div>

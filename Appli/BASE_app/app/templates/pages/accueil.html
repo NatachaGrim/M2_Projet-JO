@@ -32,48 +32,52 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="#connexion">Inscription / Connexion</a></li>
                     {% if current_user.is_authenticated %}
-                        {% if current_user.administrateur %}
-                        <a class="nav-link" href="{{ url_for('deconnexion') }}">
-                            <div class="sb-nav-link-icon"><i class="fas fa-sign-out-alt"></i></div>
-                            Se déconnecter
+                    {% if current_user.administrateur %}
+                    <a class="nav-link" href="{{ url_for('deconnexion') }}">
+                        <div class="sb-nav-link-icon"><i class="fas fa-sign-out-alt"></i></div>
+                        Se déconnecter
+                    </a>
+                    <a class="nav-link">
+                        <div class="sb-nav-link-icon"><i class="fas fa-user-shield"></i></div>
+                        Vous êtes connecté en tant qu'administrateur
+                    </a>
+                    {% else %}
+                    <a class="nav-link" href="{{ url_for('deconnexion') }}">
+                        <div class="sb-nav-link-icon"><i class="fas fa-sign-out-alt"></i></div>
+                        Se déconnecter
+                    </a>
+                    <a class="nav-link">
+                        <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
+                        Vous êtes connecté en tant que journaliste
+                    </a>
+                    {% endif %}
+                    <a class="nav-link" href="{{ url_for('favoris') }}">
+                        <div class="sb-nav-link-icon"><i class="fas fa-star"></i></div>
+                        Voir vos favoris
+                    </a>
+                    {% else %}
+                    <a class="nav-link" href="{{ url_for('connexion') }}">
+                        <div class="sb-nav-link-icon"><i class="fas fa-sign-in-alt"></i></div>
+                        Se connecter
+                    </a>
+                    <a class="nav-link" href="{{ url_for('insertion_utilisateur') }}">
+                        <div class="sb-nav-link-icon"><i class="fas fa-user-plus"></i></div>
+                        Créer un compte
+                    </a>
+                    {% endif %}
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="#question">
+                            <div class="sb-nav-link-icon"><i class="fas fa-search"></i></div>
+                            Recherche rapide
                         </a>
-                        <a class="nav-link">
-                            <div class="sb-nav-link-icon"><i class="fas fa-user-shield"></i></div>
-                            Vous êtes connecté en tant qu'administrateur
-                        </a>
-                        {% else %}
-                        <a class="nav-link" href="{{ url_for('deconnexion') }}">
-                            <div class="sb-nav-link-icon"><i class="fas fa-sign-out-alt"></i></div>
-                            Se déconnecter
-                        </a>
-                        <a class="nav-link">
-                            <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
-                            Vous êtes connecté en tant que journaliste
-                        </a>
-                        {% endif %}
-                        <a class="nav-link" href="{{ url_for('favoris') }}">
-                            <div class="sb-nav-link-icon"><i class="fas fa-star"></i></div>
-                            Voir vos favoris
-                        </a>
-                        {% else %}
-                        <a class="nav-link" href="{{ url_for('connexion') }}">
-                            <div class="sb-nav-link-icon"><i class="fas fa-sign-in-alt"></i></div>
-                            Se connecter
-                        </a>
-                        <a class="nav-link" href="{{ url_for('insertion_utilisateur') }}">
-                            <div class="sb-nav-link-icon"><i class="fas fa-user-plus"></i></div>
-                            Créer un compte
-                        </a>
-                        {% endif %}
-                    
-                    <li class="nav-item"><a class="nav-link" href="#question">Recherche rapide</a></li>
+                    </li>
                 </ul>
             </div>
         </div>
     </nav>
-    
+
     <!-- Masthead-->
     <header class="masthead">
         <div class="container px-4 px-lg-5 d-flex h-100 align-items-center justify-content-center">
@@ -96,7 +100,8 @@
                         Notre projet est de créer une application web permettant de consulter les résultats de
                         différents pays à diverses éditions des Jeux Olympiques.
                         Les utilisateurs pourront sélectionner le pays de leur choix et constater le nombre de médailles
-                        d'or, d'argent, et de bronze remportées par sport - le tout en fonction de la population et de la
+                        d'or, d'argent, et de bronze remportées par sport - le tout en fonction de la population et de
+                        la
                         richesse du pays sélectionné.
                     </p>
                 </div>
@@ -114,9 +119,9 @@
                 <div class="col-xl-4 col-lg-5">
                     <div class="featured-text text-center text-lg-left">
                         <h4>Les données</h4>
-                        <p class="text-black-50 mb-0">Explorez toutes les données à la veille des Jeux Olympiques de
-                            Paris!</p>
-                        <p class="text-black-50 mb-0"><a href="{{url_for('donnees')}}">Le lien</a></p>
+                        <p class="text-black-50 mb-0"><a href="{{url_for('donnees')}}">Explorez toutes les données à la
+                                veille des Jeux Olympiques de
+                                Paris!</a></p>
                     </div>
                 </div>
             </div>
@@ -132,24 +137,24 @@
 
                                 {% if current_user.is_authenticated %}
                                 {% if administrateur %}
-                                <li class="mb-0 text-white-50">Se déconnecter 
-                                    <a href="{{ url_for('deconnexion') }}">({{ current_user.mail }})</a>
-                                <li class="mb-0 text-white-50">Vous êtes connecté en tant qu'administrateur</li>
+                                <li class="mb-0 text-white-50">
+                                    <a href="{{ url_for('deconnexion') }}">Se déconnecter ({{ current_user.mail }})</a>
                                 </li>
-                                
+
                                 {% else %} <!-- Si l'utilisateur n'est pas administrateur, il sera alors journaliste -->
-                                <li class="mb-0 text-white-50">Se déconnecter 
-                                    <a href="{{ url_for('deconnexion') }}">({{ current_user.mail }})</a>
-                                <li class="mb-0 text-white-50">Vous êtes connecté en tant que journaliste</li>
+                                <li class="mb-0 text-white-50">
+                                    <a href="{{ url_for('deconnexion') }}">Se déconnecter ({{ current_user.mail }})</a>
                                 </li>
                                 {% endif %}
-
+                                <li class="mb-0 text-white-50">
+                                    <a href="{{ url_for('favoris') }}">Voir vos favoris</a>
+                                </li>
                                 {% else %}
                                 <li class="mb-0 text-white-50">
-                                    <a>Se connecter <a href="{{ url_for('connexion') }}">ici</a></a>
+                                    <a href="{{ url_for('connexion') }}">Se connecter</a>
                                 </li>
                                 <li class="mb-0 text-white-50">
-                                    <a>Créer un compte <a href="{{ url_for('insertion_utilisateur') }}">ici</a></a>
+                                    <a href="{{ url_for('insertion_utilisateur') }}">Créer un compte </a>
                                 </li>
                                 {% endif %}
                             </div>
@@ -166,8 +171,9 @@
                         <div class="d-flex h-100">
                             <div class="project-text w-100 my-auto text-center text-lg-right">
                                 <h4 class="text-white">Accéder aux visualisations</h4>
-                                <p class="mb-0 text-white-50">Le lien <a
-                                         href="{{ url_for('visualisation') }}">ici</a>.</p>
+                                <p class="mb-0 text-white-50"><a href="{{ url_for('visualisation') }}">Découvrez une
+                                        carte interactive, ainsi que des graphiques pour les éditions de 1996 à
+                                        2016</a>.</p>
                             </div>
                         </div>
                     </div>
@@ -182,15 +188,16 @@
             <div class="row gx-4 gx-lg-5">
                 <div class="col-md-10 col-lg-8 mx-auto text-center">
                     <i class="far fa-paper-plane fa-2x mb-2 text-white"></i>
-                    <h2 class="text-white mb-5">Une recherche rapide ?</h2>      
-                    <form class="form-signup"  action="{{ url_for('recherche_rapide')}}">
+                    <h2 class="text-white mb-5">Une recherche rapide ?</h2>
+                    <form class="form-signup" action="{{ url_for('recherche_rapide')}}">
                         <div class="row input-group-newsletter">
                             <div class="col">
-                        <input class="form-control" type="search" name="chaine" 
-                            placeholder="Rechercher" aria-label="Recherche"></div>
-                        <div class="col-auto">
-                        <button class="btn btn-outline-info" type="submit">Demandez !</button>
-                        </div>
+                                <input class="form-control" type="search" name="chaine" placeholder="Rechercher"
+                                    aria-label="Recherche">
+                            </div>
+                            <div class="col-auto">
+                                <button class="btn btn-outline-info" type="submit">Demandez !</button>
+                            </div>
                     </form>
                 </div>
             </div>
@@ -217,7 +224,8 @@
                             <i class="fab fa-github text-primary mb-2"></i>
                             <h4 class="text-uppercase m-0">Projet GitHub</h4>
                             <hr class="my-4 mx-auto" />
-                            <div class="small text-black-50"><a href="#!">https://github.com/NatachaGrim/M2_Projet-JO.git</a></div>
+                            <div class="small text-black-50"><a
+                                    href="#!">https://github.com/NatachaGrim/M2_Projet-JO.git</a></div>
                         </div>
                     </div>
                 </div>
@@ -239,7 +247,7 @@
     </section>
     <!-- Footer-->
     <footer class="footer bg-black small text-center text-white-50">
-        <div class="container px-4 px-lg-5">Projet de l'École Nationale des Chartes, 2023-2014</div>
+        <div class="container px-4 px-lg-5">Projet de l'École Nationale des Chartes, 2023-2024</div>
     </footer>
     <!-- Bootstrap core JS-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>

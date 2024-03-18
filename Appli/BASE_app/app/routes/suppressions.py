@@ -11,10 +11,11 @@ from .users import admin_required
 @login_required
 def suppression_pays():
     form = SuppressionPays()
-    form.nom_pays.choices = [('','')] + [(pays.nom) for pays in Pays.query.all()]
 
+    liste_pays = Pays.query.all()    
+    form.nom_pays.choices = [(p.nom, p.nom) for p in liste_pays]
+    
     def delete_pays(pays):
-        # vérifier que le pays existe bien en base
         pays = Pays.query.get(nom_pays)
         if pays:
             db.session.delete(pays)

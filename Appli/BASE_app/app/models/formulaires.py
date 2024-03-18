@@ -1,8 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SelectField, SelectMultipleField, TextAreaField, FloatField, IntegerField, validators
 
-
-
 class InsertionUsers(FlaskForm):
     mail = StringField("mail", validators=[
         validators.DataRequired(),

@@ -24,7 +24,4 @@ def send_email(subject, sender, recipients, text_body, html_body):
     msg.html = html_body
     mail.send(msg)
 
-from .routes import generales, insertions, users, favoris, graphiques, courriel
-
-
-
+from .routes import generales, insertions, users, favoris, graphiques, courriel, suppressions

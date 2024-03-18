@@ -47,7 +47,7 @@ def insertion_utilisateur():
                 if nouvel_utilisateur:
                     flash(f"L'utilisateur {nouvel_utilisateur.pseudo} a bien été ajouté dans la base.", 'success')
                     envoyer_courriel()  # Envoi de courriel, à supprimer/modifier ultérieurement pour éviter le spam
-                    return redirect(url_for("connexion"))
+                    return redirect(url_for("connexion")) #renvoie à la page de connexion
                 else:
                     flash(f"L'utilisateur n'a pas été ajouté dans la base. Erreurs : ", 'error')
         else:

@@ -30,13 +30,15 @@ def envoyer_courriel():
     # Récupérer les adresses e-mail des utilisateurs ayant activé les notifications.
     # La liste des destinataires est extraite de la base de données.
     recipients = [user.mail for user in Users.query.filter_by(notifications=True).all()]
+    
+    recipients_pseudos = [user.pseudo for user in Users.query.filter_by(notifications=True).all()]
 
     # Corps du courriel en texte brut.
     text_body = "test"  # Le corps du texte est ici défini simplement comme 'test' (ne s'affichera pas).
 
     # Corps du courriel en HTML.
     # Utilise un template HTML pour créer un contenu de courriel formaté.
-    html_body = render_template('pages/mails/email-MAJ-BDD.html')
+    html_body = render_template('pages/mails/email-MAJ-BDD.html', pseudo = recipients_pseudos)
 
     # Appeler la fonction d'envoi de courriel.
     send_email(subject, sender, recipients, text_body, html_body)
@@ -45,4 +47,4 @@ def envoyer_courriel():
     flash("Une notification vient d'être envoyée aux abonnés.", 'success')
 
     # Rediriger l'utilisateur vers la page 'donnees' après l'envoi du courriel.
-    return redirect(url_for("donnees"))
+    return redirect(url_for("donnees")) 

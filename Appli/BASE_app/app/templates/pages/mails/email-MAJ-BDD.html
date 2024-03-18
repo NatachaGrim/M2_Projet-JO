@@ -4,9 +4,11 @@
     <title>La base a été mise à jour</title>
 </head>
 <body>
-    <h1>Bonjour, {{pseudo}}</h1>
-    <p>Vous avez activé les notifications pour recevoir des mails depuis l'application des Jeux-Olympiques. La base a été mise à jour ! <a href="{{ url_for('donnees')}}""> Rendez-vous sur le site</a> pour découvrir de nouvelles données !</p>
+    
+    <h3>Bonjour {{pseudo[1]}},</h3> 
+    
+    <p>Vous avez activé les notifications pour recevoir des mails depuis l'application des Jeux-Olympiques. La base a été mise à jour ! <a href="{{ url_for('donnees', _external=True)}}"> Rendez-vous sur le site</a> pour découvrir de nouvelles données !</p>
 
-    <p>Pour ne plus recevoir de notifications, cliquez ici : </p>
+    <p>Pour ne plus recevoir de notifications <a href="{{url_for('connexion', _external=True)}}"> <i> modifiez vos préférences (en vous connectant dans un premier temps).</i> </a></p>
 </body>
 </html>

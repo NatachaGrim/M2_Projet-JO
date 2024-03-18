@@ -55,3 +55,6 @@ class AjoutAll(FlaskForm):
     bronze = IntegerField("bronze", validators=[
         validators.DataRequired(message="Ce champ est obligatoire. Si aucune médaille n'a été remportée, indiquer 0")
     ])
+    
+class SuppressionPays(FlaskForm):
+    nom_pays = SelectField("nom_pays", choices=[])

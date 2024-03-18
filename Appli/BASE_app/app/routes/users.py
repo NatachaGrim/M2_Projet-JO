@@ -10,8 +10,7 @@ from flask import abort
 
 
 @app.route("/connexion", methods=['GET', 'POST'])
-@app.route("/connexion/<int:page>", methods=['GET', 'POST'])
-def connexion(page=1):
+def connexion():
     """
     Route pour gérer la connexion des utilisateurs.
 
@@ -24,6 +23,11 @@ def connexion(page=1):
     -------
     template
         Retourne le template de la page de connexion avec les données nécessaires.
+
+    Redirect 
+    --------
+    page 
+        Redirige les utilisateurs connectés vers la page données 
     """
     form = Connexion()
     try:
@@ -39,6 +43,8 @@ def connexion(page=1):
                             flash(f"{utilisateur.mail} est désormais connecté en tant qu'administrateur.", 'success')
                         else:
                             flash(f"{utilisateur.mail} est désormais connecté en tant que journaliste.", 'success')
+                        return redirect(url_for('donnees')) #redirige l'utilisateur connecté vers la page données  
+                            
                     else:
                         flash("Adresse mail ou mot de passe incorrect.", 'error')
                 else:

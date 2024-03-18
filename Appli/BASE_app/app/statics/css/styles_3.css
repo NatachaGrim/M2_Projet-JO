@@ -78,6 +78,21 @@
   --bs-code-color: #d63384;
   --bs-highlight-bg: #fff3cd;
 }
+/* Les petits icones pour les admin et journalistes */ 
+
+.icon-admin {
+
+
+
+  color: red;
+  font-size: 40px;
+}
+
+.icon-journalist {
+
+  color: yellow;
+  font-size: 40px;
+}
 
 *,
 *::before,

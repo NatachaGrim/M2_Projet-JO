@@ -31,7 +31,6 @@ def accueil():
 
 @app.route('/donnees', methods=['GET', 'POST'])
 @login_required
-@admin_required 
 
 def donnees():
     choix_annee = request.form.get('annee', default=1996, type=int)

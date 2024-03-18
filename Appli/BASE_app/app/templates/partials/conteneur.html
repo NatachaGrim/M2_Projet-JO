@@ -33,7 +33,14 @@
                 <button class="btn btn-outline-info" type="submit">Rechercher</button>
             </div>
         </form>
-
+        <!-- Icones pour les administrateurs et journalistes ;)-->
+        {% if current_user.is_authenticated %}
+        {% if current_user.administrateur %}
+            <i class="fas fa-user-secret icon-admin"></i>
+        {% else %}
+            <i class="fas fa-newspaper icon-journalist"></i>
+        {% endif %}
+    {% endif %}
         <!-- Navbar -->
         <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
         </ul>
@@ -122,7 +129,7 @@
 
                         <a class="nav-link">
                             <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
-                            Vous êtes connecté en tant que journaliste <i>{% if current_user.notifications %} (notifications activées) {%else%} (notifications desactivées)  {%endif%}
+                            Vous êtes connecté en tant que journaliste {% if current_user.notifications %} (notifications activées) {%else%} (notifications desactivées)  {%endif%}
                         </a>
                         
 

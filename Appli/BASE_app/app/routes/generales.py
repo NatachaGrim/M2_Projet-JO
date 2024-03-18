@@ -2,7 +2,7 @@ from ..app import app, db
 from flask import render_template, request, flash, redirect, url_for
 from sqlalchemy import or_
 from ..models.Jeux_Olympiques import Pays, Donnees, Formulaire, Medailles
-from flask_login import LoginManager, login_required
+from flask_login import login_required
 from .users import admin_required #import du décorateur admin requiered 
 
 

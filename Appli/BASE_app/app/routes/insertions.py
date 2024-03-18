@@ -1,13 +1,15 @@
 from ..app import app, db
-from flask import render_template, request, flash, abort
+from flask import render_template, request, flash, abort, redirect, url_for
 from ..models.Jeux_Olympiques import Pays, Donnees, Medailles, Formulaire
 from ..models.formulaires import InsertionUsers
 from ..utils.transformations import clean_arg
 from ..models.users import Users
+from .courriel import envoyer_courriel # import de la fonction d'envoi de courriels : à chaque MAJ de la base les notifications seront envoyées 
+
+
 
 @app.route("/insertion/utilisateur", methods=['GET', 'POST'])
-@app.route("/insertion_utilisateur/<int:page>", methods=['GET', 'POST'])
-def insertion_utilisateur(page=1):
+def insertion_utilisateur():
     
     form = InsertionUsers()
     nouvel_utilisateur = ""
@@ -24,9 +26,20 @@ def insertion_utilisateur(page=1):
                 
                     # Assurez-vous que la méthode Ajout renvoie correctement l'utilisateur et les erreurs
                     nouvel_utilisateur, erreurs = Users().Ajout(pseudo=pseudo, password=mot_de_passe, mail=mail) #si on ne met pas ", erreurs" ici python considère que notre variable est égale à un tuple car notre méthode renvoie un tuple avec l'erreur et le contenu de la notre requête
-                    print(nouvel_utilisateur)
+                  
                     if nouvel_utilisateur:
                         flash(f"L'utilisateur {nouvel_utilisateur.pseudo} a bien été ajouté dans la base.", 'success')
+
+
+
+                        #A SUPPRIMER PLUS TARD QUAND LA ROUTE D'INSERTION SERA AJOUTÉE À LA BASE ! 
+                        envoyer_courriel()  # Appel de la fonction d'envoi de courriel
+                        #C'EST IMPORTANT SINON ON VA SE FAIRE SPAM
+
+                        #VRAIMENT PITIÉ
+                        
+                        return redirect(url_for("connexion"))
+                    
                     else:
                         flash(f"L'utilisateur n'a pas été ajouté dans la base. Erreurs : ", 'error')
         else:

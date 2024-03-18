@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Dashboard - SB Admin</title>
+    <title>Projet JO</title>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="/statics/css/styles_3.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -112,38 +112,38 @@
 
                         {% if current_user.is_authenticated %}
                         {% if current_user.administrateur %}
-                        
-                        <a class="nav-link" href="{{ url_for('deconnexion') }}">
-                            <div class="sb-nav-link-icon"><i class="fas fa-sign-out-alt"></i></div>
-                            Se déconnecter
-                        </a>
-                        <a class="nav-link">
-                            <div class="sb-nav-link-icon"><i class="fas fa-user-shield"></i></div>
-                            Vous êtes connecté en tant qu'administrateur   {% if current_user.notifications %} (notifications activées) {%else%} (notifications desactivées) {%endif%}
-                        </a>
+                            <!-- Administrateur : Déconnexion & Statut -->
+                            <a class="nav-link" href="{{ url_for('deconnexion') }}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-sign-out-alt"></i></div>
+                                Se déconnecter
+                            </a>
+                            <a class="nav-link">
+                                <div class="sb-nav-link-icon"><i class="fas fa-user-shield"></i></div>
+                                Vous êtes connecté en tant qu'administrateur ({{current_user.mail}})
+                            </a>
                         {% else %}
-                        <a class="nav-link" href="{{ url_for('deconnexion') }}">
-                            <div class="sb-nav-link-icon"><i class="fas fa-sign-out-alt"></i></div>
-                            Se déconnecter
-                        </a>
-
-                        <a class="nav-link">
-                            <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
-                            Vous êtes connecté en tant que journaliste {% if current_user.notifications %} (notifications activées) {%else%} (notifications desactivées)  {%endif%}
-                        </a>
-                        
-
-                        <a class="nav-link"> 
-                            <div class="sb-nav-link-icon"><i class="fas fa-bell"></i></div>
-                          
-                             
-
+                            <!-- Journaliste : Déconnexion & Statut -->
+                            <a class="nav-link" href="{{ url_for('deconnexion') }}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-sign-out-alt"></i></div>
+                                Se déconnecter
+                            </a>
+                            <a class="nav-link">
+                                <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
+                                Vous êtes connecté en tant que journaliste ({{current_user.mail}})
+                            </a>
                         {% endif %}
+                        <!-- Notification Status -->
+                        <a class="nav-link">
+                            <div class="sb-nav-link-icon"><i class="fas fa-bell"></i></div>
+                            {% if current_user.notifications %} Notifications activées {% else %} Notifications désactivées {% endif %}
+                        </a>
+                        <!-- Favoris -->
                         <a class="nav-link" href="{{ url_for('favoris') }}">
                             <div class="sb-nav-link-icon"><i class="fas fa-star"></i></div>
                             Voir vos favoris
                         </a>
-                        {% else %}
+                    {% else %}
+                        <!-- Connexion & Inscription pour les utilisateurs non connectés -->
                         <a class="nav-link" href="{{ url_for('connexion') }}">
                             <div class="sb-nav-link-icon"><i class="fas fa-sign-in-alt"></i></div>
                             Se connecter
@@ -152,12 +152,13 @@
                             <div class="sb-nav-link-icon"><i class="fas fa-user-plus"></i></div>
                             Créer un compte
                         </a>
-                        {% endif %}
+                    {% endif %}
+                    
 
-                        <a class="nav-link" href="{{url_for('envoyer_courriel')}}">
-                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                            Message
-                        </a>
+                            <a class="nav-link" href="{{url_for('envoyer_courriel')}}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                Message
+                            </a>
 
                         <!-- Affichage des messages flash -->
                         <div class="container">

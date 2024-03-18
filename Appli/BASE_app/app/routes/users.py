@@ -61,15 +61,29 @@ def connexion():
 
 
 
+def admin_required(f):
+    """
+    Décorateur pour restreindre l'accès aux utilisateurs administrateurs.
 
-def admin_required(f): #défini un décorateur "admin_requiered" qui prend une fonction 'f' comme argiment
-    @wraps(f) #Ce décorateur permet de s'assurer que les métadonnées de la fonction originales soient inclues dans le décorateur
-    def decorated_function(): #décorateur
-        if not current_user.administrateur: #Si l'utilisateur n'est pas administrateur 
-            abort(403)  # Interdit (renvoie une erreur 403)
-        return f() #sinon tout va bien 
+    Ce décorateur s'assure que seule une personne disposant des privilèges d'administrateur puisse accéder à certaines routes. 
+    Si un utilisateur non administrateur tente d'accéder à une route protégée par ce décorateur, une erreur 403 est renvoyée.
+
+    Parameters
+    ----------
+    f : function
+        La fonction de vue (route) à laquelle ce décorateur est appliqué.
+
+    Returns
+    -------
+    function
+        La fonction décorée avec la logique de contrôle d'accès administrateur.
+    """
+    @wraps(f)  # Préserve les métadonnées de la fonction originale
+    def decorated_function(*args, **kwargs):
+        if not current_user.administrateur:  # Vérifie si l'utilisateur courant est administrateur
+            abort(403)  # Interdit l'accès en renvoyant une erreur 403
+        return f(*args, **kwargs)  # Continue avec la fonction originale si l'utilisateur est administrateur
     return decorated_function
-
 
 
 @app.route("/utilisateurs/deconnexion", methods=["POST", "GET"])
@@ -77,14 +91,21 @@ def deconnexion():
     """
     Route pour gérer la déconnexion des utilisateurs.
 
-    Ne retourne rien 
+    Cette route permet aux utilisateurs de se déconnecter de l'application. Si un utilisateur est authentifié, la fonction logout_user() de Flask-Login est appelée pour terminer la session utilisateur. Un message flash informe l'utilisateur qu'il est déconnecté. L'utilisateur est ensuite redirigé vers la page 'donnees'.
+
+    Méthodes acceptées
+    ------------------
+    POST, GET
+
+    Returns
     -------
     redirect
-        Redirige vers la page d'accueil après la déconnexion.
+        Redirige vers la page d'accueil (définie par la route 'donnees') après la déconnexion.
     """
-    if current_user.is_authenticated is True:
-        logout_user()
-    flash("Vous êtes déconnecté", "info")
-    return redirect(url_for("donnees"))
+    if current_user.is_authenticated:
+        logout_user()  # Déconnecte l'utilisateur
+        flash("Vous êtes déconnecté", "info")  # Affiche un message de déconnexion
+    return redirect(url_for("donnees"))  # Redirige vers la page d'accueil après la déconnexion
 
+# Définit la vue de connexion pour Flask-Login
 login.login_view = "connexion"

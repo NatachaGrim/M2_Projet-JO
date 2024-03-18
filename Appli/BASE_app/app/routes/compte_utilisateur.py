@@ -103,12 +103,41 @@ def favoris():
         
 
 
-@app.route('/notifications',methods=['GET', 'POST'])
-@login_required
+"""
+Route pour gérer les préférences de notifications de l'utilisateur.
+
+Méthodes acceptées
+------------------
+GET, POST
+
+Cette route permet aux utilisateurs de modifier leurs préférences en matière de notifications. L'utilisateur peut choisir de recevoir ou non des notifications par e-mail. 
+
+Lorsque la méthode est POST, la préférence de notification de l'utilisateur est mise à jour en fonction de son choix. Si la méthode est GET, la page de paramétrage des notifications est simplement rendue.
+
+L'accès à cette route est restreint aux utilisateurs connectés.
+
+Returns
+-------
+template
+    Rendu de la page de préférences de notifications avec les informations actuelles de l'utilisateur.
+"""
+
+@app.route('/notifications', methods=['GET', 'POST'])
+@login_required  # Accès restreint aux utilisateurs authentifiés
 def notifications():
     if request.method == 'POST':
+        # Récupération du choix de l'utilisateur depuis le formulaire
         choix_notifications = request.form.get('notifications') 
+
+        # Mise à jour des préférences de notifications de l'utilisateur
+        # Si le choix est 'on', les notifications sont activées. Sinon, elles sont désactivées.
         current_user.notifications = True if choix_notifications == 'on' else False
+
+        # Sauvegarde des modifications dans la base de données
         db.session.commit()
+
+        # Afficher un message de confirmation
         flash('Vos préférences ont été mises à jour.', 'success')
+
+    # Rendre la page de préférences de notifications avec les informations de l'utilisateur actuel
     return render_template('pages/compte-utilisateur/notifications.html', user=current_user)

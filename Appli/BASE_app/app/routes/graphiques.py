@@ -7,9 +7,19 @@ import json
 @app.route("/visualisation")
 def visualisation():
     return render_template("pages/visualisation.html")
+    """
+    Route pour afficher la page de visualisation.
+
+    Returns
+    -------
+    template
+        Retourne le template visualisation.html
+    """
 
 @app.route("/carte")
-def carte():
+def carte():        
+    
+    # Requête pour récupérer les données nécessaires à la visualisation
     data = db.session.query(
         Formulaire.year, 
         Medailles.total,
@@ -24,7 +34,7 @@ def carte():
             .join(Pays, Pays.noc == Formulaire.noc) \
             .group_by(Donnees.id_team, Formulaire.year, Medailles.total, Donnees.population, Donnees.investissement, Donnees.richesse).all()
 
-    # Conversion des données en JSON et écriture dans un fichier
+    # Convertir les données en format JSON pour la carte
     data_json = []
     for donnee in data:
         coordinates = [donnee.longitude, donnee.latitude]
@@ -42,17 +52,24 @@ def carte():
             "type": "Feature"
         }
         data_json.append(feature)
-        
+
+        # Écrire les données JSON dans un fichier
         with open('./app/statics/data/donnees.js', 'w') as f:
             f.write('var geojson_RAMA = ')
             json.dump({"features": data_json}, f)
-
+ 
+    # Rendre le template carte.html avec les données JSON
     return render_template("pages/graph/carte.html")
+    """
+    Route pour générer la carte avec les données de visualisation.
+
+    Returns
+    -------
+    template
+        Retourne le template carte.html
+    """
 
 
-
-#Seconde route vers les visualisations. Ici, on crée aussi un jeu pour chaque année.
-#Les jeux sont mis à jour et générés à chaque lancement de la route.
 @app.route('/graphiques_1996', methods=['GET', 'POST'])
 def graphiques_1996():
     choix_annee = 1996
@@ -68,7 +85,6 @@ def graphiques_1996():
             .filter(Formulaire.year == choix_annee) \
             .group_by(Donnees.id_team, Formulaire.year, Medailles.total, Donnees.population, Donnees.richesse).all()
 
-    # Conversion des données en un format compatible avec Chart.js
     data_json = []
     for donnee in data:
         valeurs = {
@@ -79,13 +95,22 @@ def graphiques_1996():
         }
         data_json.append(valeurs)
 
-    # Écriture des données dans un fichier JSON
     with open('./app/statics/data/donnees_1996.json', 'w') as f:
         json.dump(data_json, f)
 
     annees = db.session.query(Formulaire.year.distinct()).order_by(Formulaire.year).all()
     
     return render_template("pages/graph/graphiques_1996.html")
+    """
+    Route pour afficher les graphiques pour l'année 1996.
+
+    Cette route récupère les données nécessaires à partir de la base de données pour générer des graphiques représentant diverses statistiques pour l'année 1996. Ces données comprennent le total des médailles remportées par chaque pays, la population de chaque pays, ainsi que la richesse mesurée de chaque pays. Ces données sont ensuite converties en format JSON pour être utilisées dans les graphiques.
+
+    Returns
+    -------
+    template
+        Retourne le template graphiques_1996.html, qui contient les graphiques générés à partir des données récupérées.
+    """
 
 @app.route('/graphiques_2000', methods=['GET', 'POST'])
 def graphiques_2000():
@@ -102,7 +127,6 @@ def graphiques_2000():
             .filter(Formulaire.year == choix_annee) \
             .group_by(Donnees.id_team, Formulaire.year, Medailles.total, Donnees.population, Donnees.richesse).all()
 
-    # Conversion des données en un format compatible avec Chart.js
     data_json = []
     for donnee in data:
         valeurs = {
@@ -113,13 +137,22 @@ def graphiques_2000():
         }
         data_json.append(valeurs)
 
-    # Écriture des données dans un fichier JSON
     with open('./app/statics/data/donnees_2000.json', 'w') as f:
         json.dump(data_json, f)
 
     annees = db.session.query(Formulaire.year.distinct()).order_by(Formulaire.year).all()
     
     return render_template("pages/graph/graphiques_2000.html")
+    """
+    Route pour afficher les graphiques pour l'année 2000.
+
+    Cette route récupère les données nécessaires à partir de la base de données pour générer des graphiques représentant diverses statistiques pour l'année 2000. Ces données comprennent le total des médailles remportées par chaque pays, la population de chaque pays, ainsi que la richesse mesurée de chaque pays. Ces données sont ensuite converties en format JSON pour être utilisées dans les graphiques.
+
+    Returns
+    -------
+    template
+        Retourne le template graphiques_2000.html, qui contient les graphiques générés à partir des données récupérées.
+    """
 
 @app.route('/graphiques_2004', methods=['GET', 'POST'])
 def graphiques_2004():
@@ -136,7 +169,6 @@ def graphiques_2004():
             .filter(Formulaire.year == choix_annee) \
             .group_by(Donnees.id_team, Formulaire.year, Medailles.total, Donnees.population, Donnees.richesse).all()
 
-    # Conversion des données en un format compatible avec Chart.js
     data_json = []
     for donnee in data:
         valeurs = {
@@ -147,13 +179,22 @@ def graphiques_2004():
         }
         data_json.append(valeurs)
 
-    # Écriture des données dans un fichier JSON
     with open('./app/statics/data/donnees_2004.json', 'w') as f:
         json.dump(data_json, f)
 
     annees = db.session.query(Formulaire.year.distinct()).order_by(Formulaire.year).all()
     
     return render_template("pages/graph/graphiques_2004.html")
+    """
+    Route pour afficher les graphiques pour l'année 2004.
+
+    Cette route récupère les données nécessaires à partir de la base de données pour générer des graphiques représentant diverses statistiques pour l'année 2000. Ces données comprennent le total des médailles remportées par chaque pays, la population de chaque pays, ainsi que la richesse mesurée de chaque pays. Ces données sont ensuite converties en format JSON pour être utilisées dans les graphiques.
+
+    Returns
+    -------
+    template
+        Retourne le template graphiques_2004.html, qui contient les graphiques générés à partir des données récupérées.
+    """
 
 @app.route('/graphiques_2008', methods=['GET', 'POST'])
 def graphiques_2008():
@@ -170,7 +211,6 @@ def graphiques_2008():
             .filter(Formulaire.year == choix_annee) \
             .group_by(Donnees.id_team, Formulaire.year, Medailles.total, Donnees.population, Donnees.richesse).all()
 
-    # Conversion des données en un format compatible avec Chart.js
     data_json = []
     for donnee in data:
         valeurs = {
@@ -181,11 +221,20 @@ def graphiques_2008():
         }
         data_json.append(valeurs)
 
-    # Écriture des données dans un fichier JSON
     with open('./app/statics/data/donnees_2008.json', 'w') as f:
         json.dump(data_json, f)
 
     return render_template("pages/graph/graphiques_2008.html")
+    """
+    Route pour afficher les graphiques pour l'année 2008.
+
+    Cette route récupère les données nécessaires à partir de la base de données pour générer des graphiques représentant diverses statistiques pour l'année 2000. Ces données comprennent le total des médailles remportées par chaque pays, la population de chaque pays, ainsi que la richesse mesurée de chaque pays. Ces données sont ensuite converties en format JSON pour être utilisées dans les graphiques.
+
+    Returns
+    -------
+    template
+        Retourne le template graphiques_2008.html, qui contient les graphiques générés à partir des données récupérées.
+    """
 
 @app.route('/graphiques_2012', methods=['GET', 'POST'])
 def graphiques_2012():
@@ -202,7 +251,6 @@ def graphiques_2012():
             .filter(Formulaire.year == choix_annee) \
             .group_by(Donnees.id_team, Formulaire.year, Medailles.total, Donnees.population, Donnees.richesse).all()
 
-    # Conversion des données en un format compatible avec Chart.js
     data_json = []
     for donnee in data:
         valeurs = {
@@ -213,11 +261,20 @@ def graphiques_2012():
         }
         data_json.append(valeurs)
 
-    # Écriture des données dans un fichier JSON
     with open('./app/statics/data/donnees_2012.json', 'w') as f:
         json.dump(data_json, f)
 
     return render_template("pages/graph/graphiques_2012.html")
+    """
+    Route pour afficher les graphiques pour l'année 2012.
+
+    Cette route récupère les données nécessaires à partir de la base de données pour générer des graphiques représentant diverses statistiques pour l'année 2000. Ces données comprennent le total des médailles remportées par chaque pays, la population de chaque pays, ainsi que la richesse mesurée de chaque pays. Ces données sont ensuite converties en format JSON pour être utilisées dans les graphiques.
+
+    Returns
+    -------
+    template
+        Retourne le template graphiques_2012.html, qui contient les graphiques générés à partir des données récupérées.
+    """
 
 @app.route('/graphiques_2016', methods=['GET', 'POST'])
 def graphiques_2016():
@@ -234,7 +291,6 @@ def graphiques_2016():
             .filter(Formulaire.year == choix_annee) \
             .group_by(Donnees.id_team, Formulaire.year, Medailles.total, Donnees.population, Donnees.richesse).all()
 
-    # Conversion des données en un format compatible avec Chart.js
     data_json = []
     for donnee in data:
         valeurs = {
@@ -245,8 +301,17 @@ def graphiques_2016():
         }
         data_json.append(valeurs)
 
-    # Écriture des données dans un fichier JSON
     with open('./app/statics/data/donnees_2016.json', 'w') as f:
         json.dump(data_json, f)
 
     return render_template("pages/graph/graphiques_2016.html")
+    """
+    Route pour afficher les graphiques pour l'année 2016.
+
+    Cette route récupère les données nécessaires à partir de la base de données pour générer des graphiques représentant diverses statistiques pour l'année 2000. Ces données comprennent le total des médailles remportées par chaque pays, la population de chaque pays, ainsi que la richesse mesurée de chaque pays. Ces données sont ensuite converties en format JSON pour être utilisées dans les graphiques.
+
+    Returns
+    -------
+    template
+        Retourne le template graphiques_2016.html, qui contient les graphiques générés à partir des données récupérées.
+    """

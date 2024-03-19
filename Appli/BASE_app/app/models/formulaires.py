@@ -45,15 +45,21 @@ class AjoutAll(FlaskForm):
         validators.NumberRange(min=None, max=None)
     ])
     gold = IntegerField("gold", validators=[
-        validators.DataRequired(message="Ce champ est obligatoire. Si aucune médaille n'a été remportée, indiquer 0")
+        validators.DataRequired(message="Ce champ est obligatoire. Si aucune médaille n'a été remportée, indiquer 0"),
+        validators.NumberRange(min=0, max=None)
     ])
     silver = IntegerField("silver", validators=[
-        validators.DataRequired(message="Ce champ est obligatoire. Si aucune médaille n'a été remportée, indiquer 0")
+        validators.DataRequired(message="Ce champ est obligatoire. Si aucune médaille n'a été remportée, indiquer 0"),
+        validators.NumberRange(min=0, max=None)
     ])
     bronze = IntegerField("bronze", validators=[
-        validators.DataRequired(message="Ce champ est obligatoire. Si aucune médaille n'a été remportée, indiquer 0")
+        validators.DataRequired(message="Ce champ est obligatoire. Si aucune médaille n'a été remportée, indiquer 0"),
+        validators.NumberRange(min=0, max=None)
     ])
     
 class SuppressionPays(FlaskForm):
     nom_pays = SelectField("nom_pays", choices=[])
-    annee_participation = SelectField("annee_participation", choices=[(''), ('1996'), ('2000'), ('2004'), ('2008'), ('2012'), ('2016'), ('3000')])
+
+class SuppressionEdition(FlaskForm):
+    nom_pays = SelectField("nom_pays", choices=[])
+    annee_participation = SelectField("annee_participation", choices=[(''), ('1996'), ('2000'), ('2004'), ('2008'), ('2012'), ('2016')])

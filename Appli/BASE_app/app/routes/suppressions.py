@@ -1,7 +1,7 @@
 from ..app import app, db
 from flask import render_template, request, flash, abort, redirect, url_for
 from ..models.Jeux_Olympiques import Pays, Donnees, Medailles, Formulaire
-from ..models.formulaires import SuppressionPays
+from ..models.formulaires import SuppressionPays, SuppressionEdition
 from ..utils.transformations import clean_arg
 from flask_login import current_user, logout_user, login_user, login_required
 from ..models.users import Users
@@ -9,10 +9,62 @@ from .users import admin_required
 
 @app.route("/suppression/pays", methods=['GET', 'POST'])
 @login_required
+#@admin_required
 def suppression_pays():
     form = SuppressionPays()
 
-    liste_pays = Pays.query.all()    
+    liste_pays = Pays.query.all()
+    form.nom_pays.choices = [('')] + [(p.nom) for p in liste_pays]
+
+    try:
+        if form.validate_on_submit():
+            nom_pays =  clean_arg(request.form.get("nom_pays", None))
+
+            donnees_pays = Pays.query.filter_by(nom=nom_pays).first()
+            code_pays = donnees_pays.noc
+
+            donnees_formulaire = Formulaire.query.filter(Formulaire.id_team.like(f"{code_pays} - %")).all()
+            donnees_donnees = Donnees.query.filter(Donnees.id_team.like(f"{code_pays} - %")).all()
+            donnees_medailles = Medailles.query.filter(Medailles.id_team.like(f"{code_pays} - %")).all()
+
+            if donnees_pays:
+                db.session.delete(donnees_pays)
+            
+            if donnees_formulaire:
+                for donnee in donnees_formulaire:
+                    db.session.delete(donnee)
+
+            if donnees_donnees:
+                for donnee in donnees_donnees:
+                    db.session.delete(donnee)
+            
+            if donnees_medailles:
+                for donnee in donnees_medailles:
+                    db.session.delete(donnee)
+
+            db.session.commit()
+
+            flash("La suppression des données sur le pays " + nom_pays + " s'est correctement déroulée", 'success')
+
+    except Exception as e :
+        print("Une erreur est survenue : " + str(e))
+        flash("Une erreur s'est produite lors de l'insertion des données sur le pays " + nom_pays + " : " + str(e), "error")
+        db.session.rollback()
+    
+    return render_template("pages/suppression_pays.html", sous_titre="Suppression pays", form=form)
+
+
+
+
+
+
+@app.route("/suppression/edition", methods=['GET', 'POST'])
+@login_required
+#@admin_required
+def suppression_edition():
+    form = SuppressionEdition()
+
+    liste_pays = Pays.query.all()
     form.nom_pays.choices = [('')] + [(p.nom) for p in liste_pays]
 
     try:
@@ -27,9 +79,6 @@ def suppression_pays():
             donnees_formulaire = Formulaire.query.filter_by(id_team=clef_p).first()
             donnees_donnees = Donnees.query.filter_by(id_team=clef_p).first()
             donnees_medailles = Medailles.query.filter_by(id_team=clef_p).first()
-
-            if donnees_pays:
-                db.session.delete(donnees_pays)
             
             if donnees_formulaire:
                 db.session.delete(donnees_formulaire)
@@ -48,5 +97,5 @@ def suppression_pays():
         print("Une erreur est survenue : " + str(e))
         flash("Une erreur s'est produite lors de l'insertion des données sur le pays " + nom_pays + " pour l'année " + annee_participation + " : " + str(e), "error")
         db.session.rollback()
-    
-    return render_template("pages/suppression_pays.html", sous_titre="Suppression pays", form=form)
+
+    return render_template("pages/suppression_edition.html", sous_titre="Suppression édition", form=form)

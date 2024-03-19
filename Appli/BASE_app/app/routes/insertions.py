@@ -75,8 +75,8 @@ def insertion_all():
                 nouveau_pays = Pays(
                     noc=code_pays,
                     nom=nom_pays,
-                    latitude=int(latitude_pays),
-                    longitude=int(longitude_pays))
+                    latitude=latitude_pays,
+                    longitude=longitude_pays)
                 db.session.add(nouveau_pays)
 
             annee_existante = Formulaire.query.filter_by(id_team=clef_p).first()
@@ -89,9 +89,9 @@ def insertion_all():
                 
                 nouvelles_donnees = Donnees(
                     id_team=clef_p,
-                    population=int(population_pays),
-                    richesse=int(richesse_pays),
-                    investissement=int(investissement_pays))
+                    population=population_pays,
+                    richesse=richesse_pays,
+                    investissement=investissement_pays)
                 
                 nouvelles_medailles = Medailles(
                     id_team=clef_p,

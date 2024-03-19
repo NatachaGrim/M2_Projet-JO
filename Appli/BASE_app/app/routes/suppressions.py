@@ -25,17 +25,8 @@ def suppression_pays():
             clef_p=f"{code_pays} - {annee_participation}"
 
             donnees_formulaire = Formulaire.query.filter_by(id_team=clef_p).first()
-
             donnees_donnees = Donnees.query.filter_by(id_team=clef_p).first()
-
             donnees_medailles = Medailles.query.filter_by(id_team=clef_p).first()
-
-            print(donnees_pays)
-            print(code_pays)
-            print(clef_p)
-            print(donnees_formulaire)
-            print(donnees_donnees)
-            print(donnees_medailles)
 
             if donnees_pays:
                 db.session.delete(donnees_pays)

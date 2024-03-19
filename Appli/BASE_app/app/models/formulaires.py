@@ -56,4 +56,4 @@ class AjoutAll(FlaskForm):
     
 class SuppressionPays(FlaskForm):
     nom_pays = SelectField("nom_pays", choices=[])
-    annee_participation = SelectField("annee_participation", choices=[(''), ('1996'), ('2000'), ('2004'), ('2008'), ('2012'), ('2016')])
+    annee_participation = SelectField("annee_participation", choices=[(''), ('1996'), ('2000'), ('2004'), ('2008'), ('2012'), ('2016'), ('3000')])

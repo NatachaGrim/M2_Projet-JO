@@ -89,7 +89,7 @@ def insertion_all():
                 gold_count=gold,
                 silver_count=silver,
                 bronze_count=bronze,
-                total=gold+silver+bronze)
+                total=int(gold)+int(silver)+int(bronze))
             
             db.session.add(nouveau_pays)
             db.session.add(nouvelle_participation)

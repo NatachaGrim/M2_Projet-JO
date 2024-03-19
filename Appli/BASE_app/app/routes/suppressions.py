@@ -13,87 +13,49 @@ def suppression_pays():
     form = SuppressionPays()
 
     liste_pays = Pays.query.all()    
-    form.nom_pays.choices = [(p.nom, p.nom) for p in liste_pays]
-    
-    def delete_pays(pays):
-        pays = Pays.query.get(nom_pays)
-        if pays:
-
-            query = db.session.query(Pays, Donnees, Medailles, Formulaire).\
-                join(Pays.pays).\
-                join(Donnees.pays).\
-                join(Medailles.pays).\
-                join(Formulaire.pays).\
-                filter(Pays.nom == nom_pays)
-            result = query.all()
-            
-            if result:
-                for donnees in result:
-                    db.session.delete(donnees)
-                    db.session.commit()
+    form.nom_pays.choices = [('')] + [(p.nom) for p in liste_pays]
 
     try:
         if form.validate_on_submit():
             nom_pays =  clean_arg(request.form.get("nom_pays", None))
+            annee_participation = clean_arg(request.form.get("annee_participation", None))
 
-            if nom_pays:
-                delete_pays(nom_pays)
-                flash("La suppression du pays s'est correctement déroulée", 'info')
+            donnees_pays = Pays.query.filter_by(nom=nom_pays).first()
+            code_pays = donnees_pays.noc
+            clef_p=f"{code_pays} - {annee_participation}"
+
+            donnees_formulaire = Formulaire.query.filter_by(id_team=clef_p).first()
+
+            donnees_donnees = Donnees.query.filter_by(id_team=clef_p).first()
+
+            donnees_medailles = Medailles.query.filter_by(id_team=clef_p).first()
+
+            print(donnees_pays)
+            print(code_pays)
+            print(clef_p)
+            print(donnees_formulaire)
+            print(donnees_donnees)
+            print(donnees_medailles)
+
+            if donnees_pays:
+                db.session.delete(donnees_pays)
             
-            else:
-                flash("Le pays indiqué ne figure pas dans la base", "error")
-    
+            if donnees_formulaire:
+                db.session.delete(donnees_formulaire)
+
+            if donnees_donnees:
+                db.session.delete(donnees_donnees)
+            
+            if donnees_medailles:
+                db.session.delete(donnees_medailles)
+
+            db.session.commit()
+
+            flash("La suppression des données sur le pays " + nom_pays + " pour l'édition " + annee_participation + " s'est correctement déroulée", 'success')
+
     except Exception as e :
-        flash("Une erreur s'est produite lors de la suppression : " + str(e), "error")
+        print("Une erreur est survenue : " + str(e))
+        flash("Une erreur s'est produite lors de l'insertion des données sur le pays " + nom_pays + " pour l'année " + annee_participation + " : " + str(e), "error")
+        db.session.rollback()
     
-    return render_template("pages/suppression_pays.html", sous_titre= "Suppression pays", form=form)
-
-
-
-
-
-
-
-
-
-
-
-
-@app.route("/suppression/pays", methods=['GET', 'POST'])
-@login_required
-def suppression_pays():
-    form = SuppressionPays()
-    liste_pays = Pays.query.all()    
-    form.nom_pays.choices = [(p.nom, p.nom) for p in liste_pays]
-    
-    try:
-        if form.validate_on_submit():
-            nom_pays = clean_arg(request.form.get("nom_pays", None))
-            if nom_pays:
-                
-
-
-
-        # Vérifier si le nom du pays est valide
-        if nom_pays:
-            # Récupérer le pays à supprimer
-            pays_a_supprimer = Pays.query.filter_by(nom=nom_pays).first()
-
-            if pays_a_supprimer:
-                # Supprimer les données associées à ce pays de toutes les tables
-                donnees_a_supprimer = Donnees.query.filter_by(pays=pays_a_supprimer).all()
-                medailles_a_supprimer = Medailles.query.filter_by(pays=pays_a_supprimer).all()
-                formulaire_a_supprimer = Formulaire.query.filter_by(pays=pays_a_supprimer).all()
-
-                for donnee in donnees_a_supprimer:
-                    db.session.delete(donnee)
-                for medaille in medailles_a_supprimer:
-                    db.session.delete(medaille)
-                for form in formulaire_a_supprimer:
-                    db.session.delete(form)
-
-                # Supprimer le pays lui-même
-                db.session.delete(pays_a_supprimer)
-
-                # Confirmer les suppressions dans la base de données
-                db.session.commit()
+    return render_template("pages/suppression_pays.html", sous_titre="Suppression pays", form=form)

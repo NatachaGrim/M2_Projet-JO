@@ -67,31 +67,23 @@ def insertion_all():
             silver = clean_arg(request.form.get("silver", None))
             bronze = clean_arg(request.form.get("bronze", None))
             
-            print("ok1")
-
             nouveau_pays = Pays(
                 noc=code_pays,
                 nom=nom_pays,
                 latitude=latitude_pays,
                 longitude=longitude_pays)
 
-            print("ok2")
-
             nouvelle_participation = Formulaire(
                 id_team=f"{code_pays} - {annee_participation}",
                 noc=code_pays,
                 year=annee_participation)
             
-            print("ok3")
-
             nouvelles_donnees = Donnees(
                 id_team=f"{code_pays} - {annee_participation}",
                 population=population_pays,
                 richesse=richesse_pays,
                 investissement=investissement_pays)
             
-            print("ok4")
-
             nouvelles_medailles = Medailles(
                 id_team=f"{code_pays} - {annee_participation}",
                 gold_count=gold,
@@ -99,27 +91,11 @@ def insertion_all():
                 bronze_count=bronze,
                 total=gold+silver+bronze)
             
-            print("ok5")
-
             db.session.add(nouveau_pays)
-
-            print("ok6")
-            
             db.session.add(nouvelle_participation)
-
-            print("ok7")
-
             db.session.add(nouvelles_donnees)
-
-            print("ok8")
-
             db.session.add(nouvelles_medailles)
-
-            print("ok9")
-         
             db.session.commit()
-
-            print("ok10")
 
             flash("L'insertion des données sur le pays " + nom_pays + " pour l'année " + annee_participation + " s'est correctement déroulée", 'success')
         else:

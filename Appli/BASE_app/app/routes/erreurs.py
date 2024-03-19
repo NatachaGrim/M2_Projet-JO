@@ -16,7 +16,7 @@ def not_found_error(error):
 	template
 		Retourne le template '404.html' ainsi que le code d'erreur 404
 	"""
-	return render_template('404.html'), 404
+	return render_template('pages/erreurs/404.html'), 404
 
 @app.errorhandler(403)
 def forbidden_error(error):
@@ -33,7 +33,7 @@ def forbidden_error(error):
 	template
 		Retourne le template '403.html' ainsi que le code d'erreur 403
 	"""
-	return render_template('403.html'), 403
+	return render_template('pages/erreurs/403.html'), 403
 
 @app.errorhandler(500)
 @app.errorhandler(503)
@@ -54,4 +54,4 @@ def internal_error(error):
 		Retourne le template '500.html' ainsi que le code d'erreur 500
 	"""
 	db.session.rollback()
-	return render_template('500.html'), 500
+	return render_template('pages/erreurs/500.html'), 500

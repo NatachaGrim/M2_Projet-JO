@@ -66,38 +66,51 @@ def insertion_all():
             gold = clean_arg(request.form.get("gold", None))
             silver = clean_arg(request.form.get("silver", None))
             bronze = clean_arg(request.form.get("bronze", None))
-            
-            nouveau_pays = Pays(
-                noc=code_pays,
-                nom=nom_pays,
-                latitude=latitude_pays,
-                longitude=longitude_pays)
 
-            nouvelle_participation = Formulaire(
-                id_team=f"{code_pays} - {annee_participation}",
-                noc=code_pays,
-                year=annee_participation)
+            clef_p = f"{code_pays} - {annee_participation}"
             
-            nouvelles_donnees = Donnees(
-                id_team=f"{code_pays} - {annee_participation}",
-                population=population_pays,
-                richesse=richesse_pays,
-                investissement=investissement_pays)
+            pays_existant = Pays.query.filter_by(nom=nom_pays).first()
             
-            nouvelles_medailles = Medailles(
-                id_team=f"{code_pays} - {annee_participation}",
-                gold_count=gold,
-                silver_count=silver,
-                bronze_count=bronze,
-                total=int(gold)+int(silver)+int(bronze))
-            
-            db.session.add(nouveau_pays)
-            db.session.add(nouvelle_participation)
-            db.session.add(nouvelles_donnees)
-            db.session.add(nouvelles_medailles)
+            if not pays_existant:
+                nouveau_pays = Pays(
+                    noc=code_pays,
+                    nom=nom_pays,
+                    latitude=latitude_pays,
+                    longitude=longitude_pays)
+                db.session.add(nouveau_pays)
+
+            annee_existante = Formulaire.query.filter_by(id_team=clef_p).first()
+
+            if not annee_existante:
+                nouvelle_participation = Formulaire(
+                    id_team=clef_p,
+                    noc=code_pays,
+                    year=annee_participation)
+                
+                nouvelles_donnees = Donnees(
+                    id_team=clef_p,
+                    population=population_pays,
+                    richesse=richesse_pays,
+                    investissement=investissement_pays)
+                
+                nouvelles_medailles = Medailles(
+                    id_team=clef_p,
+                    gold_count=gold,
+                    silver_count=silver,
+                    bronze_count=bronze,
+                    total=int(gold)+int(silver)+int(bronze))
+                        
+                db.session.add(nouvelle_participation)
+                db.session.add(nouvelles_donnees)
+                db.session.add(nouvelles_medailles)
+
+            else:
+                flash("Les données pour le pays " + nom_pays + " pour l'année " + annee_participation + " sont déjà dans la base de données", 'warning')
+
             db.session.commit()
 
             flash("L'insertion des données sur le pays " + nom_pays + " pour l'année " + annee_participation + " s'est correctement déroulée", 'success')
+        
         else:
             flash("Veuillez renseigner l'ensemble des champs pour insérer la participation", 'error')
     

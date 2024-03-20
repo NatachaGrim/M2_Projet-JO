@@ -1,0 +1,11 @@
+<form action="{{url_for('suppression_pays')}}" method="post" name="suppression_pays">
+    {{ form.hidden_tag() }}
+
+    <div class="form-group">
+        <label for="nom_pays">Nom</label>
+        {{ form.nom_pays(class_="form-control") }}
+        <small id="nom_pays" class="form-text text-muted">Sélectionner le nom du pays</small>
+    </div>
+
+    <p><input type="submit" value="Insérer"></p>
+</form>

@@ -17,6 +17,6 @@ mail = Mail(app)
 
 login = LoginManager(app)
 
-from .routes import generales, insertions, users, favoris, graphiques, courriel, suppressions, editions
+from .routes import generales, insertions, users, graphiques, courriel, compte_utilisateur, suppressions, editions
 
 

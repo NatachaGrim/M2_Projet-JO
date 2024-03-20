@@ -6,6 +6,7 @@ from ..utils.transformations import clean_arg
 from flask_login import current_user, logout_user, login_user, login_required
 from ..models.users import Users
 from .users import admin_required
+from .courriel import envoyer_courriel 
 
 @app.route("/insertion/utilisateur", methods=['GET', 'POST'])
 @app.route("/insertion_utilisateur/<int:page>", methods=['GET', 'POST'])
@@ -40,6 +41,7 @@ def insertion_utilisateur(page=1):
 
 @app.route("/insertion/all", methods=['GET', 'POST'])
 @login_required
+@admin_required #il faut être administrateur pour modifier la base 
 def insertion_all():
     """
     Route permettant l'insertion de données pour un pays et une édition des Jeux Olympiques. Les 
@@ -118,12 +120,13 @@ def insertion_all():
                 db.session.add(nouvelle_participation)
                 db.session.add(nouvelles_donnees)
                 db.session.add(nouvelles_medailles)
+                envoyer_courriel()
 
             else:
                 flash("Les données pour le pays " + nom_pays + " pour l'année " + annee_participation + " sont déjà dans la base de données", 'warning')
             db.session.commit()
             flash("L'insertion des données sur le pays " + nom_pays + " pour l'année " + annee_participation + " s'est correctement déroulée", 'success')
-        
+         
         else:
             flash("Veuillez renseigner l'ensemble des champs pour insérer la participation", 'error')
     

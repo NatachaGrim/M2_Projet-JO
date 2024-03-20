@@ -9,7 +9,7 @@ from .users import admin_required
 
 @app.route("/suppression/pays", methods=['GET', 'POST'])
 @login_required
-@admin_required
+@admin_required #il faut être administrateur pour pouvoir modifier la base;
 def suppression_pays():
     """
     Route permettant la suppression de l'intégralité des données sur un pays. Soit ses informations

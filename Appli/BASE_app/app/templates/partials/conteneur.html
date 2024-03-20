@@ -100,12 +100,30 @@
 
 
 
-
-
-                        <a class="nav-link">
-                            <div class="sb-nav-link-icon"><i class="fas fa-edit"></i></div>
-                            Modifications
+                        
+                     <a class="nav-link collapsed" data-bs-toggle="collapse" data-bs-target="#modifications"
+                     aria-expanded="false" aria-controls="modifications">
+                      <div class="sb-nav-link-icon"><i class="fas fa-edit"></i></div>
+                      Modifications de la base (insertions, suppresions)
+                      <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                  </a>
+                  <div class="collapse" id="modifications" aria-labelledby="headingOne"
+                       data-bs-parent="#sidenavAccordion">
+                      <nav class="sb-sidenav-menu-nested nav">
+                          <a class="nav-link" href="{{ url_for('insertion_all') }}">
+                              <div class="sb-nav-link-icon"><i class="fa-solid fa-database"></i></div>
+                              Insérer de nouvelles données 
+                          </a>
+                          <a class="nav-link" href="{{ url_for('suppression_pays') }}">
+                              <div class="sb-nav-link-icon"><i class="fa-solid fa-trash"></i></div>
+                              Supprimer un pays 
+                          </a>
+                          <a class="nav-link" href="{{ url_for('suppression_edition') }}">
+                            <div class="sb-nav-link-icon"><i class="fa-solid fa-trash"></i></div>
+                            Supprimer une édition des jeux 
                         </a>
+                      </nav>
+                  </div>
 
                         <!-- Inscription / Connexion -->
                         <div class="sb-sidenav-menu-heading">Inscription / connexion</div>

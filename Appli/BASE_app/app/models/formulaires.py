@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SelectField, SelectMultipleField, TextAreaField, FloatField, IntegerField, validators
+from wtforms import StringField, SelectField, SelectMultipleField, TextAreaField, FloatField, IntegerField, HiddenField, validators
 
 class InsertionUsers(FlaskForm):
     mail = StringField("mail", validators=[
@@ -63,3 +63,53 @@ class SuppressionPays(FlaskForm):
 class SuppressionEdition(FlaskForm):
     nom_pays = SelectField("nom_pays", choices=[])
     annee_participation = SelectField("annee_participation", choices=[(''), ('1996'), ('2000'), ('2004'), ('2008'), ('2012'), ('2016')])
+
+
+
+
+
+
+
+
+class EditionDonnees(FlaskForm):
+    nom_pays = SelectField("nom_pays", choices=[])
+    annee_participation = SelectField("annee_participation", choices=[(''), ('1996'), ('2000'), ('2004'), ('2008'), ('2012'), ('2016')])
+
+
+
+
+
+
+
+
+
+
+class EditionAjout(FlaskForm):
+    nom_pays = HiddenField("nom_pays")
+    annee_participation = HiddenField("annee_participation")
+
+    population_pays = IntegerField("population_pays", validators=[
+        validators.Optional(),
+        validators.NumberRange(min=None, message="La population doit correspondre à un entier")
+    ])
+
+    richesse_pays = IntegerField("richesse_pays", validators=[
+        validators.Optional(),
+        validators.NumberRange(min=None, max=None, message="La richesse doit correspondre à un entier, arrondir au besoin")
+    ])
+    investissement_pays = FloatField("investissement_pays", validators=[
+        validators.Optional(),
+        validators.NumberRange(min=None, max=None)
+    ])
+    gold = IntegerField("gold", validators=[
+        validators.Optional(),
+        validators.NumberRange(min=0, max=None)
+    ])
+    silver = IntegerField("silver", validators=[
+        validators.Optional(),
+        validators.NumberRange(min=0, max=None)
+    ])
+    bronze = IntegerField("bronze", validators=[
+        validators.Optional(),
+        validators.NumberRange(min=0, max=None)
+    ])

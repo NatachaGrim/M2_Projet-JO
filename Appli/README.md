@@ -1,4 +1,4 @@
-# Application flask
+# Manuel de l'application
 Notre application permet de consulter les résultats de différents pays à diverses éditions des Jeux Olympiques.
 
 ## Contributeurs
@@ -100,7 +100,7 @@ L'application devrait démarrer. Ouvrez ensuite votre navigateur web et saisisse
 localhost:5000/accueil
 ```
 
-Nos différentes routes sont consultables dans [ce dossier](Appli/BASE_app/app/routes).
+Nos différentes routes sont consultables dans [ce dossier](BASE_app/app/routes).
 
 ## Étape 8 : quitter l'application
 - Dans le terminal, maintenez la touche ```ctrl``` enfoncée et appuyez sur la touche ```c``` ;

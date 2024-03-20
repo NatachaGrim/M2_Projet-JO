@@ -1,8 +1,12 @@
 from ..app import app, db
-from flask import render_template
+from flask import render_template, abort
+from werkzeug.exceptions import BadRequest, BadHost, BadGateway, BadRequestKeyError
+import json 
 
+
+@app.errorhandler(400)
 @app.errorhandler(404)
-def not_found_error(error):
+def page_not_found(e):
 	"""
 	Route permettant de gérer les erreurs 404 (ressource non trouvée)
 	
@@ -19,7 +23,7 @@ def not_found_error(error):
 	return render_template('pages/erreurs/404.html'), 404
 
 @app.errorhandler(403)
-def forbidden_error(error):
+def forbiden(e):
 	"""
 	Route permettant de gérer les erreurs 403 (accès interdit)
 	
@@ -37,7 +41,7 @@ def forbidden_error(error):
 
 @app.errorhandler(500)
 @app.errorhandler(503)
-def internal_error(error):
+def service_unavailable(e):
 	"""
 	Route permettant de gérer les erreurs de type 500
 		500 : erreur interne de serveur
@@ -55,3 +59,6 @@ def internal_error(error):
 	"""
 	db.session.rollback()
 	return render_template('pages/erreurs/500.html'), 500
+
+
+

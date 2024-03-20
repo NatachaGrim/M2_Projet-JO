@@ -7,8 +7,12 @@
     
     <h3>Bonjour {{pseudo}},</h3> 
     
-    <p>Vous avez activé les notifications pour recevoir des mails depuis l'application des Jeux-Olympiques. La base a été mise à jour ! <a href="{{ url_for('donnees', _external=True)}}"> Rendez-vous sur le site</a> pour découvrir de nouvelles données !</p>
+    <p>Vous avez activé les notifications pour recevoir des mails depuis l'application des Jeux-Olympiques. </p>
+        
+    <p>La base a été mise à jour ! Le pays {{nom}} a été ajouté.</p>
+        
+    <a href="{{ url_for('donnees', _external=True)}}"> Rendez-vous sur le site</a> pour découvrir de nouvelles données !</p>
 
-    <p>Pour ne plus recevoir de notifications <a href="{{url_for('connexion', _external=True)}}"> <i> modifiez vos préférences (en vous connectant dans un premier temps).</i> </a></p>
+    <p>Pour ne plus recevoir de notifications <a href="{{url_for('connexion', _external=True)}}">  modifiez vos préférences </a><i>(il faut d'abord vous connecter).</i> </p>
 </body>
 </html>

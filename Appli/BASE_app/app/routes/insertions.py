@@ -120,7 +120,7 @@ def insertion_all():
                 db.session.add(nouvelle_participation)
                 db.session.add(nouvelles_donnees)
                 db.session.add(nouvelles_medailles)
-                envoyer_courriel()
+                envoyer_courriel(nom = nom_pays)
 
             else:
                 flash("Les données pour le pays " + nom_pays + " pour l'année " + annee_participation + " sont déjà dans la base de données", 'warning')

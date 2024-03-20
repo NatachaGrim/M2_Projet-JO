@@ -12,24 +12,7 @@ Les personnes ayant contribué sont :
 Notre application dispose des fonctionnalités suivantes :
 
 ## Variables
-Les variables sont indispensables au bon fonctionnement de l'application. Vous devrez les ajouter manuellement dans un fichier. Copiez-collez simplement ce bloc de texte :
-
-```text
-DEBUG=False
-SQLALCHEMY_DATABASE_URI= [URI DE LA BASE SQLITE]
-PAYS_PER_PAGE = 10 
-RESOURCES_PER_PAGE = 20
-SQLALCHEMY_ECHO=False
-WTF_CSRF_ENABLE=True
-SECRET_KEY=[LA CLÉ SERA ENVOYÉE PAR MAIL]
-MAIL_SERVER=smtp.sendgrid.net
-MAIL_PORT=587	
-MAIL_USERNAME=[LE NOM SERA ENVOYÉ PAR MAIL]
-SECRET_KEY=[LA CLÉ SECRÈTE SERA ENVOYÉE PAR MAIL]
-MAIL_USE_TLS=True
-MAIL_DEFAULT_SENDER=maxime.griveau@chartes.psl.eu
-
-```
+Les variables sont indispensables au bon fonctionnement de l'application. Vous devrez les ajouter manuellement dans un fichier caché nommé ```.env```. Elles sont indiquées ci-dessous.
 
 ## Instructions : un premier lancement
 
@@ -51,7 +34,7 @@ git clone https://github.com/NatachaGrim/M2_Projet-JO.git
 - Dans le terminal, collez la ligne suivante avec ```ctrl+maj+v``` et appuyez sur la touche ```Entrée``` :
 
 ```shell
-cd Application
+cd Appli
 ```
 
 - Puis collez-y la ligne suivante avec ```ctrl+maj+v``` et appuyez sur la touche ```Entrée``` :
@@ -72,7 +55,20 @@ touch .env
 
 - Ouvrez le fichier ```.env``` et copiez-collez-y ce bloc de code avec ```ctrl+v``` :
 
-```
+```shell
+DEBUG=False
+SQLALCHEMY_DATABASE_URI= [URI DE LA BASE SQLITE]
+PAYS_PER_PAGE = 10 
+RESOURCES_PER_PAGE = 20
+SQLALCHEMY_ECHO=False
+WTF_CSRF_ENABLE=True
+SECRET_KEY=[LA CLÉ SERA ENVOYÉE PAR MAIL]
+MAIL_SERVER=smtp.sendgrid.net
+MAIL_PORT=587	
+MAIL_USERNAME=[LE NOM SERA ENVOYÉ PAR MAIL]
+SECRET_KEY=[LA CLÉ SECRÈTE SERA ENVOYÉE PAR MAIL]
+MAIL_USE_TLS=True
+MAIL_DEFAULT_SENDER=maxime.griveau@chartes.psl.eu
 ```
 
 - Enregistrez avec ```ctrl+s``` et fermez le fichier.
@@ -101,7 +97,7 @@ python run.py
 L'application devrait démarrer. Ouvrez ensuite votre navigateur web et saisissez le nom d'une route. Par exemple :
 
 ```shell
-localhost:5000/nomDeRoute
+localhost:5000/accueil
 ```
 
 Nos différentes routes sont consultables dans [ce dossier]().

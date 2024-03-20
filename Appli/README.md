@@ -34,7 +34,7 @@ git clone https://github.com/NatachaGrim/M2_Projet-JO.git
 - Dans le terminal, collez la ligne suivante avec ```ctrl+maj+v``` et appuyez sur la touche ```Entrée``` :
 
 ```shell
-cd Appli
+cd Appli/BASE_app
 ```
 
 - Puis collez-y la ligne suivante avec ```ctrl+maj+v``` et appuyez sur la touche ```Entrée``` :
@@ -44,7 +44,7 @@ virtualenv env -p python3
 ```
 
 ### Étape 4 : télécharger la base de données
-- Téléchargez la base de données et déplacez-la dans le dossier "Application".
+- Téléchargez la base de données et déplacez-la dans le dossier ```Appli```.
 
 ### Étape 5 : saisir les variables
 - Dans le terminal, collez la ligne suivante avec ```ctrl+maj+v``` et appuyez sur la touche ```Entrée``` :
@@ -100,7 +100,7 @@ L'application devrait démarrer. Ouvrez ensuite votre navigateur web et saisisse
 localhost:5000/accueil
 ```
 
-Nos différentes routes sont consultables dans [ce dossier]().
+Nos différentes routes sont consultables dans [ce dossier](Appli/BASE_app/app/routes).
 
 ## Étape 8 : quitter l'application
 - Dans le terminal, maintenez la touche ```ctrl``` enfoncée et appuyez sur la touche ```c``` ;
@@ -114,7 +114,7 @@ deactivate
 
 Pour lancer l'application :
 ```shell
-cd cheminJusqu'auDossierApplication
+cd cheminJusqu'auDossierBASE_app
 ```
 
 ```shell

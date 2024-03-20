@@ -64,35 +64,17 @@ class SuppressionEdition(FlaskForm):
     nom_pays = SelectField("nom_pays", choices=[])
     annee_participation = SelectField("annee_participation", choices=[(''), ('1996'), ('2000'), ('2004'), ('2008'), ('2012'), ('2016')])
 
-
-
-
-
-
-
-
-class EditionDonnees(FlaskForm):
+class EditionSelection(FlaskForm):
     nom_pays = SelectField("nom_pays", choices=[])
     annee_participation = SelectField("annee_participation", choices=[(''), ('1996'), ('2000'), ('2004'), ('2008'), ('2012'), ('2016')])
-
-
-
-
-
-
-
-
-
 
 class EditionAjout(FlaskForm):
     nom_pays = HiddenField("nom_pays")
     annee_participation = HiddenField("annee_participation")
-
     population_pays = IntegerField("population_pays", validators=[
         validators.Optional(),
         validators.NumberRange(min=None, message="La population doit correspondre à un entier")
     ])
-
     richesse_pays = IntegerField("richesse_pays", validators=[
         validators.Optional(),
         validators.NumberRange(min=None, max=None, message="La richesse doit correspondre à un entier, arrondir au besoin")

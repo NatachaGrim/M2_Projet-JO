@@ -7,7 +7,7 @@
     
     <div class="form-group">
         <strong>
-            <label for="population_pays">Population en base :</label>
+            <label for="population_base"><u>Population en base</u> :</label>
             <span>{{ donnees_donnees.population }}</span>
         </strong>
     </div>
@@ -17,15 +17,11 @@
         {{ form.population_pays(class_="form-control", placeholder_="saisir la population du pays") }}
     </div>
     
-
-
     <br/>
-
-
 
     <div class="form-group">
         <strong>
-            <label for="population_pays">Richesse en base :</label>
+            <label for="richesse_base"><u>PIB en base</u> :</label>
             <span>{{ donnees_donnees.richesse }}</span>
         </strong>
     </div>
@@ -37,12 +33,9 @@
 
     <br/>
 
-
-
-
     <div class="form-group">
         <strong>
-            <label for="population_pays">Niveau d'investissement en base :</label>
+            <label for="investissement_base"><u>Niveau d'investissement en base</u> :</label>
             <span>{{ donnees_donnees.investissement }}</span>
         </strong>
     </div>
@@ -52,31 +45,25 @@
         {{ form.investissement_pays(class_="form-control", placeholder_="saisir le montant investi (utiliser le point comme séparateur)") }}
     </div>
 
-
     <br/>
-
 
     <div class="form-group">
         <strong>
-            <label for="population_pays">Nombre de médailles d'or en base :</label>
+            <label for="gold_base"><u>Nombre de médailles d'or en base</u> :</label>
             <span>{{ donnees_medailles.gold_count }}</span>
         </strong>
     </div>
-
 
     <div class="form-group">
         <label for="gold">Mettre à jour le nombre de médailles d'or</label>
         {{ form.gold(class_="form-control", placeholder_="saisir le nombre de médailles (0 si aucune remportée)") }}
     </div>
 
-
-
     <br/>
-
 
     <div class="form-group">
         <strong>
-            <label for="population_pays">Nombre de médailles d'argent en base :</label>
+            <label for="silver_base"><u>Nombre de médailles d'argent en base</u> :</label>
             <span>{{ donnees_medailles.silver_count }}</span>
         </strong>
     </div>
@@ -86,13 +73,11 @@
         {{ form.silver(class_="form-control", placeholder_="saisir le nombre de médailles (0 si aucune remportée)") }}
     </div>
 
-
     <br/>
-
 
     <div class="form-group">
         <strong>
-            <label for="population_pays">Nombre de médailles de bronze en base :</label>
+            <label for="bronze_base"><u>Nombre de médailles de bronze en base</u> :</label>
             <span>{{ donnees_medailles.bronze_count }}</span>
         </strong>
     </div>

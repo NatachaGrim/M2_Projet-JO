@@ -116,10 +116,10 @@ def insertion_all():
                 
                 nouvelles_medailles = Medailles(
                     id_team=clef_p,
-                    gold_count=int(gold),
-                    silver_count=int(silver),
-                    bronze_count=int(bronze),
-                    total=int(gold)+int(silver)+int(bronze))
+                    gold_count=gold,
+                    silver_count=silver,
+                    bronze_count=bronze,
+                    total=gold+silver+bronze)
                         
                 db.session.add(nouvelle_participation)
                 db.session.add(nouvelles_donnees)

@@ -19,8 +19,7 @@ class AjoutAll(FlaskForm):
         validators.Regexp('^[A-Z]{3}$', message="Le code NOC doit être en majuscules")
     ])
     nom_pays = StringField("nom_pays", validators=[
-        validators.DataRequired(),
-        validators.Regexp('^[A-Z][a-zA-Z]*$', message="Le nom du pays doit commencer par une majuscule")
+        validators.DataRequired()
     ])
     latitude_pays = FloatField("latitude_pays", validators=[
          validators.DataRequired(),
@@ -45,15 +44,12 @@ class AjoutAll(FlaskForm):
         validators.NumberRange(min=None, max=None)
     ])
     gold = IntegerField("gold", validators=[
-        validators.DataRequired(message="Ce champ est obligatoire. Si aucune médaille n'a été remportée, indiquer 0"),
         validators.NumberRange(min=0, max=None)
     ])
     silver = IntegerField("silver", validators=[
-        validators.DataRequired(message="Ce champ est obligatoire. Si aucune médaille n'a été remportée, indiquer 0"),
         validators.NumberRange(min=0, max=None)
     ])
     bronze = IntegerField("bronze", validators=[
-        validators.DataRequired(message="Ce champ est obligatoire. Si aucune médaille n'a été remportée, indiquer 0"),
         validators.NumberRange(min=0, max=None)
     ])
     

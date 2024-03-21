@@ -80,6 +80,10 @@ def insertion_all():
             silver = clean_arg(request.form.get("silver", None))
             bronze = clean_arg(request.form.get("bronze", None))
 
+            gold = int(gold) if gold else 0
+            silver = int(silver) if silver else 0
+            bronze = int(bronze) if bronze else 0
+
             clef_p = f"{code_pays} - {annee_participation}"
             
             # Vérification de l'existence des données en base

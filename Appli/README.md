@@ -8,6 +8,11 @@ Les personnes ayant contribué sont :
 - [Maxime Griveau](https://github.com/Maxime-Griveau) ;
 - [Mohammed Mechentel]().
 
+
+## Notes importantes 
+Notre application dispose de deux rôles : soit utilisateur (la variable "administrateur" de la table Users sera alors à 0) ; soit administrateur (la variable "administrateur" de la table Users sera alors à 1). Il n'existe aucun moyen, dans l'application, d'ajouter un utilisateur en tant qu'administrateur. Il faut donc lui créer un compte et modifier, manuellement, dans la base la valeur. 
+
+
 ## Fonctionnalités
 Notre application dispose des fonctionnalités suivantes :
 
